@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Admin Panel — FIADSHOP (Static Demo)</title>
+    <meta name="robots" content="noindex, nofollow">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    screens: { 'xs': '480px' },
+                    colors: { cta: { 50:'#fff7ed',100:'#ffedd5',200:'#fed7aa',300:'#fdba74',400:'#fb923c',500:'#f97316',600:'#ea580c',700:'#c2410c',800:'#9a3412',900:'#7c2d12' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        *:focus-visible { outline: 2px solid #f97316; outline-offset: 2px; border-radius: 4px; }
+
+        .sidebar-link {
+            display: flex; align-items: center; gap: .75rem;
+            padding: .625rem .875rem; border-radius: .5rem;
+            font-size: .8125rem; font-weight: 500;
+            color: #4b5563; transition: all .15s ease;
+        }
+        .dark .sidebar-link { color: #a1a1aa; }
+        .sidebar-link:hover { background: #fff7ed; color: #ea580c; }
+        .dark .sidebar-link:hover { background: rgba(249,115,22,.1); color: #fb923c; }
+        .sidebar-link.active {
+            background: #f97316; color: #fff; box-shadow: 0 4px 12px rgba(249,115,22,.3);
+        }
+        .sidebar-link.active:hover { background: #ea580c; color: #fff; }
+
+        .admin-card { border: 1px solid #e5e7eb; }
+        .dark .admin-card { border-color: #27272a; }
+
+        .modal-backdrop { animation: fadeIn .18s ease-out; }
+        @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+
+        #sidebar { transition: transform .25s ease; }
+        @media (max-width: 767px) {
+            #sidebar { position: fixed; left: 0; top: 0; bottom: 0; z-index: 60; transform: translateX(-100%); }
+            #sidebar.open { transform: translateX(0); }
+        }
+
+        table.data { width: 100%; font-size: 12px; border-collapse: collapse; }
+        table.data th { text-align: left; padding: .5rem .75rem; font-weight: 600; color: #6b7280; border-bottom: 1px solid #e5e7eb; }
+        table.data td { padding: .625rem .75rem; border-bottom: 1px solid #f3f4f6; }
+        .dark table.data th { color: #9ca3af; border-color: #27272a; }
+        .dark table.data td { border-color: #18181b; }
+        table.data tr:hover td { background: #fff7ed; }
+        .dark table.data tr:hover td { background: rgba(249,115,22,.05); }
+
+        .status-pill { display: inline-block; padding: 2px 8px; border-radius: 9999px; font-size: 10px; font-weight: 700; }
+        .status-PENDING   { background:#fef3c7; color:#92400e; }
+        .status-PAID      { background:#dbeafe; color:#1e40af; }
+        .status-APPROVED  { background:#e0e7ff; color:#3730a3; }
+        .status-SHIPPED   { background:#dcfce7; color:#166534; }
+        .status-DELIVERED { background:#d1fae5; color:#065f46; }
+        .status-REJECTED,.status-CANCELLED { background:#fee2e2; color:#991b1b; }
+        .status-REFUNDED  { background:#f3e8ff; color:#6b21a8; }
+        .dark .status-PENDING   { background:rgba(146,64,14,.25); color:#fcd34d; }
+        .dark .status-PAID      { background:rgba(30,64,175,.25); color:#93c5fd; }
+        .dark .status-APPROVED  { background:rgba(55,48,163,.25); color:#a5b4fc; }
+        .dark .status-SHIPPED   { background:rgba(22,101,52,.25); color:#86efac; }
+        .dark .status-DELIVERED { background:rgba(6,95,70,.3); color:#6ee7b7; }
+        .dark .status-REJECTED,.dark .status-CANCELLED { background:rgba(153,27,27,.25); color:#fca5a5; }
+        .dark .status-REFUNDED  { background:rgba(107,33,168,.25); color:#d8b4fe; }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-black text-gray-900 dark:text-gray-100 transition-colors duration-300 min-h-screen">
+
+    <div id="shell" class="flex min-h-screen">
+        <aside id="sidebar" class="w-64 bg-white dark:bg-zinc-950 border-r border-gray-200 dark:border-zinc-800 flex flex-col md:sticky md:top-0 md:h-screen">
+            <div class="px-5 py-5 border-b-2 border-gray-300 dark:border-zinc-700">
+                <a href="#" class="text-xl font-bold tracking-tight">
+                    <span class="text-cta-500">FIAD</span>SHOP
+                </a>
+                <p class="text-[10px] font-bold uppercase tracking-widest text-cta-500 mt-1">Admin · Demo</p>
+            </div>
+            <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+                <a class="sidebar-link" data-section="dashboard"       href="#dashboard"><i class="fa-solid fa-chart-line w-4 text-center"></i>Dashboard</a>
+                <a class="sidebar-link" data-section="products"        href="#products"><i class="fa-solid fa-box w-4 text-center"></i>Products</a>
+                <a class="sidebar-link" data-section="orders"          href="#orders"><i class="fa-solid fa-cart-shopping w-4 text-center"></i>Orders</a>
+                <a class="sidebar-link" data-section="affiliates"      href="#affiliates"><i class="fa-solid fa-user-group w-4 text-center"></i>Affiliates</a>
+                <a class="sidebar-link" data-section="feedback"        href="#feedback"><i class="fa-solid fa-comment-dots w-4 text-center"></i>Feedback</a>
+                <a class="sidebar-link" data-section="ai-knowledge"    href="#ai-knowledge"><i class="fa-solid fa-robot w-4 text-center"></i>AI Knowledge</a>
+                <a class="sidebar-link" data-section="email-providers" href="#email-providers"><i class="fa-solid fa-envelope w-4 text-center"></i>Email Providers</a>
+                <a class="sidebar-link" data-section="support-settings" href="#support-settings"><i class="fa-solid fa-toggle-on w-4 text-center"></i>Support Settings</a>
+                <a class="sidebar-link" data-section="live-support"    href="#live-support"><i class="fa-solid fa-headset w-4 text-center"></i>Live Support</a>
+                <a class="sidebar-link" data-section="homepage"        href="#homepage"><i class="fa-solid fa-house-chimney w-4 text-center"></i>Homepage</a>
+                <a class="sidebar-link" data-section="users"           href="#users"><i class="fa-solid fa-users-cog w-4 text-center"></i>Users</a>
+            </nav>
+            <div class="px-3 py-4 border-t border-gray-100 dark:border-zinc-900">
+                <button id="reset-btn" class="sidebar-link w-full text-left text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30">
+                    <i class="fa-solid fa-rotate-left w-4 text-center"></i>Reset demo data
+                </button>
+            </div>
+        </aside>
+
+        <div class="flex-1 flex flex-col min-w-0">
+            <header class="sticky top-0 z-40 bg-white/95 dark:bg-black/95 backdrop-blur-sm border-b-2 border-gray-300 dark:border-zinc-700 px-4 py-3 flex items-center gap-3">
+                <button id="mobile-sidebar-toggle" class="md:hidden p-2 rounded-full bg-gray-100 dark:bg-zinc-800" aria-label="Toggle sidebar">
+                    <i class="fa-solid fa-bars text-sm"></i>
+                </button>
+                <h1 id="section-title" class="text-base sm:text-lg font-bold">Dashboard</h1>
+                <div class="ml-auto flex items-center gap-2">
+                    <button id="dark-mode-toggle" class="p-2 rounded-full bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-cta-400 hover:scale-105 transition" aria-label="Toggle theme">
+                        <span id="theme-icon" class="text-sm">🌙</span>
+                    </button>
+                    <span id="admin-name" class="hidden sm:inline text-xs text-gray-600"></span>
+                </div>
+            </header>
+
+            <div id="section-root" class="flex-1 p-4 md:p-6"></div>
+        </div>
+    </div>
+
+    <div id="modal-root"></div>
+
+    <!-- ==================== MOCK API LAYER ==================== -->
+    <script>
+    (function () {
+        function escapeHtml(s) {
+            if (s === null || s === undefined) return '';
+            return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+        function uid() { return 'id_' + Math.random().toString(36).slice(2, 10); }
+
+        function toast(message, type = 'info', duration = 3200) {
+            const colors = {
+                info: 'bg-blue-500', success: 'bg-green-500',
+                error: 'bg-red-500', warn: 'bg-amber-500', warning: 'bg-amber-500'
+            };
+            const el = document.createElement('div');
+            el.className = `fixed bottom-6 left-1/2 -translate-x-1/2 z-[999] ${colors[type] || colors.info} text-white px-5 py-3 rounded-lg shadow-lg text-sm font-medium transition`;
+            el.textContent = message;
+            document.body.appendChild(el);
+            setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; }, duration - 300);
+            setTimeout(() => el.remove(), duration);
+        }
+
+        const now = new Date();
+        const iso = (daysAgo) => new Date(now.getTime() - daysAgo * 86400000).toISOString();
+
+        const seed = {
+            products: [
+                { id: 'p1', sku: 'FIAD-WATCH-001', pid: 'CJ88211', name: 'Minimalist Leather Watch', description: 'Classic hand-stitched leather strap with Japanese quartz movement.', category: 'Accessories', basePrice: 49.99, images: ['https://placehold.co/120x120/ea580c/ffffff?text=Watch'], videos: [], affiliateCommission: 15, stock: 120, isActive: true, isProMode: true, isPackage: false, variants: [{ color: 'Black', size: 'M', stock: 40 }, { color: 'Brown', size: 'M', stock: 80 }], packageItems: [], createdAt: iso(40) },
+                { id: 'p2', sku: 'FIAD-EARBUD-002', pid: 'CJ88212', name: 'Wireless Earbuds Pro', description: 'Active noise cancellation, 30h battery with case, USB-C.', category: 'Electronics', basePrice: 79.99, images: ['https://placehold.co/120x120/1e40af/ffffff?text=Earbuds'], videos: [], affiliateCommission: 10, stock: 340, isActive: true, isProMode: false, isPackage: false, variants: [{ color: 'White', stock: 170 }, { color: 'Black', stock: 170 }], packageItems: [], createdAt: iso(35) },
+                { id: 'p3', sku: 'FIAD-SUNGLASS-003', pid: 'CJ88213', name: 'Bamboo Sunglasses', description: 'Sustainable bamboo frame, polarized UV400.', category: 'Accessories', basePrice: 34.99, images: ['https://placehold.co/120x120/92400e/ffffff?text=Sunglasses'], videos: [], affiliateCommission: 20, stock: 200, isActive: true, isProMode: false, isPackage: false, variants: [], packageItems: [], createdAt: iso(30) },
+                { id: 'p4', sku: 'FIAD-BACKPACK-004', pid: 'CJ88214', name: 'Canvas Backpack', description: 'Water-resistant waxed canvas, laptop sleeve up to 15".', category: 'Bags', basePrice: 64.99, images: ['https://placehold.co/120x120/166534/ffffff?text=Backpack'], videos: [], affiliateCommission: 12, stock: 90, isActive: true, isProMode: false, isPackage: false, variants: [{ color: 'Olive', stock: 45 }, { color: 'Black', stock: 45 }], packageItems: [], createdAt: iso(22) },
+                { id: 'p5', sku: 'FIAD-BUNDLE-005', pid: 'CJ88215', name: 'Accessories Starter Bundle', description: 'Watch + Sunglasses together at a discount.', category: 'Bundles', basePrice: 74.99, images: ['https://placehold.co/120x120/7c2d12/ffffff?text=Bundle'], videos: [], affiliateCommission: 18, stock: 50, isActive: true, isProMode: false, isPackage: true, variants: [], packageItems: [{ childProductId: 'p1', quantity: 1 }, { childProductId: 'p3', quantity: 1 }], createdAt: iso(15) },
+                { id: 'p6', sku: 'FIAD-JACKET-006', pid: 'CJ88216', name: 'Vintage Denim Jacket', description: 'Distressed finish, unisex fit, button front.', category: 'Apparel', basePrice: 119.99, images: ['https://placehold.co/120x120/1e3a8a/ffffff?text=Jacket'], videos: [], affiliateCommission: 8, stock: 0, isActive: false, isProMode: false, isPackage: false, variants: [{ size: 'S' }, { size: 'M' }, { size: 'L' }], packageItems: [], createdAt: iso(90) }
+            ],
+            orders: [
+                { id: 'o1', orderNumber: 'FIAD-1042', user: null, guestEmail: 'alice@example.com', subtotal: 149.97, discountAmount: 0, shippingAmount: 0, total: 149.97, status: 'PAID', shippingAddress: { fullName: 'Alice Smith', email: 'alice@example.com', phone: '+1 555 0101', line1: '12 Maple St', line2: 'Apt 4B', city: 'Portland', state: 'OR', postalCode: '97201', country: 'USA' }, items: [{ productId: 'p1', name: 'Minimalist Leather Watch', sku: 'FIAD-WATCH-001', quantity: 2, lineTotal: 99.98, variantJson: { color: 'Black' } }, { productId: 'p3', name: 'Bamboo Sunglasses', sku: 'FIAD-SUNGLASS-003', quantity: 1, lineTotal: 34.99, variantJson: {} }], createdAt: iso(1) },
+                { id: 'o2', orderNumber: 'FIAD-1041', user: { email: 'bob@example.com', displayName: 'Bob Johnson' }, guestEmail: null, subtotal: 79.99, discountAmount: 0, shippingAmount: 0, total: 79.99, status: 'APPROVED', shippingAddress: { fullName: 'Bob Johnson', email: 'bob@example.com', phone: '+1 555 0102', line1: '88 Oak Ave', line2: '', city: 'Austin', state: 'TX', postalCode: '73301', country: 'USA' }, items: [{ productId: 'p2', name: 'Wireless Earbuds Pro', sku: 'FIAD-EARBUD-002', quantity: 1, lineTotal: 79.99, variantJson: { color: 'White' } }], createdAt: iso(2) },
+                { id: 'o3', orderNumber: 'FIAD-1040', user: null, guestEmail: 'carol@example.com', subtotal: 99.98, discountAmount: 0, shippingAmount: 0, total: 99.98, status: 'SHIPPED', trackingNumber: '1Z999AA10123456784', trackingCarrier: 'UPS', shippingAddress: { fullName: 'Carol Davis', email: 'carol@example.com', phone: '+1 555 0103', line1: '5 Pine Rd', line2: '', city: 'Seattle', state: 'WA', postalCode: '98101', country: 'USA' }, items: [{ productId: 'p1', name: 'Minimalist Leather Watch', sku: 'FIAD-WATCH-001', quantity: 2, lineTotal: 99.98, variantJson: { color: 'Brown' } }], createdAt: iso(4) },
+                { id: 'o4', orderNumber: 'FIAD-1039', user: { email: 'dave@example.com', displayName: 'Dave Wilson' }, guestEmail: null, subtotal: 64.99, discountAmount: 5, shippingAmount: 0, total: 59.99, status: 'DELIVERED', trackingNumber: '9400111899223197428490', trackingCarrier: 'USPS', shippingAddress: { fullName: 'Dave Wilson', email: 'dave@example.com', phone: '+1 555 0104', line1: '200 Birch Ln', line2: '', city: 'Denver', state: 'CO', postalCode: '80202', country: 'USA' }, items: [{ productId: 'p4', name: 'Canvas Backpack', sku: 'FIAD-BACKPACK-004', quantity: 1, lineTotal: 64.99, variantJson: { color: 'Olive' } }], createdAt: iso(8) },
+                { id: 'o5', orderNumber: 'FIAD-1038', user: null, guestEmail: 'eve@example.com', subtotal: 74.99, discountAmount: 0, shippingAmount: 0, total: 74.99, status: 'PENDING', shippingAddress: { fullName: 'Eve Martinez', email: 'eve@example.com', phone: '+1 555 0105', line1: '42 Cedar Ct', line2: '', city: 'Miami', state: 'FL', postalCode: '33101', country: 'USA' }, items: [{ productId: 'p5', name: 'Accessories Starter Bundle', sku: 'FIAD-BUNDLE-005', quantity: 1, lineTotal: 74.99, variantJson: {} }], createdAt: iso(0) }
+            ],
+            affiliates: [
+                { id: 'a1', user: { displayName: 'John Doe', email: 'john@example.com' }, promoCode: 'JOHN10', level: 'GOLD', type: 'INFLUENCER', commissionRate: 12, totalSales: 45, totalEarned: 540.50, balance: 120.75, status: 'ACTIVE', promoCodeLocked: false },
+                { id: 'a2', user: { displayName: 'Sarah Lee', email: 'sarah@example.com' }, promoCode: 'SARAH8', level: 'SILVER', type: 'REGULAR', commissionRate: 8, totalSales: 22, totalEarned: 180.25, balance: 45.10, status: 'ACTIVE', promoCodeLocked: false },
+                { id: 'a3', user: { displayName: 'Mike Chen', email: 'mike@example.com' }, promoCode: 'MIKE5', level: 'BRONZE', type: 'REGULAR', commissionRate: null, totalSales: 6, totalEarned: 45.00, balance: 12.30, status: 'SUSPENDED', promoCodeLocked: true }
+            ],
+            feedback: [
+                { id: 'f1', title: 'Love the watch!', description: 'The leather strap is so comfortable.', type: 'COMPLIMENT', levelRequested: 'MICRO', level: 'MICRO', status: 'REVIEWED', user: { email: 'alice@example.com' }, guestEmail: null, imageUrl: null, adminNote: 'Thanks, coupon issued.', createdAt: iso(2) },
+                { id: 'f2', title: 'Shipping was a bit slow', description: 'Took 9 days to arrive. Product is great though.', type: 'COMPLAINT', levelRequested: 'MICRO', level: 'MICRO', status: 'REVIEWED', user: null, guestEmail: 'bob@example.com', imageUrl: null, adminNote: null, createdAt: iso(4) },
+                { id: 'f3', title: 'Please add more colors', description: 'Would love the backpack in navy and tan.', type: 'SUGGESTION', levelRequested: 'MACRO', level: 'MACRO', status: 'ACCEPTED', user: { email: 'carol@example.com' }, guestEmail: null, imageUrl: null, adminNote: 'Forwarded to product team.', createdAt: iso(6) },
+                { id: 'f4', title: 'Payment issue with card', description: 'Card was declined twice before succeeding.', type: 'BUG', levelRequested: 'UNSET', level: 'UNSET', status: 'PENDING', user: null, guestEmail: 'dave@example.com', imageUrl: null, adminNote: null, createdAt: iso(0) }
+            ],
+            aiKnowledge: [
+                { id: 'k1', category: 'shipping', question: 'How long does shipping take?', answer: 'Standard shipping takes 7-12 business days. Express is 3-5 business days.', keywords: ['shipping', 'delivery', 'how long', 'when'], isActive: true, priority: 10 },
+                { id: 'k2', category: 'returns', question: 'What is your return policy?', answer: '30-day returns on unused items. Contact support to start a return.', keywords: ['return', 'refund', 'exchange'], isActive: true, priority: 10 },
+                { id: 'k3', category: 'payment', question: 'What payment methods do you accept?', answer: 'We accept Visa, Mastercard, Amex, PayPal, and Apple Pay.', keywords: ['payment', 'pay', 'card', 'paypal'], isActive: true, priority: 8 },
+                { id: 'k4', category: 'shipping', question: 'Do you ship internationally?', answer: 'Yes, we ship to over 60 countries.', keywords: ['international', 'countries', 'worldwide'], isActive: true, priority: 9 },
+                { id: 'k5', category: 'general', question: 'How can I contact support?', answer: 'Use the live chat on any page, or email support@fiad.shop.', keywords: ['contact', 'support', 'email', 'chat'], isActive: true, priority: 5 }
+            ],
+            emailProviders: [
+                { id: 'ep1', name: 'Brevo Primary', kind: 'BREVO', priority: 10, isActive: true, fromName: 'FIADSHOP', fromEmail: 'support@fiad.shop' },
+                { id: 'ep2', name: 'Sendpulse Backup', kind: 'SENDPULSE', priority: 20, isActive: false, fromName: 'FIADSHOP', fromEmail: 'support@fiad.shop' }
+            ],
+            supportSettings: { isLiveEnabled: true, offlineMessage: 'Our team is currently offline. Leave a message and we will reply within 24 hours.' },
+            sessions: [
+                { id: 's1', email: 'visitor1@example.com', status: 'ACTIVE', messages: [{ sender: 'user', message: 'Hi, is the watch still in stock?', timestamp: iso(0.1) }, { sender: 'admin', message: 'Yes! We have both colors available.', timestamp: iso(0.09) }, { sender: 'user', message: 'Great, ordering now.', timestamp: iso(0.08) }], createdAt: iso(0.12), updatedAt: iso(0.08) },
+                { id: 's2', email: 'visitor2@example.com', status: 'WAITING', messages: [{ sender: 'user', message: 'Can I change my shipping address after ordering?', timestamp: iso(0.05) }], createdAt: iso(0.05), updatedAt: iso(0.05) },
+                { id: 's3', email: 'visitor3@example.com', status: 'CLOSED', messages: [{ sender: 'user', message: 'Where is my order?', timestamp: iso(1) }, { sender: 'admin', message: 'Let me check. Order #FIAD-1040 shipped yesterday.', timestamp: iso(0.98) }, { sender: 'user', message: 'Perfect, thanks!', timestamp: iso(0.97) }, { sender: 'system', message: 'Session closed by admin.', timestamp: iso(0.9) }], createdAt: iso(1.1), updatedAt: iso(0.9) }
+            ],
+            homepageIds: ['p1', 'p2', 'p3', 'p4'],
+            users: [
+                { id: 'u1', displayName: 'Admin User', username: 'admin', email: 'admin@fiad.shop', role: 'ADMIN', twoFactorEnabled: true, isVerified: true, createdAt: iso(200) },
+                { id: 'u2', displayName: 'John Doe', username: 'johndoe', email: 'john@example.com', role: 'AFFILIATE', twoFactorEnabled: false, isVerified: true, createdAt: iso(120) },
+                { id: 'u3', displayName: 'Alice Smith', username: 'alice', email: 'alice@example.com', role: 'USER', twoFactorEnabled: false, isVerified: true, createdAt: iso(80) },
+                { id: 'u4', displayName: 'Bob Johnson', username: 'bob', email: 'bob@example.com', role: 'USER', twoFactorEnabled: true, isVerified: false, createdAt: iso(45) },
+                { id: 'u5', displayName: 'Carol Davis', username: 'carol', email: 'carol@example.com', role: 'MODERATOR', twoFactorEnabled: true, isVerified: true, createdAt: iso(30) }
+            ]
+        };
+
+        const DB_KEY = 'fiadshop_mock_db_v1';
+        let DB;
+        try {
+            const saved = localStorage.getItem(DB_KEY);
+            DB = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(seed));
+        } catch {
+            DB = JSON.parse(JSON.stringify(seed));
+        }
+        function saveDB() {
+            try { localStorage.setItem(DB_KEY, JSON.stringify(DB)); } catch {}
+        }
+        window.__FIAD_RESET__ = () => { try { localStorage.removeItem(DB_KEY); } catch {} location.reload(); };
+
+        async function mockRequest(method, path, body = {}) {
+            await new Promise(r => setTimeout(r, 40));
+            const [p, qs] = path.split('?');
+            const q = Object.fromEntries(new URLSearchParams(qs || ''));
+            let m;
+
+            if (method === 'GET' && p === '/admin/dashboard') {
+                const revenue = DB.orders.filter(o => ['PAID','APPROVED','SHIPPED','DELIVERED'].includes(o.status)).reduce((s, o) => s + Number(o.total || 0), 0);
+                const counts = { orders: DB.orders.length, users: DB.users.length, affiliates: DB.affiliates.length, pendingFeedback: DB.feedback.filter(f => f.status !== 'ACCEPTED' && f.status !== 'REJECTED').length, activeSessions: DB.sessions.filter(s => s.status !== 'CLOSED').length };
+                const recentOrders = [...DB.orders].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 8);
+                return { counts, revenue, recentOrders };
+            }
+
+            if (method === 'GET' && p === '/admin/products') return { items: DB.products };
+            if (method === 'POST' && p === '/admin/products') { const prod = { id: uid(), createdAt: new Date().toISOString(), ...body }; DB.products.push(prod); saveDB(); return { product: prod }; }
+            if (method === 'PUT' && (m = p.match(/^\/admin\/products\/([^/]+)$/))) { const i = DB.products.findIndex(x => x.id === m[1]); if (i < 0) throw new Error('Product not found'); DB.products[i] = { ...DB.products[i], ...body }; saveDB(); return { product: DB.products[i] }; }
+            if (method === 'DELETE' && (m = p.match(/^\/admin\/products\/([^/]+)$/))) { const i = DB.products.findIndex(x => x.id === m[1]); if (i < 0) throw new Error('Product not found'); const sku = DB.products[i].sku; const hasOrders = DB.orders.some(o => o.items.some(it => it.sku === sku)); if (hasOrders) { DB.products[i].isActive = false; saveDB(); return { softDeleted: true, message: 'Product deactivated (has orders)' }; } DB.products.splice(i, 1); saveDB(); return { deleted: true }; }
+
+            if (method === 'GET' && p === '/admin/orders') return { orders: DB.orders };
+            if (method === 'GET' && (m = p.match(/^\/admin\/orders\/([^/]+)$/))) { const o = DB.orders.find(x => x.id === m[1]); if (!o) throw new Error('Order not found'); return { order: o }; }
+            if (method === 'POST' && (m = p.match(/^\/admin\/orders\/([^/]+)\/approve$/))) { const o = DB.orders.find(x => x.id === m[1]); if (!o) throw new Error('Order not found'); o.status = 'APPROVED'; saveDB(); const cjForward = { orderNumber: o.orderNumber, shippingAddress: o.shippingAddress, items: o.items.map(it => { const prod = DB.products.find(pr => pr.id === it.productId || pr.sku === it.sku); return { sku: it.sku, pid: prod?.pid || '(unset)', name: it.name, quantity: it.quantity, variant: it.variantJson || null }; }) }; return { cjForward }; }
+            if (method === 'POST' && (m = p.match(/^\/admin\/orders\/([^/]+)\/reject$/))) { const o = DB.orders.find(x => x.id === m[1]); if (!o) throw new Error('Order not found'); o.status = 'REJECTED'; o.rejectReason = body.reason || ''; saveDB(); return { ok: true }; }
+            if (method === 'POST' && (m = p.match(/^\/admin\/orders\/([^/]+)\/ship$/))) { const o = DB.orders.find(x => x.id === m[1]); if (!o) throw new Error('Order not found'); o.status = 'SHIPPED'; o.trackingNumber = body.trackingNumber; o.trackingCarrier = body.trackingCarrier || ''; saveDB(); return { ok: true }; }
+            if (method === 'POST' && (m = p.match(/^\/admin\/orders\/([^/]+)\/deliver$/))) { const o = DB.orders.find(x => x.id === m[1]); if (!o) throw new Error('Order not found'); o.status = 'DELIVERED'; saveDB(); return { ok: true }; }
+
+            if (method === 'GET' && p === '/admin/affiliates') return { items: DB.affiliates };
+            if (method === 'PUT' && (m = p.match(/^\/admin\/affiliates\/([^/]+)$/))) { const i = DB.affiliates.findIndex(x => x.id === m[1]); if (i < 0) throw new Error('Affiliate not found'); DB.affiliates[i] = { ...DB.affiliates[i], ...body }; saveDB(); return { affiliate: DB.affiliates[i] }; }
+
+            if (method === 'GET' && p === '/admin/feedback') return { items: DB.feedback };
+            if (method === 'POST' && (m = p.match(/^\/admin\/feedback\/([^/]+)\/review$/))) { const f = DB.feedback.find(x => x.id === m[1]); if (!f) throw new Error('Feedback not found'); if (body.level !== undefined) f.level = body.level; if (body.status !== undefined) f.status = body.status; if (body.adminNote !== undefined) f.adminNote = body.adminNote; saveDB(); return { feedback: f }; }
+
+            if (method === 'GET' && p === '/admin/ai-knowledge') return { items: DB.aiKnowledge };
+            if (method === 'POST' && p === '/admin/ai-knowledge') { const k = { id: uid(), ...body }; DB.aiKnowledge.push(k); saveDB(); return { entry: k }; }
+            if (method === 'PUT' && (m = p.match(/^\/admin\/ai-knowledge\/([^/]+)$/))) { const i = DB.aiKnowledge.findIndex(x => x.id === m[1]); if (i < 0) throw new Error('Entry not found'); DB.aiKnowledge[i] = { ...DB.aiKnowledge[i], ...body }; saveDB(); return { entry: DB.aiKnowledge[i] }; }
+            if (method === 'DELETE' && (m = p.match(/^\/admin\/ai-knowledge\/([^/]+)$/))) { DB.aiKnowledge = DB.aiKnowledge.filter(x => x.id !== m[1]); saveDB(); return { ok: true }; }
+
+            if (method === 'GET' && p === '/admin/email-providers') return { items: DB.emailProviders };
+            if (method === 'POST' && p === '/admin/email-providers') { const ep = { id: uid(), ...body }; DB.emailProviders.push(ep); saveDB(); return { provider: ep }; }
+            if (method === 'PUT' && (m = p.match(/^\/admin\/email-providers\/([^/]+)$/))) { const i = DB.emailProviders.findIndex(x => x.id === m[1]); if (i < 0) throw new Error('Provider not found'); DB.emailProviders[i] = { ...DB.emailProviders[i], ...body }; saveDB(); return { provider: DB.emailProviders[i] }; }
+            if (method === 'DELETE' && (m = p.match(/^\/admin\/email-providers\/([^/]+)$/))) { DB.emailProviders = DB.emailProviders.filter(x => x.id !== m[1]); saveDB(); return { ok: true }; }
+
+            if (method === 'GET' && p === '/admin/support-settings') return { settings: DB.supportSettings };
+            if (method === 'PUT' && p === '/admin/support-settings') { DB.supportSettings = { ...DB.supportSettings, ...body }; saveDB(); return { settings: DB.supportSettings }; }
+
+            if (method === 'GET' && p === '/support/admin/sessions') { let sessions = DB.sessions; if (q.status && q.status !== 'ALL') sessions = sessions.filter(s => s.status === q.status); return { sessions }; }
+            if (method === 'POST' && (m = p.match(/^\/support\/admin\/session\/([^/]+)\/join$/))) { const s = DB.sessions.find(x => x.id === m[1]); if (!s) throw new Error('Session not found'); s.status = 'ACTIVE'; saveDB(); return { ok: true }; }
+            if (method === 'POST' && (m = p.match(/^\/support\/admin\/session\/([^/]+)\/close$/))) { const s = DB.sessions.find(x => x.id === m[1]); if (!s) throw new Error('Session not found'); s.status = 'CLOSED'; s.messages = s.messages || []; s.messages.push({ sender: 'system', message: 'Session closed by admin.', timestamp: new Date().toISOString() }); s.updatedAt = new Date().toISOString(); saveDB(); return { ok: true }; }
+            if (method === 'POST' && (m = p.match(/^\/support\/session\/([^/]+)\/message$/))) { const s = DB.sessions.find(x => x.id === m[1]); if (!s) throw new Error('Session not found'); s.messages = s.messages || []; s.messages.push({ sender: body.sender || 'admin', message: body.message, timestamp: new Date().toISOString() }); s.updatedAt = new Date().toISOString(); saveDB(); return { ok: true }; }
+
+            if (method === 'GET' && p === '/admin/settings/homepage') return { ids: DB.homepageIds };
+            if (method === 'PUT' && p === '/admin/settings/homepage') { DB.homepageIds = body.ids || []; saveDB(); return { ok: true }; }
+
+            if (method === 'GET' && p === '/admin/users') return { items: DB.users };
+            if (method === 'PUT' && (m = p.match(/^\/admin\/users\/([^/]+)\/role$/))) { const u = DB.users.find(x => x.id === m[1]); if (!u) throw new Error('User not found'); u.role = body.role; saveDB(); return { user: u }; }
+
+            throw new Error('Mock 404: ' + method + ' ' + path);
+        }
+
+        const api = {
+            get:  (path)       => mockRequest('GET', path),
+            post: (path, body) => mockRequest('POST', path, body),
+            put:  (path, body) => mockRequest('PUT', path, body),
+            del:  (path)       => mockRequest('DELETE', path)
+        };
+
+        window.FiadAPI = { api, toast, escapeHtml };
+    })();
+    </script>
+
+    <!-- ==================== ADMIN LOGIC ==================== -->
+    <script>
+    (function () {
+        const { api, toast, escapeHtml } = window.FiadAPI;
+
+        // ---- sections registry declared FIRST to avoid TDZ ----
+        const sections = {};
+
+        // ---- helpers ----
+        function openModal(html, opts = {}) {
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop fixed inset-0 z-[95] bg-black/50 flex items-center justify-center p-4 overflow-y-auto';
+            backdrop.innerHTML = `<div class="admin-card bg-white dark:bg-zinc-900 rounded-xl w-full ${opts.width || 'max-w-lg'} my-8 max-h-[90vh] overflow-y-auto">${html}</div>`;
+            document.getElementById('modal-root').appendChild(backdrop);
+            const close = () => backdrop.remove();
+            backdrop.addEventListener('click', (e) => { if (e.target === backdrop && opts.closeOnBackdrop !== false) close(); });
+            backdrop.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', close));
+            return { el: backdrop, close };
+        }
+        function money(n) { return '$' + Number(n || 0).toFixed(2); }
+        function fmt(d) { return d ? new Date(d).toLocaleString() : '—'; }
+
+        // ============================================================================
+        // DASHBOARD
+        // ============================================================================
+        sections.dashboard = async (root) => {
+            const { counts, revenue, recentOrders } = await api.get('/admin/dashboard');
+            const stat = (label, val, icon, color) => `
+                <div class="admin-card bg-white dark:bg-zinc-900 rounded-xl p-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-${color}-100 dark:bg-${color}-900/30 text-${color}-600 dark:text-${color}-400 flex items-center justify-center">
+                            <i class="fa-solid ${icon}"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] uppercase tracking-widest text-gray-600">${label}</p>
+                            <p class="text-xl font-bold">${val}</p>
+                        </div>
+                    </div>
+                </div>`;
+            root.innerHTML = `
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
+                    ${stat('Orders',         counts.orders,          'fa-cart-shopping', 'cta')}
+                    ${stat('Revenue',        money(revenue),         'fa-dollar-sign',   'green')}
+                    ${stat('Users',          counts.users,           'fa-users',         'blue')}
+                    ${stat('Affiliates',     counts.affiliates,      'fa-user-group',    'purple')}
+                    ${stat('Feedback',       counts.pendingFeedback, 'fa-comment-dots',  'yellow')}
+                    ${stat('Live Sessions',  counts.activeSessions,  'fa-headset',       'red')}
+                </div>
+                <div class="admin-card bg-white dark:bg-zinc-900 rounded-xl p-5">
+                    <h3 class="text-sm font-bold mb-3">Recent orders</h3>
+                    <div class="overflow-x-auto">
+                    <table class="data">
+                        <thead><tr><th>Order</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th></tr></thead>
+                        <tbody>
+                        ${recentOrders.map(o => `
+                            <tr>
+                                <td class="font-semibold"><a class="text-cta-500 hover:underline" href="#orders">${escapeHtml(o.orderNumber)}</a></td>
+                                <td class="text-gray-600">${escapeHtml(o.user?.email || o.guestEmail || 'Registered user')}</td>
+                                <td class="font-bold">${money(o.total)}</td>
+                                <td><span class="status-pill status-${o.status}">${o.status}</span></td>
+                                <td class="text-gray-600">${fmt(o.createdAt)}</td>
+                            </tr>`).join('') || '<tr><td colspan="5" class="text-center text-gray-600 py-6">No orders yet.</td></tr>'}
+                        </tbody>
+                    </table>
+                    </div>
+                </div>`;
+        };
+
+        // ============================================================================
+        // PRODUCTS
+        // ============================================================================
+        let _allProductsCache = [];
+        async function getAllProductsForPackage() {
+            try {
+                if (_allProductsCache.length) return _allProductsCache;
+                const { items } = await api.get('/admin/products');
+                _allProductsCache = items;
+                return items;
+            } catch { return []; }
+        }
+
+        sections.products = async (root) => {
+            const { items } = await api.get('/admin/products');
+            root.innerHTML = `
+                <div class="flex justify-between items-center mb-4">
+                    <p class="text-sm text-gray-600">${items.length} products</p>
+                    <button id="new-product" class="bg-cta-500 hover:bg-cta-600 text-white text-sm font-bold px-4 py-2 rounded-lg"><i class="fa-solid fa-plus mr-1"></i>New product</button>
+                </div>
+                <div class="admin-card bg-white dark:bg-zinc-900 rounded-xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                    <table class="data">
+                        <thead><tr><th>Product</th><th>SKU</th><th>Category</th><th>Price</th><th>Commission</th><th>Status</th><th></th></tr></thead>
+                        <tbody>
+                        ${items.map(p => `
+                            <tr>
+                                <td>
+                                    <div class="flex items-center gap-2">
+                                        <img src="${(p.images && p.images[0]) || 'https://placehold.co/60'}" class="w-9 h-9 rounded object-cover">
+                                        <div class="min-w-0">
+                                            <div class="font-semibold truncate">${escapeHtml(p.name)}</div>
+                                            <div class="text-[10px] text-gray-600">${p.isProMode ? '<span class="text-cta-500">Pro Mode</span> · ' : ''}${p.isPackage ? 'Package · ' : ''}${(p.variants || []).length} variants</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="font-mono text-[11px]">${escapeHtml(p.sku)}</td>
+                                <td>${escapeHtml(p.category)}</td>
+                                <td class="font-bold">${money(p.basePrice)}</td>
+                                <td>${Number(p.affiliateCommission || 0)}%</td>
+                                <td>${p.isActive ? '<span class="text-green-600 text-xs font-bold">Active</span>' : '<span class="text-gray-600 text-xs">Inactive</span>'}</td>
+                                <td class="text-right whitespace-nowrap">
+                                    <button data-edit="${p.id}" class="text-cta-500 hover:text-cta-600 px-2"><i class="fa-solid fa-pen"></i></button>
+                                    <button data-del="${p.id}" class="text-red-500 hover:text-red-600 px-2"><i class="fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>`).join('') || '<tr><td colspan="7" class="text-center text-gray-600 py-6">No products yet.</td></tr>'}
+                        </tbody>
+                    </table>
+                    </div>
+                </div>`;
+
+            document.getElementById('new-product').addEventListener('click', () => productModal(null));
+            root.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => {
+                const p = items.find(i => i.id === b.getAttribute('data-edit'));
+                productModal(p);
+            }));
+            root.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async () => {
+                if (!confirm('Delete this product? If it has orders, it will be deactivated instead of deleted.')) return;
+                try {
+                    const res = await api.del('/admin/products/' + b.getAttribute('data-del'));
+                    if (res.softDeleted) toast(res.message || 'Product deactivated (has orders)', 'info');
+                    else toast('Deleted', 'success');
+                    _allProductsCache = [];
+                    sections.products(root);
+                } catch (e) { toast(e.message, 'error'); }
+            }));
+        };
+
+        function productModal(p) {
+            const isEdit = !!p;
+            const existingPkgItems = p?.packageItems || [];
+            const { close, el } = openModal(`
+                <div class="p-6 max-h-[90vh] overflow-y-auto">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-lg">${isEdit ? 'Edit product' : 'New product'}</h3>
+                        <button data-close class="text-gray-600 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div><label class="text-xs font-medium mb-1 block">SKU *</label><input id="p-sku" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700" value="${escapeHtml(p?.sku || '')}"></div>
+                        <div><label class="text-xs font-medium mb-1 block">CJ PID *</label><input id="p-pid" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700" value="${escapeHtml(p?.pid || '')}"></div>
+                        <div class="col-span-2"><label class="text-xs font-medium mb-1 block">Name *</label><input id="p-name" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700" value="${escapeHtml(p?.name || '')}"></div>
+                        <div class="col-span-2"><label class="text-xs font-medium mb-1 block">Description *</label><textarea id="p-desc" rows="3" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700">${escapeHtml(p?.description || '')}</textarea></div>
+                        <div><label class="text-xs font-medium mb-1 block">Category *</label><input id="p-cat" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700" value="${escapeHtml(p?.category || '')}"></div>
+                        <div><label class="text-xs font-medium mb-1 block">Base price ($) *</label><input id="p-price" type="number" step="0.01" min="0" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700" value="${p?.basePrice || 0}"></div>
+                        <div><label class="text-xs font-medium mb-1 block">Affiliate commission (%)</label><input id="p-comm" type="number" step="0.5" min="0" max="90" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700" value="${p?.affiliateCommission || 0}"></div>
+                        <div><label class="text-xs font-medium mb-1 block">Stock</label><input id="p-stock" type="number" min="0" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700" value="${p?.stock || 0}"></div>
+                        <div class="col-span-2"><label class="text-xs font-medium mb-1 block">Image URLs (one per line) *</label><textarea id="p-imgs" rows="3" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700">${escapeHtml((p?.images || []).join('\n'))}</textarea></div>
+                        <div class="col-span-2"><label class="text-xs font-medium mb-1 block">Video URLs (one per line, max 10)</label><textarea id="p-vids" rows="3" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700">${escapeHtml((p?.videos || []).join('\n'))}</textarea></div>
+                        <div class="col-span-2 flex gap-4">
+                            <label class="text-xs flex items-center gap-2"><input id="p-active" type="checkbox" ${p?.isActive !== false ? 'checked' : ''} class="accent-cta-500"> Active</label>
+                            <label class="text-xs flex items-center gap-2"><input id="p-pro" type="checkbox" ${p?.isProMode ? 'checked' : ''} class="accent-cta-500"> Pro Mode</label>
+                            <label class="text-xs flex items-center gap-2"><input id="p-pkg" type="checkbox" ${p?.isPackage ? 'checked' : ''} class="accent-cta-500"> Is Package</label>
+                        </div>
+
+                        <div id="pkg-builder" class="col-span-2 ${p?.isPackage ? '' : 'hidden'} border border-dashed border-cta-300 dark:border-cta-700 rounded-lg p-3 bg-cta-50/30 dark:bg-cta-950/20">
+                            <h4 class="text-xs font-bold mb-2 flex items-center gap-1"><i class="fa-solid fa-box-open text-cta-500"></i> Package Builder</h4>
+                            <p class="text-[11px] text-gray-600 mb-2">Select products and set quantity.</p>
+                            <div id="pkg-items-list" class="space-y-2 mb-3"></div>
+                            <div class="flex gap-2">
+                                <select id="pkg-product-select" class="flex-1 px-2 py-1.5 border rounded bg-white dark:bg-zinc-900 border-gray-300 dark:border-zinc-700 text-[11px]">
+                                    <option value="">Select product to add...</option>
+                                </select>
+                                <input id="pkg-qty" type="number" min="1" value="1" class="w-20 px-2 py-1.5 border rounded bg-white dark:bg-zinc-900 border-gray-300 dark:border-zinc-700 text-[11px]" placeholder="Qty">
+                                <button type="button" id="pkg-add-btn" class="px-3 py-1.5 bg-cta-500 hover:bg-cta-600 text-white rounded text-[11px] font-bold">Add</button>
+                            </div>
+                            <details class="mt-3">
+                                <summary class="text-[11px] font-medium cursor-pointer text-gray-600">Advanced: Edit as JSON</summary>
+                                <textarea id="p-pkg-items" rows="3" placeholder='[{"childProductId":"abc123","quantity":2}]' class="mt-2 w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 font-mono text-[11px]"></textarea>
+                            </details>
+                        </div>
+
+                        <div class="col-span-2">
+                            <label class="text-xs font-medium mb-1 block">Variants (JSON array, optional)</label>
+                            <textarea id="p-var" rows="3" placeholder='[{"color":"Black","size":"M","stock":10}]' class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 font-mono text-[11px]">${escapeHtml(JSON.stringify(p?.variants || [], null, 2))}</textarea>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 mt-5">
+                        <button data-close class="flex-1 py-2.5 border border-gray-300 dark:border-zinc-700 rounded-lg text-sm">Cancel</button>
+                        <button id="p-save" class="flex-1 py-2.5 bg-cta-500 hover:bg-cta-600 text-white rounded-lg text-sm font-bold">${isEdit ? 'Save changes' : 'Create product'}</button>
+                    </div>
+                </div>`, { width: 'max-w-2xl' });
+
+            let pkgItems = JSON.parse(JSON.stringify(existingPkgItems.map(pi => ({ childProductId: pi.childProductId || pi.childProduct?.id, quantity: pi.quantity, _name: pi.childProduct?.name || '' }))));
+
+            (async () => {
+                const all = await getAllProductsForPackage();
+                pkgItems.forEach(pi => { if (!pi._name) { const found = all.find(x => x.id === pi.childProductId); if (found) pi._name = found.name; } });
+                renderPkgList();
+            })();
+
+            async function refreshPkgDropdown() {
+                const all = await getAllProductsForPackage();
+                const sel = el.querySelector('#pkg-product-select');
+                if (!sel) return;
+                const currentIds = new Set(pkgItems.map(i => i.childProductId));
+                const options = all.filter(prod => prod.id !== p?.id).map(prod =>
+                    `<option value="${prod.id}" ${currentIds.has(prod.id) ? 'disabled' : ''}>${escapeHtml(prod.name)} — ${prod.sku} (${money(prod.basePrice)})</option>`
+                ).join('');
+                sel.innerHTML = '<option value="">Select product to add...</option>' + options;
+            }
+
+            function renderPkgList() {
+                const list = el.querySelector('#pkg-items-list');
+                if (!list) return;
+                if (pkgItems.length === 0) { list.innerHTML = '<p class="text-[11px] text-gray-600 italic">No items yet. Add from dropdown below.</p>'; return; }
+                list.innerHTML = pkgItems.map((pi, idx) => `
+                    <div class="flex items-center gap-2 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded px-2 py-1.5">
+                        <span class="text-[11px] flex-1 truncate">${escapeHtml(pi._name || pi.childProductId)}</span>
+                        <input type="number" min="1" value="${pi.quantity || 1}" data-qty="${idx}" class="w-16 px-1 py-0.5 border rounded text-[11px] bg-transparent border-gray-300 dark:border-zinc-700">
+                        <button type="button" data-remove-pkg="${idx}" class="text-red-500 hover:text-red-600 px-1"><i class="fa-solid fa-xmark text-[11px]"></i></button>
+                    </div>
+                `).join('');
+                list.querySelectorAll('[data-qty]').forEach(inp => inp.addEventListener('change', (e) => { const i = Number(e.target.getAttribute('data-qty')); pkgItems[i].quantity = Math.max(1, Number(e.target.value) || 1); syncPkgJson(); }));
+                list.querySelectorAll('[data-remove-pkg]').forEach(btn => btn.addEventListener('click', (e) => { const i = Number(e.currentTarget.getAttribute('data-remove-pkg')); pkgItems.splice(i, 1); renderPkgList(); syncPkgJson(); }));
+            }
+
+            function syncPkgJson() {
+                const ta = el.querySelector('#p-pkg-items');
+                if (ta) ta.value = JSON.stringify(pkgItems.map(pi => ({ childProductId: pi.childProductId, quantity: pi.quantity })), null, 2);
+            }
+
+            const pkgCheck = el.querySelector('#p-pkg');
+            const pkgBuilder = el.querySelector('#pkg-builder');
+            if (pkgCheck && pkgBuilder) {
+                pkgCheck.addEventListener('change', () => pkgBuilder.classList.toggle('hidden', !pkgCheck.checked));
+            }
+
+            el.querySelector('#pkg-add-btn')?.addEventListener('click', async () => {
+                const sel = el.querySelector('#pkg-product-select');
+                const qtyInput = el.querySelector('#pkg-qty');
+                const childId = sel?.value;
+                const qty = Math.max(1, Number(qtyInput?.value) || 1);
+                if (!childId) return toast('Select a product', 'warn');
+                if (pkgItems.some(i => i.childProductId === childId)) return toast('Already added', 'warn');
+                const all = await getAllProductsForPackage();
+                const prod = all.find(x => x.id === childId);
+                pkgItems.push({ childProductId: childId, quantity: qty, _name: prod?.name || childId });
+                renderPkgList(); syncPkgJson(); await refreshPkgDropdown();
+                if (qtyInput) qtyInput.value = '1';
+            });
+
+            refreshPkgDropdown();
+            syncPkgJson();
+
+            el.querySelector('#p-pkg-items')?.addEventListener('change', (e) => {
+                try {
+                    const parsed = JSON.parse(e.target.value || '[]');
+                    if (Array.isArray(parsed)) {
+                        getAllProductsForPackage().then(all => {
+                            pkgItems = parsed.map(pi => { const found = all.find(x => x.id === pi.childProductId); return { childProductId: pi.childProductId, quantity: pi.quantity, _name: found?.name || pi.childProductId }; });
+                            renderPkgList();
+                        });
+                    }
+                } catch { toast('Package JSON invalid', 'error'); }
+            });
+
+            el.querySelector('#p-save').addEventListener('click', async () => {
+                let variants;
+                try { variants = JSON.parse(el.querySelector('#p-var').value || '[]'); }
+                catch { return toast('Variants JSON is invalid', 'error'); }
+                let packageItems = [];
+                const pkgJson = el.querySelector('#p-pkg-items')?.value || '[]';
+                try { const parsed = JSON.parse(pkgJson || '[]'); if (Array.isArray(parsed)) packageItems = parsed; }
+                catch { packageItems = pkgItems.map(pi => ({ childProductId: pi.childProductId, quantity: pi.quantity })); }
+
+                const isPkg = el.querySelector('#p-pkg').checked;
+                if (!isPkg) packageItems = [];
+
+                const body = {
+                    sku: el.querySelector('#p-sku').value.trim(),
+                    pid: el.querySelector('#p-pid').value.trim(),
+                    name: el.querySelector('#p-name').value.trim(),
+                    description: el.querySelector('#p-desc').value.trim(),
+                    category: el.querySelector('#p-cat').value.trim(),
+                    basePrice: Number(el.querySelector('#p-price').value),
+                    images: el.querySelector('#p-imgs').value.split('\n').map(s => s.trim()).filter(Boolean),
+                    videos: el.querySelector('#p-vids').value.split('\n').map(s => s.trim()).filter(Boolean),
+                    affiliateCommission: Number(el.querySelector('#p-comm').value || 0),
+                    stock: Number(el.querySelector('#p-stock').value || 0),
+                    isActive:  el.querySelector('#p-active').checked,
+                    isProMode: el.querySelector('#p-pro').checked,
+                    isPackage: isPkg,
+                    variants,
+                    packageItems,
+                };
+                if (!body.sku || !body.name) return toast('SKU and Name are required', 'warn');
+                if (isPkg && packageItems.length === 0) return toast('Package must have at least 1 product item', 'warn');
+
+                try {
+                    if (isEdit) await api.put('/admin/products/' + p.id, body);
+                    else        await api.post('/admin/products', body);
+                    toast(isEdit ? 'Product updated' : 'Product created', 'success');
+                    _allProductsCache = [];
+                    close();
+                    sections.products(document.getElementById('section-root'));
+                } catch (e) { toast(e.message || 'Save failed', 'error'); }
+            });
+        }
+
+        // ============================================================================
+        // ORDERS
+        // ============================================================================
+        sections.orders = async (root) => {
+            const { orders } = await api.get('/admin/orders');
+            root.innerHTML = `
+                <div class="admin-card bg-white dark:bg-zinc-900 rounded-xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                    <table class="data">
+                        <thead><tr><th>Order</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th><th></th></tr></thead>
+                        <tbody>
+                        ${orders.map(o => `
+                            <tr>
+                                <td class="font-semibold">${escapeHtml(o.orderNumber)}</td>
+                                <td>${escapeHtml(o.user?.email || o.guestEmail || 'Guest')}</td>
+                                <td class="font-bold">${money(o.total)}</td>
+                                <td><span class="status-pill status-${o.status}">${o.status}</span></td>
+                                <td class="text-gray-600">${fmt(o.createdAt)}</td>
+                                <td class="text-right whitespace-nowrap">
+                                    <button data-view="${o.id}" class="text-cta-500 hover:text-cta-600 px-2 text-xs font-semibold">View →</button>
+                                </td>
+                            </tr>`).join('') || '<tr><td colspan="6" class="text-center text-gray-600 py-6">No orders yet.</td></tr>'}
+                        </tbody>
+                    </table>
+                    </div>
+                </div>`;
+            root.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => orderModal(b.getAttribute('data-view'))));
+        };
+
+        async function orderModal(id) {
+            const { order } = await api.get('/admin/orders/' + id);
+            const addr = order.shippingAddress || {};
+            const canApprove = order.status === 'PAID';
+            const canReject  = ['PENDING','PAID'].includes(order.status);
+            const canShip    = order.status === 'APPROVED';
+            const canDeliver = order.status === 'SHIPPED';
+
+            const { close, el } = openModal(`
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-3">
+                        <div>
+                            <h3 class="font-bold text-lg">${escapeHtml(order.orderNumber)}</h3>
+                            <p class="text-xs text-gray-600">${fmt(order.createdAt)}</p>
+                        </div>
+                        <button data-close class="text-gray-600 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-xs font-bold uppercase text-gray-600 mb-1">Customer</p>
+                            <p class="text-sm">${escapeHtml(order.user?.displayName || addr.fullName || 'Guest')}</p>
+                            <p class="text-xs text-gray-600">${escapeHtml(order.user?.email || order.guestEmail || addr.email || '')}</p>
+                            <p class="text-xs text-gray-600">${escapeHtml(addr.phone || '')}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold uppercase text-gray-600 mb-1">Shipping</p>
+                            <p class="text-xs">${escapeHtml(addr.line1 || '')}${addr.line2 ? ', ' + escapeHtml(addr.line2) : ''}</p>
+                            <p class="text-xs">${escapeHtml(addr.city || '')}, ${escapeHtml(addr.state || '')} ${escapeHtml(addr.postalCode || '')}</p>
+                            <p class="text-xs">${escapeHtml(addr.country || '')}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-xs font-bold uppercase text-gray-600 mb-2">Items</p>
+                        <table class="data">
+                            <thead><tr><th>Item</th><th>SKU</th><th>Qty</th><th>Line</th></tr></thead>
+                            <tbody>${order.items.map(i => `
+                                <tr>
+                                    <td>${escapeHtml(i.name)} ${i.variantJson && Object.values(i.variantJson).filter(Boolean).length ? '<span class="text-[10px] text-gray-600">(' + escapeHtml(Object.values(i.variantJson).filter(Boolean).join(' · ')) + ')</span>' : ''}</td>
+                                    <td class="font-mono text-[11px]">${escapeHtml(i.sku)}</td>
+                                    <td>${i.quantity}</td>
+                                    <td class="font-bold">${money(i.lineTotal)}</td>
+                                </tr>`).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 gap-2 text-sm">
+                        <div class="text-gray-600">Subtotal</div><div class="text-right">${money(order.subtotal)}</div>
+                        <div class="text-gray-600">Discount</div><div class="text-right text-red-500">-${money(order.discountAmount)}</div>
+                        <div class="text-gray-600">Shipping</div><div class="text-right">${money(order.shippingAmount)}</div>
+                        <div class="font-bold border-t pt-2">Total</div><div class="text-right font-bold border-t pt-2">${money(order.total)}</div>
+                    </div>
+                    ${order.trackingNumber ? `<p class="mt-3 text-xs">📦 Tracking: <b>${escapeHtml(order.trackingNumber)}</b> (${escapeHtml(order.trackingCarrier || 'carrier')})</p>` : ''}
+                    <div class="flex flex-wrap gap-2 mt-5 pt-4 border-t border-gray-100 dark:border-zinc-800">
+                        ${canApprove ? '<button id="o-approve" class="px-3 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-xs font-bold"><i class="fa-solid fa-check mr-1"></i>Approve + CJ Forward</button>' : ''}
+                        ${canReject  ? '<button id="o-reject" class="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-xs font-bold"><i class="fa-solid fa-xmark mr-1"></i>Reject</button>' : ''}
+                        ${canShip    ? '<button id="o-ship" class="px-3 py-2 bg-cta-500 hover:bg-cta-600 text-white rounded-lg text-xs font-bold"><i class="fa-solid fa-truck mr-1"></i>Mark Shipped</button>' : ''}
+                        ${canDeliver ? '<button id="o-deliver" class="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-xs font-bold"><i class="fa-solid fa-box-check mr-1"></i>Mark Delivered</button>' : ''}
+                    </div>
+                </div>`, { width: 'max-w-2xl' });
+
+            el.querySelector('#o-approve')?.addEventListener('click', async () => {
+                try { const res = await api.post('/admin/orders/' + id + '/approve', {}); close(); cjForwardModal(res.cjForward); toast('Order approved', 'success'); sections.orders(document.getElementById('section-root')); }
+                catch (e) { toast(e.message, 'error'); }
+            });
+            el.querySelector('#o-reject')?.addEventListener('click', async () => {
+                const reason = prompt('Reason for rejection (optional):') || '';
+                try { await api.post('/admin/orders/' + id + '/reject', { reason }); toast('Rejected', 'success'); close(); sections.orders(document.getElementById('section-root')); }
+                catch (e) { toast(e.message, 'error'); }
+            });
+            el.querySelector('#o-ship')?.addEventListener('click', () => shipModal(id, close));
+            el.querySelector('#o-deliver')?.addEventListener('click', async () => {
+                try { await api.post('/admin/orders/' + id + '/deliver', {}); toast('Marked delivered', 'success'); close(); sections.orders(document.getElementById('section-root')); }
+                catch (e) { toast(e.message, 'error'); }
+            });
+        }
+
+        function cjForwardModal(cj) {
+            const text =
+                'ORDER: ' + cj.orderNumber + '\n\n' +
+                'SHIP TO:\n' +
+                cj.shippingAddress.fullName + '\n' +
+                cj.shippingAddress.line1 + (cj.shippingAddress.line2 ? '\n' + cj.shippingAddress.line2 : '') + '\n' +
+                cj.shippingAddress.city + ', ' + (cj.shippingAddress.state || '') + ' ' + cj.shippingAddress.postalCode + '\n' +
+                cj.shippingAddress.country + '\n' +
+                'Phone: ' + cj.shippingAddress.phone + '\n\n' +
+                'ITEMS:\n' +
+                cj.items.map(i => '- SKU ' + i.sku + ' / PID ' + (i.pid || '(unset)') + ' — ' + i.name + ' × ' + i.quantity +
+                    (i.variant ? ' (' + Object.values(i.variant).filter(Boolean).join(' / ') + ')' : '')).join('\n');
+            const { close, el } = openModal(`
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-lg">CJ Forward Data</h3>
+                        <button data-close class="text-gray-600 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <p class="text-xs text-gray-600 mb-3">Copy the block below and paste it into your CJ Dropshipping order.</p>
+                    <textarea id="cj-text" readonly rows="14" class="w-full px-3 py-2 border rounded bg-gray-50 dark:bg-zinc-950 border-gray-200 dark:border-zinc-800 font-mono text-[11px]">${escapeHtml(text)}</textarea>
+                    <div class="flex gap-2 mt-3">
+                        <button id="cj-copy" class="flex-1 py-2.5 bg-cta-500 hover:bg-cta-600 text-white rounded-lg text-sm font-bold"><i class="fa-solid fa-copy mr-2"></i>Copy All</button>
+                        <button data-close class="flex-1 py-2.5 border border-gray-300 dark:border-zinc-700 rounded-lg text-sm">Close</button>
+                    </div>
+                </div>`);
+            el.querySelector('#cj-copy').addEventListener('click', () => {
+                navigator.clipboard.writeText(text).then(() => toast('Copied to clipboard', 'success'))
+                    .catch(() => toast('Copy failed — select and copy manually', 'warn'));
+            });
+        }
+
+        function shipModal(id, parentClose) {
+            const { close, el } = openModal(`
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-lg">Mark shipped</h3>
+                        <button data-close class="text-gray-600 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="space-y-3">
+                        <div><label class="text-xs font-medium mb-1 block">Tracking number *</label><input id="s-tn" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm"></div>
+                        <div><label class="text-xs font-medium mb-1 block">Carrier</label><input id="s-c" placeholder="e.g. DHL, USPS, Yun Express" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm"></div>
+                        <button id="s-save" class="w-full py-2.5 bg-cta-500 hover:bg-cta-600 text-white rounded-lg text-sm font-bold">Save &amp; notify customer</button>
+                    </div>
+                </div>`);
+            el.querySelector('#s-save').addEventListener('click', async () => {
+                const tn = el.querySelector('#s-tn').value.trim();
+                const c  = el.querySelector('#s-c').value.trim() || undefined;
+                if (!tn) return toast('Enter a tracking number', 'warn');
+                try { await api.post('/admin/orders/' + id + '/ship', { trackingNumber: tn, trackingCarrier: c }); toast('Marked shipped', 'success'); close(); parentClose && parentClose(); sections.orders(document.getElementById('section-root')); }
+                catch (e) { toast(e.message, 'error'); }
+            });
+        }
+
+        // ============================================================================
+        // AFFILIATES
+        // ============================================================================
+        sections.affiliates = async (root) => {
+            const { items } = await api.get('/admin/affiliates');
+            root.innerHTML = `
+                <div class="admin-card bg-white dark:bg-zinc-900 rounded-xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                    <table class="data">
+                        <thead><tr><th>Affiliate</th><th>Level</th><th>Type</th><th>Commission</th><th>Sales</th><th>Earned</th><th>Balance</th><th>Status</th><th></th></tr></thead>
+                        <tbody>
+                        ${items.map(a => `
+                            <tr>
+                                <td>
+                                    <div class="font-semibold">${escapeHtml(a.user?.displayName || '—')}</div>
+                                    <div class="text-[10px] text-gray-600">${escapeHtml(a.user?.email || '')}</div>
+                                    ${a.promoCode ? '<div class="text-[10px]"><code class="text-cta-500">' + escapeHtml(a.promoCode) + '</code></div>' : ''}
+                                </td>
+                                <td>${a.level}</td>
+                                <td>${a.type}</td>
+                                <td>${a.commissionRate != null ? Number(a.commissionRate) + '%' : '<span class="text-gray-600">per-product</span>'}</td>
+                                <td>${a.totalSales}</td>
+                                <td class="font-bold">${money(a.totalEarned)}</td>
+                                <td class="font-bold text-green-600">${money(a.balance)}</td>
+                                <td><span class="status-pill status-${a.status === 'ACTIVE' ? 'SHIPPED' : a.status === 'SUSPENDED' ? 'REJECTED' : 'PENDING'}">${a.status}</span></td>
+                                <td><button data-edit-a="${a.id}" class="text-cta-500 px-2"><i class="fa-solid fa-pen"></i></button></td>
+                            </tr>`).join('') || '<tr><td colspan="9" class="text-center text-gray-600 py-6">No affiliates yet.</td></tr>'}
+                        </tbody>
+                    </table>
+                    </div>
+                </div>`;
+            root.querySelectorAll('[data-edit-a]').forEach(b => b.addEventListener('click', () => affiliateEditModal(items.find(x => x.id === b.getAttribute('data-edit-a')))));
+        };
+
+        function affiliateEditModal(a) {
+            const { close, el } = openModal(`
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-lg">Edit affiliate — ${escapeHtml(a.user?.displayName || '')}</h3>
+                        <button data-close class="text-gray-600 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="space-y-3">
+                        <div><label class="text-xs font-medium mb-1 block">Level</label>
+                            <select id="a-lvl" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm">
+                                ${['BRONZE','SILVER','GOLD','PLATINUM','DIAMOND'].map(l => `<option ${l===a.level?'selected':''}>${l}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div><label class="text-xs font-medium mb-1 block">Type</label>
+                            <select id="a-type" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm">
+                                ${['REGULAR','INFLUENCER'].map(l => `<option ${l===a.type?'selected':''}>${l}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div><label class="text-xs font-medium mb-1 block">Status</label>
+                            <select id="a-st" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm">
+                                ${['ACTIVE','SUSPENDED','PENDING'].map(l => `<option ${l===a.status?'selected':''}>${l}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div><label class="text-xs font-medium mb-1 block">Commission rate % (blank = per-product)</label>
+                            <input id="a-cr" type="number" step="0.5" min="0" max="90" value="${a.commissionRate ?? ''}" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm">
+                        </div>
+                        <label class="text-xs flex items-center gap-2"><input id="a-lock" type="checkbox" ${a.promoCodeLocked ? 'checked' : ''} class="accent-cta-500"> Promo code locked</label>
+                        <button id="a-save" class="w-full py-2.5 bg-cta-500 hover:bg-cta-600 text-white rounded-lg text-sm font-bold">Save changes</button>
+                    </div>
+                </div>`);
+            el.querySelector('#a-save').addEventListener('click', async () => {
+                const body = {
+                    level: el.querySelector('#a-lvl').value,
+                    type:  el.querySelector('#a-type').value,
+                    status: el.querySelector('#a-st').value,
+                    promoCodeLocked: el.querySelector('#a-lock').checked,
+                };
+                const cr = el.querySelector('#a-cr').value;
+                body.commissionRate = cr === '' ? null : Number(cr);
+                try { await api.put('/admin/affiliates/' + a.id, body); toast('Saved', 'success'); close(); sections.affiliates(document.getElementById('section-root')); }
+                catch (e) { toast(e.message, 'error'); }
+            });
+        }
+
+        // ============================================================================
+        // FEEDBACK
+        // ============================================================================
+        sections.feedback = async (root) => {
+            const { items } = await api.get('/admin/feedback');
+            root.innerHTML = `
+                <div class="admin-card bg-white dark:bg-zinc-900 rounded-xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                    <table class="data">
+                        <thead><tr><th>Title</th><th>Type</th><th>Requested</th><th>Level</th><th>User</th><th>Status</th><th>Date</th><th></th></tr></thead>
+                        <tbody>
+                        ${items.map(f => `
+                            <tr>
+                                <td class="font-semibold max-w-xs truncate">${escapeHtml(f.title)}</td>
+                                <td class="text-[11px]">${escapeHtml(f.type)}</td>
+                                <td class="text-[11px] text-gray-600">${f.levelRequested || 'UNSET'}</td>
+                                <td>${f.level === 'MACRO' ? '<span class="text-cta-500 font-bold text-xs">MACRO</span>' : f.level === 'MICRO' ? '<span class="text-green-600 font-bold text-xs">MICRO</span>' : '<span class="text-gray-600 text-xs">—</span>'}</td>
+                                <td class="text-[11px]">${escapeHtml(f.user?.email || f.guestEmail || 'Guest')}</td>
+                                <td>${f.status}</td>
+                                <td class="text-[11px] text-gray-600">${fmt(f.createdAt)}</td>
+                                <td><button data-review="${f.id}" class="text-cta-500 text-xs font-semibold">Review →</button></td>
+                            </tr>`).join('') || '<tr><td colspan="8" class="text-center text-gray-600 py-6">No feedback yet.</td></tr>'}
+                        </tbody>
+                    </table>
+                    </div>
+                </div>`;
+            root.querySelectorAll('[data-review]').forEach(b => b.addEventListener('click', () => feedbackModal(items.find(x => x.id === b.getAttribute('data-review')))));
+        };
+
+        function feedbackModal(f) {
+            const { close, el } = openModal(`
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-lg">${escapeHtml(f.title)}</h3>
+                        <button data-close class="text-gray-600 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <p class="text-[11px] text-gray-600 mb-3">${escapeHtml(f.type)} · ${escapeHtml(f.user?.email || f.guestEmail || 'Guest')} · ${fmt(f.createdAt)}</p>
+                    <div class="text-sm whitespace-pre-wrap bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800 rounded-lg p-3 mb-4 max-h-56 overflow-y-auto">${escapeHtml(f.description)}</div>
+                    <div class="grid grid-cols-2 gap-3 mb-3">
+                        <div><label class="text-xs font-medium mb-1 block">Level</label>
+                            <select id="f-lvl" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm">
+                                ${['UNSET','MICRO','MACRO'].map(l => `<option ${l===(f.level||'UNSET')?'selected':''}>${l}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div><label class="text-xs font-medium mb-1 block">Status</label>
+                            <select id="f-st" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm">
+                                ${['REVIEWED','ACCEPTED','REJECTED'].map(l => `<option ${l===f.status?'selected':''}>${l}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+                    <div><label class="text-xs font-medium mb-1 block">Admin note</label><textarea id="f-note" rows="2" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm">${escapeHtml(f.adminNote || '')}</textarea></div>
+                    <button id="f-save" class="w-full mt-4 py-2.5 bg-cta-500 hover:bg-cta-600 text-white rounded-lg text-sm font-bold">Save</button>
+                </div>`, { width: 'max-w-xl' });
+
+            el.querySelector('#f-save').addEventListener('click', async () => {
+                const body = {
+                    level:  el.querySelector('#f-lvl').value,
+                    status: el.querySelector('#f-st').value,
+                    adminNote: el.querySelector('#f-note').value.trim() || undefined,
+                };
+                try { await api.post('/admin/feedback/' + f.id + '/review', body); toast('Saved', 'success'); close(); sections.feedback(document.getElementById('section-root')); }
+                catch (e) { toast(e.message, 'error'); }
+            });
+        }
+
+        // ============================================================================
+        // AI KNOWLEDGE
+        // ============================================================================
+        sections['ai-knowledge'] = async (root) => {
+            const { items } = await api.get('/admin/ai-knowledge');
+            root.innerHTML = `
+                <div class="flex justify-between items-center mb-4">
+                    <p class="text-sm text-gray-600">${items.length} entries</p>
+                    <button id="kb-new" class="bg-cta-500 hover:bg-cta-600 text-white text-sm font-bold px-4 py-2 rounded-lg"><i class="fa-solid fa-plus mr-1"></i>New entry</button>
+                </div>
+                <div class="grid gap-3">
+                ${items.map(k => `
+                    <div class="admin-card bg-white dark:bg-zinc-900 rounded-xl p-4">
+                        <div class="flex items-start gap-3">
+                            <span class="text-[10px] font-bold uppercase text-cta-500 bg-cta-50 dark:bg-cta-900/30 px-2 py-0.5 rounded">${escapeHtml(k.category)}</span>
+                            ${k.isActive ? '' : '<span class="text-[10px] text-gray-600">Inactive</span>'}
+                            <span class="ml-auto text-[10px] text-gray-600">Priority ${k.priority}</span>
+                            <button data-edit-k="${k.id}" class="text-cta-500 hover:text-cta-600 px-2"><i class="fa-solid fa-pen"></i></button>
+                            <button data-del-k="${k.id}" class="text-red-500 hover:text-red-600 px-2"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        <p class="text-sm font-semibold mt-2">${escapeHtml(k.question)}</p>
+                        <p class="text-xs text-gray-600 mt-1">${escapeHtml(k.answer)}</p>
+                        ${(k.keywords || []).length ? `<p class="text-[10px] text-gray-600 mt-2">Keywords: ${(k.keywords || []).map(escapeHtml).join(', ')}</p>` : ''}
+                    </div>`).join('') || '<p class="text-gray-600 text-sm text-center py-6">No entries yet.</p>'}
+                </div>`;
+            document.getElementById('kb-new').addEventListener('click', () => kbModal(null));
+            root.querySelectorAll('[data-edit-k]').forEach(b => b.addEventListener('click', () => kbModal(items.find(x => x.id === b.getAttribute('data-edit-k')))));
+            root.querySelectorAll('[data-del-k]').forEach(b => b.addEventListener('click', async () => {
+                if (!confirm('Delete this entry?')) return;
+                try { await api.del('/admin/ai-knowledge/' + b.getAttribute('data-del-k')); toast('Deleted', 'success'); sections['ai-knowledge'](root); }
+                catch (e) { toast(e.message, 'error'); }
+            }));
+        };
+
+        function kbModal(k) {
+            const isEdit = !!k;
+            const { close, el } = openModal(`
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-lg">${isEdit ? 'Edit' : 'New'} knowledge entry</h3>
+                        <button data-close class="text-gray-600 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="space-y-3">
+                        <div><label class="text-xs font-medium mb-1 block">Category *</label><input id="k-cat" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm" value="${escapeHtml(k?.category || 'general')}" placeholder="shipping, returns, products, payment, general"></div>
+                        <div><label class="text-xs font-medium mb-1 block">Question *</label><input id="k-q" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm" value="${escapeHtml(k?.question || '')}"></div>
+                        <div><label class="text-xs font-medium mb-1 block">Answer *</label><textarea id="k-a" rows="4" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm">${escapeHtml(k?.answer || '')}</textarea></div>
+                        <div><label class="text-xs font-medium mb-1 block">Keywords (comma-separated)</label><input id="k-kw" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm" value="${escapeHtml((k?.keywords || []).join(', '))}" placeholder="shipping, delivery, when"></div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="text-xs flex items-center gap-2"><input id="k-active" type="checkbox" ${k?.isActive !== false ? 'checked' : ''} class="accent-cta-500"> Active</label>
+                            <div><label class="text-xs font-medium mb-1 block">Priority</label><input id="k-pr" type="number" min="0" max="100" value="${k?.priority || 0}" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm"></div>
+                        </div>
+                        <button id="k-save" class="w-full py-2.5 bg-cta-500 hover:bg-cta-600 text-white rounded-lg text-sm font-bold">${isEdit ? 'Save' : 'Create'}</button>
+                    </div>
+                </div>`);
+            el.querySelector('#k-save').addEventListener('click', async () => {
+                const body = {
+                    category: el.querySelector('#k-cat').value.trim(),
+                    question: el.querySelector('#k-q').value.trim(),
+                    answer:   el.querySelector('#k-a').value.trim(),
+                    keywords: el.querySelector('#k-kw').value.split(',').map(s => s.trim()).filter(Boolean),
+                    isActive: el.querySelector('#k-active').checked,
+                    priority: Number(el.querySelector('#k-pr').value || 0),
+                };
+                if (!body.question || !body.answer) return toast('Question and Answer are required', 'warn');
+                try {
+                    if (isEdit) await api.put('/admin/ai-knowledge/' + k.id, body);
+                    else        await api.post('/admin/ai-knowledge', body);
+                    toast('Saved', 'success'); close();
+                    sections['ai-knowledge'](document.getElementById('section-root'));
+                } catch (e) { toast(e.message, 'error'); }
+            });
+        }
+
+        // ============================================================================
+        // EMAIL PROVIDERS
+        // ============================================================================
+        sections['email-providers'] = async (root) => {
+            const { items } = await api.get('/admin/email-providers');
+            root.innerHTML = `
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <p class="text-sm text-gray-600">${items.length} providers · lower priority = tried first</p>
+                        <p class="text-[11px] text-gray-600">Demo only — no real emails are sent.</p>
+                    </div>
+                    <button id="ep-new" class="bg-cta-500 hover:bg-cta-600 text-white text-sm font-bold px-4 py-2 rounded-lg"><i class="fa-solid fa-plus mr-1"></i>Add provider</button>
+                </div>
+                <div class="admin-card bg-white dark:bg-zinc-900 rounded-xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                    <table class="data">
+                        <thead><tr><th>Priority</th><th>Name</th><th>Kind</th><th>From</th><th>Status</th><th></th></tr></thead>
+                        <tbody>${items.map(p => `
+                            <tr>
+                                <td class="font-mono">${p.priority}</td>
+                                <td class="font-semibold">${escapeHtml(p.name)}</td>
+                                <td>${escapeHtml(p.kind)}</td>
+                                <td class="text-[11px] text-gray-600">${escapeHtml(p.fromName)} &lt;${escapeHtml(p.fromEmail)}&gt;</td>
+                                <td>${p.isActive ? '<span class="text-green-600 text-xs font-bold">Active</span>' : '<span class="text-gray-600 text-xs">Inactive</span>'}</td>
+                                <td class="text-right whitespace-nowrap">
+                                    <button data-edit-e="${p.id}" class="text-cta-500 px-2"><i class="fa-solid fa-pen"></i></button>
+                                    <button data-del-e="${p.id}"  class="text-red-500 px-2"><i class="fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>`).join('') || '<tr><td colspan="6" class="text-center text-gray-600 py-6">No custom providers configured.</td></tr>'}
+                        </tbody>
+                    </table>
+                    </div>
+                </div>`;
+            document.getElementById('ep-new').addEventListener('click', () => epModal(null));
+            root.querySelectorAll('[data-edit-e]').forEach(b => b.addEventListener('click', () => epModal(items.find(x => x.id === b.getAttribute('data-edit-e')))));
+            root.querySelectorAll('[data-del-e]').forEach(b => b.addEventListener('click', async () => {
+                if (!confirm('Delete this provider?')) return;
+                try { await api.del('/admin/email-providers/' + b.getAttribute('data-del-e')); toast('Deleted', 'success'); sections['email-providers'](root); }
+                catch (e) { toast(e.message, 'error'); }
+            }));
+        };
+
+        function epModal(p) {
+            const isEdit = !!p;
+            const { close, el } = openModal(`
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-lg">${isEdit ? 'Edit' : 'Add'} email provider</h3>
+                        <button data-close class="text-gray-600 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div><label class="text-xs font-medium mb-1 block">Name *</label><input id="e-name" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm" value="${escapeHtml(p?.name || '')}"></div>
+                        <div><label class="text-xs font-medium mb-1 block">Kind *</label>
+                            <select id="e-kind" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm">
+                                ${['BREVO','SENDPULSE','SMTP'].map(k => `<option ${k===(p?.kind||'BREVO')?'selected':''}>${k}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div><label class="text-xs font-medium mb-1 block">Priority</label><input id="e-pr" type="number" min="0" value="${p?.priority ?? 50}" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm"></div>
+                        <div><label class="text-xs font-medium mb-1 block">Active</label>
+                            <select id="e-act" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm">
+                                <option value="true" ${p?.isActive !== false ? 'selected' : ''}>Yes</option>
+                                <option value="false" ${p?.isActive === false ? 'selected' : ''}>No</option>
+                            </select>
+                        </div>
+                        <div><label class="text-xs font-medium mb-1 block">From name</label><input id="e-fn" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm" value="${escapeHtml(p?.fromName || 'FIADSHOP')}"></div>
+                        <div><label class="text-xs font-medium mb-1 block">From email</label><input id="e-fe" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm" value="${escapeHtml(p?.fromEmail || 'support@fiad.shop')}"></div>
+                        <div class="col-span-2"><label class="text-xs font-medium mb-1 block">API key (BREVO / SENDPULSE)</label><input id="e-ak" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm font-mono" placeholder="${isEdit ? '(unchanged if left blank)' : ''}"></div>
+                        <div class="col-span-2"><label class="text-xs font-medium mb-1 block">API secret (SENDPULSE only)</label><input id="e-as" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm font-mono" placeholder="${isEdit ? '(unchanged if left blank)' : ''}"></div>
+                        <div><label class="text-xs font-medium mb-1 block">SMTP host</label><input id="e-h" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm" value="${escapeHtml(p?.host || '')}"></div>
+                        <div><label class="text-xs font-medium mb-1 block">SMTP port</label><input id="e-p" type="number" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm" value="${p?.port || 587}"></div>
+                        <div><label class="text-xs font-medium mb-1 block">SMTP user</label><input id="e-u" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm" value="${escapeHtml(p?.authUser || '')}"></div>
+                        <div><label class="text-xs font-medium mb-1 block">SMTP password</label><input id="e-pw" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm font-mono" placeholder="${isEdit ? '(unchanged if left blank)' : ''}"></div>
+                    </div>
+                    <button id="e-save" class="w-full mt-4 py-2.5 bg-cta-500 hover:bg-cta-600 text-white rounded-lg text-sm font-bold">${isEdit ? 'Save' : 'Add provider'}</button>
+                </div>`, { width: 'max-w-2xl' });
+
+            el.querySelector('#e-save').addEventListener('click', async () => {
+                const body = {
+                    name: el.querySelector('#e-name').value.trim(),
+                    kind: el.querySelector('#e-kind').value,
+                    priority: Number(el.querySelector('#e-pr').value),
+                    isActive: el.querySelector('#e-act').value === 'true',
+                    fromName:  el.querySelector('#e-fn').value.trim(),
+                    fromEmail: el.querySelector('#e-fe').value.trim(),
+                    apiKey:    el.querySelector('#e-ak').value.trim() || undefined,
+                    apiSecret: el.querySelector('#e-as').value.trim() || undefined,
+                    host:      el.querySelector('#e-h').value.trim() || undefined,
+                    port:      Number(el.querySelector('#e-p').value) || undefined,
+                    authUser:  el.querySelector('#e-u').value.trim() || undefined,
+                    authPass:  el.querySelector('#e-pw').value.trim() || undefined,
+                };
+                if (!body.name) return toast('Name is required', 'warn');
+                try {
+                    if (isEdit) await api.put('/admin/email-providers/' + p.id, body);
+                    else        await api.post('/admin/email-providers', body);
+                    toast('Saved', 'success'); close();
+                    sections['email-providers'](document.getElementById('section-root'));
+                } catch (e) { toast(e.message, 'error'); }
+            });
+        }
+
+        // ============================================================================
+        // SUPPORT SETTINGS
+        // ============================================================================
+        sections['support-settings'] = async (root) => {
+            const { settings } = await api.get('/admin/support-settings');
+            root.innerHTML = `
+                <div class="admin-card bg-white dark:bg-zinc-900 rounded-xl p-6 max-w-xl">
+                    <h3 class="text-sm font-bold mb-3">Live support</h3>
+                    <label class="flex items-center gap-3 cursor-pointer p-3 rounded-lg bg-gray-50 dark:bg-zinc-950 border border-gray-200 dark:border-zinc-800">
+                        <input id="ss-live" type="checkbox" ${settings.isLiveEnabled ? 'checked' : ''} class="w-5 h-5 accent-cta-500">
+                        <div>
+                            <p class="text-sm font-semibold">Enable live chat</p>
+                            <p class="text-xs text-gray-600">When ON, visitors see a "Live Support" button.</p>
+                        </div>
+                    </label>
+                    <div class="mt-4">
+                        <label class="text-xs font-medium mb-1 block">Offline message</label>
+                        <textarea id="ss-off" rows="3" class="w-full px-3 py-2 border rounded bg-transparent border-gray-300 dark:border-zinc-700 text-sm">${escapeHtml(settings.offlineMessage || '')}</textarea>
+                    </div>
+                    <button id="ss-save" class="w-full mt-4 py-2.5 bg-cta-500 hover:bg-cta-600 text-white rounded-lg text-sm font-bold">Save settings</button>
+                </div>`;
+            document.getElementById('ss-save').addEventListener('click', async () => {
+                try { await api.put('/admin/support-settings', { isLiveEnabled: document.getElementById('ss-live').checked, offlineMessage: document.getElementById('ss-off').value.trim() }); toast('Saved', 'success'); }
+                catch (e) { toast(e.message, 'error'); }
+            });
+        };
+
+        // ============================================================================
+        // LIVE SUPPORT
+        // ============================================================================
+        sections['live-support'] = async (root) => {
+            const { sessions } = await api.get('/support/admin/sessions?status=ALL');
+            root.innerHTML = `
+                <div class="admin-card bg-white dark:bg-zinc-900 rounded-xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="data">
+                            <thead><tr><th>Email</th><th>Status</th><th>Messages</th><th>Started</th><th>Last activity</th><th></th></tr></thead>
+                            <tbody>${sessions.map(s => `
+                                <tr>
+                                    <td class="font-semibold">${escapeHtml(s.email)}</td>
+                                    <td>${s.status}</td>
+                                    <td>${(s.messages || []).length}</td>
+                                    <td class="text-[11px] text-gray-600">${fmt(s.createdAt)}</td>
+                                    <td class="text-[11px] text-gray-600">${fmt(s.updatedAt)}</td>
+                                    <td class="text-right whitespace-nowrap">
+                                        <button data-view-s="${s.id}" class="text-cta-500 text-xs font-semibold px-2">View</button>
+                                        ${s.status !== 'CLOSED' ? `<button data-join-s="${s.id}" class="text-green-600 text-xs font-semibold px-2">Join</button>
+                                        <button data-close-s="${s.id}" class="text-red-500 text-xs font-semibold px-2">Close</button>` : ''}
+                                    </td>
+                                </tr>`).join('') || '<tr><td colspan="6" class="text-center text-gray-600 py-6">No sessions.</td></tr>'}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>`;
+            root.querySelectorAll('[data-view-s]').forEach(b => b.addEventListener('click', () => sessionModal(sessions.find(x => x.id === b.getAttribute('data-view-s')))));
+            root.querySelectorAll('[data-join-s]').forEach(b => b.addEventListener('click', async () => {
+                try { await api.post('/support/admin/session/' + b.getAttribute('data-join-s') + '/join', {}); toast('Joined session', 'success'); sections['live-support'](root); }
+                catch (e) { toast(e.message, 'error'); }
+            }));
+            root.querySelectorAll('[data-close-s]').forEach(b => b.addEventListener('click', async () => {
+                if (!confirm('Close this session?')) return;
+                try { await api.post('/support/admin/session/' + b.getAttribute('data-close-s') + '/close', {}); toast('Closed', 'success'); sections['live-support'](root); }
+                catch (e) { toast(e.message, 'error'); }
+            }));
+        };
+
+        function sessionModal(s) {
+            const messages = Array.isArray(s.messages) ? s.messages : [];
+            const { close, el } = openModal(`
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-3">
+                        <div>
+                            <h3 class="font-bold text-lg">Session — ${escapeHtml(s.email)}</h3>
+                            <p class="text-xs text-gray-600">${s.status} · started ${fmt(s.createdAt)}</p>
+                        </div>
+                        <button data-close class="text-gray-600 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="max-h-72 overflow-y-auto space-y-2 bg-gray-50 dark:bg-zinc-950 rounded-lg p-3 mb-3 border border-gray-100 dark:border-zinc-800">
+                        ${messages.length ? messages.map(m => `
+                            <div class="flex ${m.sender === 'admin' ? 'justify-end' : 'justify-start'}">
+                                <div class="max-w-[80%] px-3 py-2 rounded-lg text-xs ${m.sender === 'admin' ? 'bg-cta-500 text-white' : m.sender === 'system' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300' : 'bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700'}">
+                                    <div>${escapeHtml(m.message)}</div>
+                                    <div class="text-[9px] opacity-70 mt-0.5">${fmt(m.timestamp)}</div>
+                                </div>
+                            </div>`).join('') : '<p class="text-center text-xs text-gray-600 py-6">No messages yet.</p>'}
+                    </div>
+                    <div class="flex gap-2">
+                        <input id="s-msg" placeholder="Type a reply…" class="flex-1 px-3 py-2 border rounded-lg bg-transparent border-gray-300 dark:border-zinc-700 text-sm">
+                        <button id="s-send" class="bg-cta-500 hover:bg-cta-600 text-white font-bold px-4 rounded-lg text-sm"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                </div>`, { width: 'max-w-xl' });
+
+            el.querySelector('#s-send').addEventListener('click', async () => {
+                const message = el.querySelector('#s-msg').value.trim();
+                if (!message) return;
+                try { await api.post('/support/session/' + s.id + '/message', { sender: 'admin', message }); toast('Sent', 'success'); close(); sections['live-support'](document.getElementById('section-root')); }
+                catch (e) { toast(e.message, 'error'); }
+            });
+            el.querySelector('#s-msg').addEventListener('keydown', (e) => { if (e.key === 'Enter') el.querySelector('#s-send').click(); });
+        }
+
+        // ============================================================================
+        // HOMEPAGE
+        // ============================================================================
+        sections.homepage = async (root) => {
+            const [{ ids }, { items }] = await Promise.all([api.get('/admin/settings/homepage'), api.get('/admin/products')]);
+            const chosen = new Set(ids);
+            root.innerHTML = `
+                <div class="admin-card bg-white dark:bg-zinc-900 rounded-xl p-5 max-w-4xl">
+                    <h3 class="text-sm font-bold mb-1">Featured products on homepage</h3>
+                    <p class="text-xs text-gray-600 mb-4">Selected products appear on the homepage.</p>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    ${items.map(p => `
+                        <label class="cursor-pointer border-2 ${chosen.has(p.id) ? 'border-cta-500' : 'border-gray-200 dark:border-zinc-700'} rounded-lg p-2 hover:border-cta-500 transition">
+                            <input type="checkbox" class="hp-cb hidden" value="${p.id}" ${chosen.has(p.id) ? 'checked' : ''}>
+                            <img src="${(p.images && p.images[0]) || 'https://placehold.co/300'}" class="w-full aspect-square object-cover rounded mb-2">
+                            <p class="text-xs font-semibold truncate">${escapeHtml(p.name)}</p>
+                            <p class="text-[10px] text-gray-600">${money(p.basePrice)}</p>
+                        </label>`).join('')}
+                    </div>
+                    <button id="hp-save" class="mt-4 w-full py-2.5 bg-cta-500 hover:bg-cta-600 text-white rounded-lg text-sm font-bold">Save selection</button>
+                </div>`;
+            root.querySelectorAll('.hp-cb').forEach(cb => {
+                cb.addEventListener('change', () => {
+                    const lbl = cb.closest('label');
+                    if (cb.checked) { lbl.classList.remove('border-gray-200','dark:border-zinc-700'); lbl.classList.add('border-cta-500'); }
+                    else            { lbl.classList.remove('border-cta-500'); lbl.classList.add('border-gray-200','dark:border-zinc-700'); }
+                });
+            });
+            document.getElementById('hp-save').addEventListener('click', async () => {
+                const selected = Array.from(root.querySelectorAll('.hp-cb:checked')).map(c => c.value);
+                try { await api.put('/admin/settings/homepage', { ids: selected }); toast('Homepage updated', 'success'); }
+                catch (e) { toast(e.message, 'error'); }
+            });
+        };
+
+        // ============================================================================
+        // USERS
+        // ============================================================================
+        sections.users = async (root) => {
+            const { items } = await api.get('/admin/users');
+            root.innerHTML = `
+                <div class="admin-card bg-white dark:bg-zinc-900 rounded-xl overflow-hidden">
+                    <div class="overflow-x-auto">
+                    <table class="data">
+                        <thead><tr><th>User</th><th>Email</th><th>Role</th><th>2FA</th><th>Verified</th><th>Joined</th></tr></thead>
+                        <tbody>${items.map(u => `
+                            <tr>
+                                <td class="font-semibold">${escapeHtml(u.displayName)} <span class="text-[10px] text-gray-600">@${escapeHtml(u.username)}</span></td>
+                                <td>${escapeHtml(u.email)}</td>
+                                <td>
+                                    <select data-role-user="${u.id}" class="text-[11px] px-2 py-1 border rounded bg-transparent border-gray-300 dark:border-zinc-700">
+                                        ${['USER','AFFILIATE','MODERATOR','ADMIN'].map(r => `<option ${r===u.role?'selected':''}>${r}</option>`).join('')}
+                                    </select>
+                                </td>
+                                <td>${u.twoFactorEnabled ? '<i class="fa-solid fa-check text-green-500"></i>' : '<i class="fa-solid fa-xmark text-gray-600"></i>'}</td>
+                                <td>${u.isVerified ? '<i class="fa-solid fa-check text-green-500"></i>' : '<i class="fa-solid fa-xmark text-red-500"></i>'}</td>
+                                <td class="text-[11px] text-gray-600">${fmt(u.createdAt)}</td>
+                            </tr>`).join('')}
+                        </tbody>
+                    </table>
+                    </div>
+                </div>`;
+            root.querySelectorAll('[data-role-user]').forEach(sel => sel.addEventListener('change', async () => {
+                try { await api.put('/admin/users/' + sel.getAttribute('data-role-user') + '/role', { role: sel.value }); toast('Role updated', 'success'); }
+                catch (e) { toast(e.message, 'error'); }
+            }));
+        };
+
+        // ============================================================================
+        // ROUTER (declared after all sections; navigate reads `sections` safely now)
+        // ============================================================================
+        function navigate(name) {
+            if (!sections[name]) name = 'dashboard';
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.toggle('active', l.getAttribute('data-section') === name));
+            document.getElementById('section-title').textContent =
+                ({dashboard:'Dashboard', products:'Products', orders:'Orders', affiliates:'Affiliates', feedback:'Feedback',
+                  'ai-knowledge':'AI Knowledge', 'email-providers':'Email Providers', 'support-settings':'Support Settings',
+                  'live-support':'Live Support', homepage:'Homepage Products', users:'Users'})[name] || name;
+            if (location.hash !== '#' + name) location.hash = '#' + name;
+            const root = document.getElementById('section-root');
+            root.innerHTML = '<div class="text-center py-10 text-gray-600"><i class="fa-solid fa-spinner fa-spin text-xl"></i></div>';
+            Promise.resolve()
+                .then(() => sections[name](root))
+                .catch(e => { console.error(e); root.innerHTML = '<p class="text-red-500 text-sm p-4">' + escapeHtml(e.message) + '</p>'; });
+        }
+
+        function initRouter() {
+            document.querySelectorAll('.sidebar-link[data-section]').forEach(a => {
+                a.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    navigate(a.getAttribute('data-section'));
+                    document.getElementById('sidebar').classList.remove('open');
+                });
+            });
+            window.addEventListener('hashchange', () => {
+                const s = location.hash.replace(/^#/, '') || 'dashboard';
+                navigate(s);
+            });
+            navigate(location.hash.replace(/^#/, '') || 'dashboard');
+        }
+
+        // ============================================================================
+        // BOOT — now that `sections` is fully populated, safe to start router
+        // ============================================================================
+        document.getElementById('admin-name').textContent = 'Hi, Admin';
+
+        document.getElementById('reset-btn').addEventListener('click', () => {
+            if (confirm('Reset all demo data to defaults?')) window.__FIAD_RESET__();
+        });
+        document.getElementById('mobile-sidebar-toggle').addEventListener('click', () =>
+            document.getElementById('sidebar').classList.toggle('open'));
+
+        // dark mode
+        (function initTheme() {
+            const isDark = localStorage.getItem('fiadshop_theme') === 'dark';
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('theme-icon').textContent = '☀️';
+            }
+            document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+                const nowDark = document.documentElement.classList.toggle('dark');
+                document.getElementById('theme-icon').textContent = nowDark ? '☀️' : '🌙';
+                try { localStorage.setItem('fiadshop_theme', nowDark ? 'dark' : 'light'); } catch {}
+            });
+        })();
+
+        // start router LAST
+        initRouter();
+    })();
+    </script>
+</body>
+</html>
