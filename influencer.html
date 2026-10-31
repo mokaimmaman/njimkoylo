@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Influencer Dashboard - FIADSHOP</title>
+    <meta name="robots" content="noindex, nofollow">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { cta: { 50:'#fff7ed',100:'#ffedd5',200:'#fed7aa',300:'#fdba74',400:'#fb923c',500:'#f97316',600:'#ea580c',700:'#c2410c',800:'#9a3412',900:'#7c2d12' } }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        *:focus-visible { outline: 2px solid #f97316; outline-offset: 2px; border-radius: 4px; }
+        .stat-card { transition: all .25s ease; border: 1px solid #e5e7eb; }
+        .dark .stat-card { border-color: #27272a; }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.08); border-color: #f97316; }
+        .dark .stat-card:hover { box-shadow: 0 0 15px rgba(249,115,22,.15); }
+        .level-badge { background: linear-gradient(135deg, #f97316 0%, #ea580c 100%); }
+        .modal { animation: fadeIn .18s ease-out; }
+        @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+    </style>
+</head>
+<body class="bg-white dark:bg-black text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+    <!-- ===== NAVBAR (unchanged) ===== -->
+    <nav class="bg-white/95 dark:bg-zinc-950/95 backdrop-blur-sm sticky top-0 z-50 border-b-2 border-gray-300 dark:border-zinc-700 shadow-sm">
+        <div class="container mx-auto px-3 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold tracking-tight hover:opacity-80 transition">
+                <span class="text-cta-500">FIAD</span>SHOP
+            </a>
+            <div class="hidden md:flex items-center gap-6 text-sm font-medium">
+                <a href="index.html" class="text-gray-600 dark:text-gray-600 hover:text-cta-500 transition pb-1">Home</a>
+                <a href="products.html" class="text-gray-600 dark:text-gray-600 hover:text-cta-500 transition pb-1">Products</a>
+                <a href="affiliate-dashboard.html" class="text-cta-500 dark:text-cta-400 border-b-2 border-cta-500 pb-1">Dashboard</a>
+                <a href="contact.html" class="text-gray-600 dark:text-gray-600 hover:text-cta-500 transition pb-1">Contact</a>
+            </div>
+            <div class="flex items-center gap-3">
+                <button id="dark-mode-toggle" class="p-2 rounded-full bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-cta-400 transition-all hover:scale-105" aria-label="Toggle dark mode">
+                    <span id="theme-icon" class="text-sm">🌙</span>
+                </button>
+                <a href="cart.html" class="relative group" aria-label="Shopping cart">
+                    <i class="fa-solid fa-cart-shopping text-xl text-gray-700 dark:text-gray-300"></i>
+                    <span class="absolute -top-2 -right-2 bg-cta-500 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-md">3</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== GATES REMOVED — DASHBOARD SHOWN DIRECTLY ===== -->
+    <main class="py-6 px-3 pb-14">
+        <div class="container mx-auto max-w-6xl space-y-6">
+
+            <!-- Header -->
+            <div class="flex items-center gap-3 flex-wrap">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold leading-tight">Influencer Dashboard</h1>
+                    <p class="text-xs text-gray-600 dark:text-gray-600">Welcome back, Rahim.</p>
+                </div>
+                <span class="level-badge ml-auto text-white text-xs font-bold px-3 py-1.5 rounded-full inline-flex items-center gap-2">
+                    <i class="fa-solid fa-crown"></i> SILVER
+                </span>
+                <span class="text-xs font-bold px-3 py-1.5 rounded-full bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400">Active</span>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="stat-card bg-white dark:bg-zinc-900 rounded-xl p-4">
+                    <p class="text-[10px] uppercase tracking-widest text-gray-600 mb-1">Total Sales</p>
+                    <p class="text-2xl font-bold">47</p>
+                </div>
+                <div class="stat-card bg-white dark:bg-zinc-900 rounded-xl p-4">
+                    <p class="text-[10px] uppercase tracking-widest text-gray-600 mb-1">Total Earned</p>
+                    <p class="text-2xl font-bold text-cta-500">$1,284.50</p>
+                </div>
+                <div class="stat-card bg-white dark:bg-zinc-900 rounded-xl p-4">
+                    <p class="text-[10px] uppercase tracking-widest text-gray-600 mb-1">Available Balance</p>
+                    <p class="text-2xl font-bold text-green-600 dark:text-green-400">$342.75</p>
+                </div>
+                <div class="stat-card bg-white dark:bg-zinc-900 rounded-xl p-4">
+                    <p class="text-[10px] uppercase tracking-widest text-gray-600 mb-1">Product Commission Rate</p>
+                    <p class="text-2xl font-bold">12.0%</p>
+                </div>
+            </div>
+
+            <!-- Level progress -->
+            <div class="stat-card bg-white dark:bg-zinc-900 rounded-xl p-5">
+                <div class="flex items-center justify-between mb-2">
+                    <div>
+                        <p class="text-xs text-gray-600 mb-0.5">Level progress</p>
+                        <p class="text-sm font-bold">Silver → <span class="text-cta-500">Gold</span></p>
+                    </div>
+                    <span class="text-xs text-gray-600">3 sales to next</span>
+                </div>
+                <div class="h-2.5 bg-gray-100 dark:bg-zinc-800 rounded-full overflow-hidden">
+                    <div class="h-full bg-cta-500" style="width: 87%"></div>
+                </div>
+            </div>
+
+            <!-- Referral, product-link and product-discount actions -->
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+                <button class="stat-card bg-white dark:bg-zinc-900 rounded-xl p-4 text-left hover:bg-cta-50 dark:hover:bg-cta-900/10 transition" data-open="promo-modal">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-cta-100 dark:bg-cta-900/30 text-cta-600 dark:text-cta-400 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-tag"></i></div>
+                        <div class="flex-1">
+                            <p class="text-sm font-bold">Promo &amp; Referral Code</p>
+                            <p id="promo-status" class="text-[11px] text-gray-600 dark:text-gray-400 mt-0.5">Not set — choose your unique code once</p>
+                        </div>
+                    </div>
+                </button>
+
+                <div class="stat-card bg-white dark:bg-zinc-900 rounded-xl p-4">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-user-plus"></i></div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-bold">User Referral</p>
+                            <p id="user-ref-status" class="text-[11px] text-gray-600 dark:text-gray-400 mt-0.5">Set your code to unlock this link</p>
+                            <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-1">Share: <code id="user-ref-link" class="text-cta-500 break-all"></code></p>
+                            <p class="text-[10px] text-green-600 dark:text-green-400 mt-1">They get 10% off their first order and 5% off their next 9 orders.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="stat-card bg-white dark:bg-zinc-900 rounded-xl p-4 text-left hover:bg-cta-50 dark:hover:bg-cta-900/10 transition" data-open="affiliate-link-modal">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-link"></i></div>
+                        <div class="flex-1">
+                            <p class="text-sm font-bold">Make Your Affiliated Link</p>
+                            <p class="text-[11px] text-gray-600 dark:text-gray-400 mt-0.5">Add your locked referral/promo code to a FIADSHOP product URL.</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button class="stat-card bg-white dark:bg-zinc-900 rounded-xl p-4 text-left hover:bg-cta-50 dark:hover:bg-cta-900/10 transition" data-open="discount-modal">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-cta-100 dark:bg-cta-900/30 text-cta-600 dark:text-cta-400 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-scissors"></i></div>
+                        <div class="flex-1">
+                            <p class="text-sm font-bold">Product Referral Discount</p>
+                            <p class="text-[11px] text-gray-600 dark:text-gray-400 mt-0.5">A special discount for a product you refer—separate from user-referral 10% / 5% benefits.</p>
+                        </div>
+                    </div>
+                </button>
+
+                <button class="stat-card bg-white dark:bg-zinc-900 rounded-xl p-4 text-left hover:bg-cta-50 dark:hover:bg-cta-900/10 transition" data-open="withdraw-modal">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-cta-100 dark:bg-cta-900/30 text-cta-600 dark:text-cta-400 flex items-center justify-center flex-shrink-0"><i class="fa-solid fa-money-bill-wave"></i></div>
+                        <div class="flex-1"><p class="text-sm font-bold">Withdraw Funds</p><p class="text-[11px] text-gray-600 dark:text-gray-400 mt-0.5">Request a payout from your balance.</p></div>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Recent referred orders -->
+            <div class="grid grid-cols-1 gap-4">
+                <div class="stat-card bg-white dark:bg-zinc-900 rounded-xl p-5">
+                    <h3 class="text-sm font-bold mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-receipt text-cta-500"></i> Recent Referred Orders
+                    </h3>
+                    <div class="divide-y divide-gray-100 dark:divide-zinc-800">
+                        <div class="flex items-center justify-between py-2.5">
+                            <div class="min-w-0">
+                                <p class="text-xs font-semibold truncate">#FIAD-8821</p>
+                                <p class="text-[10px] text-gray-600">2/18/2025, 10:42 AM</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-bold">$124.00</p>
+                                <p class="text-[10px] text-gray-600">DELIVERED</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between py-2.5">
+                            <div class="min-w-0">
+                                <p class="text-xs font-semibold truncate">#FIAD-8790</p>
+                                <p class="text-[10px] text-gray-600">2/17/2025, 3:15 PM</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-bold">$58.50</p>
+                                <p class="text-[10px] text-gray-600">SHIPPED</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between py-2.5">
+                            <div class="min-w-0">
+                                <p class="text-xs font-semibold truncate">#FIAD-8755</p>
+                                <p class="text-[10px] text-gray-600">2/16/2025, 9:04 AM</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-bold">$210.00</p>
+                                <p class="text-[10px] text-gray-600">PAID</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Withdrawals -->
+            <div class="stat-card bg-white dark:bg-zinc-900 rounded-xl p-5">
+                <h3 class="text-sm font-bold mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-cta-500"></i> Withdrawal History
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs">
+                        <thead class="text-left text-gray-600 border-b border-gray-100 dark:border-zinc-800">
+                            <tr><th class="py-2">Date</th><th>Amount</th><th>Method</th><th>Status</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-50 dark:border-zinc-900">
+                                <td class="py-2">2/10/2025</td>
+                                <td class="font-bold">$200.00</td>
+                                <td>USDT_TRC20</td>
+                                <td><span class="px-2 py-0.5 rounded-full text-[10px] bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-400">PAID</span></td>
+                            </tr>
+                            <tr class="border-b border-gray-50 dark:border-zinc-900">
+                                <td class="py-2">2/3/2025</td>
+                                <td class="font-bold">$150.00</td>
+                                <td>PAYPAL</td>
+                                <td><span class="px-2 py-0.5 rounded-full text-[10px] bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400">APPROVED</span></td>
+                            </tr>
+                            <tr>
+                                <td class="py-2">1/28/2025</td>
+                                <td class="font-bold">$75.00</td>
+                                <td>BTC</td>
+                                <td><span class="px-2 py-0.5 rounded-full text-[10px] bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400">PENDING</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- One user-selected code: personal promo and user referral, locked after saving. -->
+    <div id="promo-modal" class="hidden fixed inset-0 z-[95] bg-black/50 flex items-center justify-center p-4" data-dismissible>
+        <div class="modal bg-white dark:bg-zinc-900 rounded-xl max-w-md w-full p-6"><div class="flex justify-between items-center mb-3"><h3 class="font-bold text-base">Set your promo &amp; referral code</h3><button data-close class="text-gray-600 dark:text-gray-400 hover:text-cta-500"><i class="fa-solid fa-xmark"></i></button></div><p id="promo-modal-note" class="text-xs text-gray-600 dark:text-gray-400 mb-3">Choose 3–20 letters, numbers, underscores or hyphens. This same code is used for your promo and user-referral links, then it is permanently locked.</p><div class="flex gap-2"><input id="promo-input" type="text" maxlength="20" autocomplete="off" placeholder="MY-CODE" class="flex-1 uppercase px-3 py-2.5 border border-gray-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-900 text-sm focus:ring-2 focus:ring-cta-500 outline-none"><button id="promo-save" class="bg-cta-500 hover:bg-cta-600 disabled:opacity-50 text-white font-bold px-4 rounded-lg text-sm">Lock code</button></div></div>
+    </div>
+
+    <div id="affiliate-link-modal" class="hidden fixed inset-0 z-[95] bg-black/50 flex items-center justify-center p-4" data-dismissible>
+        <div class="modal bg-white dark:bg-zinc-900 rounded-xl max-w-md w-full p-6"><div class="flex justify-between items-center mb-3"><h3 class="font-bold text-base">Make your affiliated link</h3><button data-close class="text-gray-600 dark:text-gray-400 hover:text-cta-500"><i class="fa-solid fa-xmark"></i></button></div><p class="text-xs text-gray-600 dark:text-gray-400 mb-3">Paste a FIADSHOP product URL. Your locked referral/promo code will be added automatically.</p><div class="space-y-3"><input id="affiliate-product-url" type="url" inputmode="url" placeholder="https://…/product-detail.html?id=…" class="w-full px-3 py-2.5 border border-gray-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-900 text-sm focus:ring-2 focus:ring-cta-500 outline-none"><button id="affiliate-link-build" class="w-full bg-cta-500 hover:bg-cta-600 text-white font-bold py-2.5 rounded-lg text-sm">Make affiliated link</button><div id="affiliate-link-result-wrap" class="hidden"><label class="text-xs font-medium mb-1 block">Your affiliated product link</label><div class="flex gap-2"><input id="affiliate-link-result" readonly class="flex-1 min-w-0 px-3 py-2.5 border border-gray-200 dark:border-zinc-700 rounded-lg bg-gray-50 dark:bg-zinc-950 text-xs text-cta-600 dark:text-cta-400 outline-none"><button id="affiliate-link-copy" class="bg-gray-100 hover:bg-gray-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 px-3 rounded-lg text-sm" aria-label="Copy affiliated link"><i class="fa-solid fa-copy"></i></button></div></div></div></div>
+    </div>
+
+    <div id="discount-modal" class="hidden fixed inset-0 z-[95] bg-black/50 flex items-center justify-center p-4" data-dismissible>
+        <div class="modal bg-white dark:bg-zinc-900 rounded-xl max-w-md w-full p-6"><div class="flex justify-between items-center mb-3"><h3 class="font-bold text-base">Create product referral discount</h3><button data-close class="text-gray-600 dark:text-gray-400 hover:text-cta-500"><i class="fa-solid fa-xmark"></i></button></div><p class="text-xs text-gray-600 dark:text-gray-400 mb-4">This discount applies to a product you refer. It is separate from the automatic 10% first-order and 5% next-nine user-referral benefits.</p><div class="space-y-3"><div><label class="text-xs font-medium mb-1 block">FIADSHOP product URL *</label><input id="discount-product-url" type="url" inputmode="url" placeholder="https://…/product-detail.html?id=…" class="w-full px-3 py-2.5 border border-gray-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-900 text-sm focus:ring-2 focus:ring-cta-500 outline-none"></div><div><label class="text-xs font-medium mb-1 block">Discount % to buyer *</label><input id="discount-pct" type="number" min="1" max="12" step="0.5" placeholder="5" class="w-full px-3 py-2.5 border border-gray-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-900 text-sm focus:ring-2 focus:ring-cta-500 outline-none"><p class="text-[10px] text-gray-600 dark:text-gray-400 mt-1">You keep <span id="keep-pct" class="font-bold text-green-600 dark:text-green-400">7%</span> of the sale commission.</p></div><div class="grid grid-cols-2 gap-2"><div><label class="text-xs font-medium mb-1 block">Max uses (opt.)</label><input id="discount-max" type="number" min="1" placeholder="∞" class="w-full px-3 py-2.5 border border-gray-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-900 text-sm focus:ring-2 focus:ring-cta-500 outline-none"></div><div><label class="text-xs font-medium mb-1 block">Expires (opt.)</label><input id="discount-exp" type="date" class="w-full px-3 py-2.5 border border-gray-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-900 text-sm focus:ring-2 focus:ring-cta-500 outline-none"></div></div><button id="discount-save" class="w-full bg-cta-500 hover:bg-cta-600 text-white font-bold py-2.5 rounded-lg text-sm">Generate product discount link</button></div></div>
+    </div>
+
+    <div id="withdraw-modal" class="hidden fixed inset-0 z-[95] bg-black/50 flex items-center justify-center p-4" data-dismissible>
+        <div class="modal bg-white dark:bg-zinc-900 rounded-xl max-w-md w-full p-6"><div class="flex justify-between items-center mb-3"><h3 class="font-bold text-base">Request withdrawal</h3><button data-close class="text-gray-600 dark:text-gray-400 hover:text-cta-500"><i class="fa-solid fa-xmark"></i></button></div><p class="text-xs text-gray-600 dark:text-gray-400 mb-4">Available: <span class="font-bold text-green-600">$342.75</span></p><input type="number" placeholder="25.00" class="w-full px-3 py-2.5 border border-gray-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-900 text-sm mb-3"><button class="w-full bg-cta-500 text-white font-bold py-2.5 rounded-lg text-sm">Submit request</button></div>
+    </div>
+
+    <div id="toast-container" class="fixed top-20 right-4 z-[120] space-y-2"></div>
+
+    <script>
+    (function () {
+        const html = document.documentElement;
+        const $ = id => document.getElementById(id);
+        const MAX_PRODUCT_DISCOUNT = 12;
+        const CODE_KEY = 'fiad_affiliate_personal_code';
+        const AGREEMENT_KEY = 'fiad_affiliate_first_visit_agreed';
+        const DISCOUNTS_KEY = 'fiad_affiliate_product_discounts';
+        let code = '';
+        let discounts = [];
+
+        function getStore(key, fallback) { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch (e) { return fallback; } }
+        function setStore(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {} }
+        function toast(message) {
+            const item = document.createElement('div');
+            item.className = 'bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 shadow-lg rounded-lg px-3 py-2 text-xs';
+            item.textContent = message; $('toast-container').appendChild(item); setTimeout(() => item.remove(), 3200);
+        }
+        function userReferralUrl() {
+            if (!code) return '';
+            const u = new URL('login.html', location.href);
+            u.searchParams.set('ref', code); u.searchParams.set('promo', code);
+            return u.href;
+        }
+        function affiliateUrl(raw, extras) {
+            if (!code) throw new Error('Set and lock your promo/referral code first.');
+            const rawUrl = String(raw || '').trim();
+            if (!rawUrl) throw new Error('Enter a product URL.');
+            const u = new URL(rawUrl, location.href);
+            if (!/^https?:$/.test(u.protocol)) throw new Error('Enter a valid product URL.');
+            u.searchParams.set('ref', code); u.searchParams.set('promo', code);
+            Object.entries(extras || {}).forEach(([key, value]) => { if (value !== '' && value != null) u.searchParams.set(key, value); });
+            return u.toString();
+        }
+        async function copyText(text) {
+            if (navigator.clipboard?.writeText) return navigator.clipboard.writeText(text);
+            const area = document.createElement('textarea'); area.value = text; area.style.position = 'fixed'; area.style.opacity = '0'; document.body.appendChild(area); area.select();
+            try { document.execCommand('copy'); } finally { area.remove(); }
+        }
+        function renderReferral() {
+            $('promo-status').textContent = code ? 'Locked code: ' + code + ' — promo + user referral' : 'Not set — choose your unique code once';
+            $('user-ref-status').textContent = code ? 'Code: ' + code + ' (locked)' : 'Set your code to unlock this link';
+            $('user-ref-link').textContent = userReferralUrl();
+            $('promo-input').value = code;
+            $('promo-input').disabled = !!code;
+            $('promo-save').disabled = !!code;
+            $('promo-save').textContent = code ? 'Locked' : 'Lock code';
+            $('promo-modal-note').textContent = code ? 'This code is permanently locked and is used for your promo and user-referral links.' : 'Choose 3–20 letters, numbers, underscores or hyphens. This same code is used for your promo and user-referral links, then it is permanently locked.';
+        }
+        function escapeHtml(value) { return String(value == null ? '' : value).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+        function renderDiscounts() {
+            const box = $('product-discount-links');
+            // The dashboard no longer displays a discount-links history card.
+            if (!box) return;
+            if (!discounts.length) { box.innerHTML = '<p class="text-xs text-gray-600 dark:text-gray-400 text-center py-6">No product referral discounts yet.</p>'; return; }
+            box.innerHTML = discounts.map(d => {
+                const url = affiliateUrl(d.productUrl, { product_discount: d.percent });
+                return `<div class="border border-gray-200 dark:border-zinc-800 rounded-lg p-3"><div class="flex items-center justify-between gap-2 mb-1"><code class="text-xs font-bold text-cta-500">${escapeHtml(code)}</code><span class="text-[10px] text-gray-600 dark:text-gray-400">${Number(d.percent)}% off · you keep ${(MAX_PRODUCT_DISCOUNT - Number(d.percent)).toFixed(1)}%</span></div><div class="flex items-center gap-2"><input readonly value="${escapeHtml(url)}" class="flex-1 min-w-0 text-[10px] px-2 py-1 rounded bg-gray-50 dark:bg-zinc-950 border border-gray-100 dark:border-zinc-800"><button data-copy="${escapeHtml(url)}" class="text-cta-500 hover:text-cta-600 text-xs px-2 py-1 rounded" aria-label="Copy link"><i class="fa-solid fa-copy"></i></button></div><p class="text-[10px] text-gray-600 dark:text-gray-400 mt-1">${d.maxUses ? 'Max ' + d.maxUses + ' uses' : 'No use limit'}${d.expires ? ' · expires ' + d.expires : ''}</p></div>`;
+            }).join('');
+            box.querySelectorAll('[data-copy]').forEach(button => button.addEventListener('click', async () => { await copyText(button.dataset.copy); toast('Link copied'); }));
+        }
+        function open(id) { $(id).classList.remove('hidden'); }
+        function close(id) { $(id).classList.add('hidden'); }
+
+        // Theme
+        const savedTheme = (() => { try { return localStorage.getItem('theme') || localStorage.getItem('fiad_theme'); } catch (e) { return null; } })();
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia?.('(prefers-color-scheme: dark)').matches)) html.classList.add('dark');
+        function syncTheme() { const dark = html.classList.contains('dark'); $('theme-icon').textContent = dark ? '🔆' : '🌙'; try { localStorage.setItem('theme', dark ? 'dark' : 'light'); localStorage.setItem('fiad_theme', dark ? 'dark' : 'light'); } catch (e) {} }
+        syncTheme();
+        $('dark-mode-toggle').addEventListener('click', () => { html.classList.toggle('dark'); syncTheme(); });
+
+        // Agreement is shown only on the first entry and is intentionally non-dismissible.
+        const agreed = (() => { try { return localStorage.getItem(AGREEMENT_KEY) === '1'; } catch (e) { return false; } })();
+        if (!agreed) open('affiliate-onboarding');
+        $('onboarding-agree').addEventListener('click', () => { try { localStorage.setItem(AGREEMENT_KEY, '1'); } catch (e) {} close('affiliate-onboarding'); toast('Agreement saved. Set your unique code when you are ready.'); });
+
+        // Dismissible action modals.
+        document.querySelectorAll('[data-open]').forEach(button => button.addEventListener('click', () => open(button.dataset.open)));
+        document.querySelectorAll('[data-dismissible]').forEach(modal => {
+            modal.querySelectorAll('[data-close]').forEach(button => button.addEventListener('click', () => close(modal.id)));
+            modal.addEventListener('click', event => { if (event.target === modal) close(modal.id); });
+        });
+
+        // Lock a user-selected personal promo/referral code exactly once.
+        $('promo-save').addEventListener('click', () => {
+            if (code) return toast('This code is already locked.');
+            const chosen = $('promo-input').value.trim().toUpperCase();
+            if (!/^[A-Z0-9_-]{3,20}$/.test(chosen)) return toast('Use 3–20 letters, numbers, underscores or hyphens.');
+            code = chosen; setStore(CODE_KEY, code); renderReferral(); close('promo-modal'); toast('Your promo and referral code is locked!');
+        });
+
+        $('affiliate-link-build').addEventListener('click', () => {
+            try { $('affiliate-link-result').value = affiliateUrl($('affiliate-product-url').value); open('affiliate-link-result-wrap'); }
+            catch (e) { toast(e.message || 'Enter a valid product URL.'); }
+        });
+        $('affiliate-link-copy').addEventListener('click', async () => { const url = $('affiliate-link-result').value; if (url) { await copyText(url); toast('Affiliated link copied'); } });
+
+        const pct = $('discount-pct');
+        pct.addEventListener('input', () => { const value = Math.max(0, Math.min(Number(pct.value) || 0, MAX_PRODUCT_DISCOUNT)); $('keep-pct').textContent = (MAX_PRODUCT_DISCOUNT - value).toFixed(1) + '%'; });
+        $('discount-save').addEventListener('click', () => {
+            const rawProductUrl = $('discount-product-url').value.trim();
+            if (!rawProductUrl) return toast('Enter a product URL.');
+            let productUrl; try { productUrl = new URL(rawProductUrl, location.href).toString(); } catch (e) { return toast('Enter a valid product URL.'); }
+            if (!code) return toast('Set and lock your promo/referral code first.');
+            const percent = Number(pct.value);
+            if (!percent || percent <= 0 || percent > MAX_PRODUCT_DISCOUNT) return toast('Enter a discount between 1% and ' + MAX_PRODUCT_DISCOUNT + '%.');
+            discounts.unshift({ productUrl, percent, maxUses: $('discount-max').value.trim(), expires: $('discount-exp').value });
+            setStore(DISCOUNTS_KEY, discounts); renderDiscounts(); close('discount-modal'); toast('Product referral discount link created!');
+        });
+
+        code = (() => { try { return String(localStorage.getItem(CODE_KEY) || '').toUpperCase(); } catch (e) { return ''; } })();
+        discounts = getStore(DISCOUNTS_KEY, []);
+        renderReferral(); renderDiscounts();
+    })();
+    </script>
+</body>
+</html>
