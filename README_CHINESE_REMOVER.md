@@ -1,64 +1,29 @@
-# প্রোডাক্ট ছবি থেকে শুধু চাইনিজ লেখা মুছে ফেলা ও jsDelivr লিংক জেনারেটর
+# প্রোডাক্ট ছবি থেকে শুধু চাইনিজ লেখা মুছে ফেলা ও jsDelivr লিংক জেনারেটর (v2)
 
-এই প্রজেক্টে আপনার `three_groups_products.csv` ফাইলের সব প্রোডাক্ট ছবির (`Image 1` থেকে `Image 5` — মোট ২,১২৬টি ইউনিক ছবি) জন্য সম্পূর্ণ স্বয়ংক্রিয় **Chinese-Only Text Eraser + jsDelivr Link Updater** তৈরি করা হয়েছে।
-
----
-
-## প্রোগ্রামটি ঠিক কীভাবে কাজ করে? (`remove_chinese_text.py`)
-
-1. **সব ছবি চেক করে, কিন্তু শুধু চাইনিজ থাকলেই পরিবর্তন করে:**
-   - **PP-OCRv4 (`RapidOCR` character-level word box)** দিয়ে প্রতিটি ছবি স্ক্যান করে।
-   - যেসব ছবিতে **কোনো চাইনিজ লেখা নেই**, সেগুলো **অপরিবর্তিত থাকে** এবং CSV ফাইলে সেগুলোর **আগের অরিজিনাল লিংকই বহাল থাকে**।
-   - আইকন বা বাটনের কারণে ভুল শনাক্তকরণ (যেমন `+` বাটনকে `田` বা আইকনকে `回` মনে করা) স্বয়ংক্রিয়ভাবে ফিল্টার করে বাদ দেয়।
-
-2. **শুধু চাইনিজ লেখা মুছে ফেলে, বাকি সব অংশ অক্ষত রাখে:**
-   - একই লাইনে যদি ইংরেজি স্পেসিফিকেশন/মাপ ও চাইনিজ একসাথে থাকে (যেমন `USB输出 5V2.1A 9V2A`, `TYPE-C快充口`, `28cm`, `22L`, `60min`, `IPX7`, `1:24`, `NO.8605`, `SCY18101`, `ODM OEM`), প্রোগ্রামটি অক্ষর-ভিত্তিক বক্স ধরে **শুধু চাইনিজ অক্ষরগুলো মুছে ফেলে** এবং ইংরেজি ও সংখ্যাগুলো অক্ষত রাখে।
-   - রঙিন ব্যাজ/বক্স বা সাদা ব্যাকগ্রাউন্ডের ভেতরের লেখা মুছতে **Solid-Badge Topology Fill** এবং জটিল ছবির ব্যাকগ্রাউন্ডের জন্য **LaMa Neural Inpainting / Multi-Scale Telea Inpainting** ব্যবহার করে, যাতে পণ্যের মূল ছবি নষ্ট না হয়।
-
-3. **পরিবর্তিত ছবির জায়গায় GitHub (jsDelivr) লিংক বসায়:**
-   - শুধুমাত্র যেসব ছবিতে চাইনিজ মুছে নতুন ছবি তৈরি হয়েছে, সেগুলো `cleaned-images/img_<hash>.jpg` হিসেবে সেভ হয় এবং CSV ফাইলে শুধুমাত্র সেই লিংকগুলো পরিবর্তন হয়ে নিচের ফরম্যাটে বসে:
-     ```text
-     https://cdn.jsdelivr.net/gh/mokaimmaman/njimkoylo@main/cleaned-images/img_<hash>.jpg
-     ```
-   - চাইলে `--gh-repo mokaimmaman/fiad-shop-media` দিয়ে আপনার মিডিয়া রিপোজিটরিতেও আপলোড করতে পারবেন।
+এই প্রজেক্টে আপনার `three_groups_products.csv` ফাইলের সব প্রোডাক্ট ছবির (`Image 1` থেকে `Image 5` — মোট ২,১২৬টি ইউনিক ছবি) জন্য সম্পূর্ণ স্বয়ংক্রিয় **Surrounding-Background Color Chinese Text Eraser + `<50 MB` jsDelivr Link Updater (v2)** তৈরি করা হয়েছে।
 
 ---
 
-## কীভাবে এক ক্লিকে সব ২,১২৬টি ছবি প্রসেস করবেন?
+## v2 সংস্করণে কী কী সমাধান ও উন্নতি করা হয়েছে?
 
-> **নোট:** Arena-র এই কোডিং স্যান্ডবক্সে শুধুমাত্র `github.com` ও `pypi.org`-এ নেটওয়ার্ক অ্যাক্সেস অনুমোদিত থাকে (`alicdn.com` / `ozone.ru` ব্লক থাকে)। তাই নিচের যেকোনো একটি উপায়ে (মোবাইল ব্রাউজার থেকেও বিনা ঝামেলায়!) পুরো ২,১২৬টি ছবি প্রসেস করে সরাসরি GitHub ও jsDelivr-এ লাইভ করতে পারবেন:
+1. **কোনো ঝাপসা (Blurry) দাগ ছাড়াই আশেপাশের আসল Background Color বসানো (3-Tier Engine):**
+   - **Tier 1 (Solid Badge / Capsule / Starburst Fill):** একরঙা লাল/নীল/হলুদ বক্স, ক্যাপসুল বা স্টারবার্স্ট ব্যাজের ভেতরের চাইনিজ লেখা মুছে ঠিক সেই ব্যাজের নিখুঁত রঙ বসিয়ে দেয় (বক্সের গোল কোণা বা স্টারবার্স্টের ধার নষ্ট হয় না)।
+   - **Tier 2 (Smooth Surrounding Gradient Surface Fill):** হালকা গ্রেডিয়েন্ট ব্যানার (যেমন `ZH-10`, গ্লসি ফুটার বার, `OEM/ODM` বার বা স্টুডিওর গ্রেডিয়েন্ট দেয়াল) — আগের মতো চারকোণা ব্লার বক্স না বানিয়ে লেখার চারপাশের পরিষ্কার পিক্সেল থেকে মসৃণভাবে ঠিক সেই ব্যাকগ্রাউন্ড কালার ও গ্রেডিয়েন্ট রিকনস্ট্রাক্ট করে।
+   - **Tier 3 (Stroke-Masked Cropped `SimpleLama` Neural Inpainting — CPU ও GPU উভয়েই সচল):** জটিল ফটোগ্রাফিক ব্যাকগ্রাউন্ডে পুরো বক্সের বদলে **শুধুমাত্র চাইনিজ অক্ষরের দাগটুকু (stroke)** মাস্ক করে `SimpleLama` নিউরাল মডেল দিয়ে নিখুঁতভাবে ব্যাকগ্রাউন্ড পূরণ করে।
 
-### পদ্ধতি ১ (সবচেয়ে দ্রুত — ফ্রি GPU সহ): Google Colab (মোবাইল বা পিসি থেকে ১ ক্লিকে)
-1. এই ব্রাঞ্চের PR টি `main`-এ Merge করুন।
-2. আপনার ব্রাউজারে নিচের লিংকটি ওপেন করুন:
-   `https://colab.research.google.com/github/mokaimmaman/njimkoylo/blob/main/Chinese_Text_Remover_Colab.ipynb`
-3. মেনু থেকে **Runtime -> Change runtime type -> T4 GPU** বেছে নিন এবং **Run all** চাপুন।
-4. সব ছবি পরিষ্কার হয়ে স্বয়ংক্রিয়ভাবে আপনার GitHub রিপোজিটরিতে আপলোড হয়ে যাবে এবং আপডেটেড **`three_groups_products_cleaned.csv`** ফাইলটি আপনার ফোনে/কম্পিউটারে ডাউনলোড হয়ে যাবে!
+2. **jsDelivr-এর `50 MB` লিমিট সমস্যার স্থায়ী সমাধান:**
+   - আগের `.jpg` ফাইলগুলোর মোট সাইজ `112 MB` হওয়ায় jsDelivr `Package size exceeded the configured limit of 50 MB` এরর দিচ্ছিল।
+   - পুরনো সব `.jpg` মুছে দিয়ে নতুন ছবিগুলো অপ্টিমাইজড **WebP (`<=720px`)** ফরম্যাটে সেভ করা হয়, ফলে ~৯১৫টি ছবির মোট সাইজ দাঁড়ায় মাত্র **~৩০–৩৩ MB** (jsDelivr-এর `50 MB` সীমার অনেক নিচে)।
+   - এছাড়া CSV ফাইলে পরিষ্কার করা ছবির লিংক সরাসরি নতুন কমিট হ্যাশে (`cdn.jsdelivr.net/gh/mokaimmaman/njimkoylo@<commit_sha>/cleaned-images/img_<hash>.webp`) পিন করা হয় এবং `@main` ক্যাশও পার্জ করা হয়, যাতে সাথে সাথেই সব লিংক ওপেন হয়।
 
-### পদ্ধতি ২ (কোনো টোকেন ছাড়াই সরাসরি GitHub সার্ভারে): GitHub Actions
-1. PR মার্জ করার পর GitHub ওয়েবসাইটে `workflows/clean-chinese-images.yml` ফাইলটিকে `.github/workflows/clean-chinese-images.yml` পাথে মুভ/কপি করে কমিট করুন।
-2. রিপোজিটরির **Actions** ট্যাবে গিয়ে **Clean Chinese Text From Product Images** ওয়ার্কফ্লো সিলেক্ট করে **Run workflow** বাটনে ক্লিক করুন।
-3. কাজ শেষ হলে `cleaned-images/` এবং `output/three_groups_products_cleaned.csv` সরাসরি আপনার রিপোজিটরিতে যুক্ত হয়ে যাবে!
-
-### পদ্ধতি ৩: নিজের কম্পিউটার বা Termux/Linux থেকে চালানো
-```bash
-chmod +x setup_env.sh
-./setup_env.sh
-
-python3 remove_chinese_text.py \
-  --input data/three_groups_products.csv \
-  --output output/three_groups_products_cleaned.csv \
-  --image-dir cleaned-images \
-  --gh-repo mokaimmaman/njimkoylo \
-  --gh-branch main \
-  --inpainter auto \
-  --workers 12 \
-  --git-push
-```
+3. **শুধু চাইনিজ লেখা মুছে ফেলে, বাকি সব অক্ষত রাখে:**
+   - যেসব ছবিতে চাইনিজ লেখা নেই সেগুলো **অপরিবর্তিত থাকে** এবং CSV-তে আগের অরিজিনাল লিংকই থাকে।
+   - একই লাইনে ইংরেজি স্পেসিফিকেশন বা মডেল কোড থাকলে (`USB`, `TYPE-C`, `5V2.1A`, `12V`, `22L`, `60min`, `IPX7`, `220mL`, `ZH-10`, `OEM/ODM`) সেগুলো অক্ষত রেখে শুধু চাইনিজ অংশটুকু মুছে ফেলা হয়।
 
 ---
 
-## আউটপুট ফাইলসমূহ
-- `output/three_groups_products_cleaned.csv` — চূড়ান্ত CSV (যেখানে শুধু চাইনিজ মুছে ফেলা ছবির লিংকগুলো `cdn.jsdelivr.net/gh/...` হয়েছে এবং বাকি সব ছবি আগের লিংকেই আছে)।
-- `output/cleaning_report.csv` — কোন ছবিতে কী চাইনিজ লেখা পাওয়া গেছে ও মুছে ফেলা হয়েছে তার বিস্তারিত রিপোর্ট।
-- `output/progress_manifest.json` — ক্র্যাশ বা ইন্টারনেট বিচ্ছিন্ন হলে যেখান থেকে থেমেছিল ঠিক সেখান থেকে পুনরায় শুরু করার (`--resume`) চেকপয়েন্ট ফাইল।
+## কীভাবে ২ ক্লিকে চালাবেন? (GitHub Actions ইতিমধ্যে যুক্ত আছে!)
+
+1. এই ব্রাঞ্চের নতুন Pull Request টি **`main`** ব্রাঞ্চে **Merge** করুন (মার্জ করার সাথে সাথেই পুরনো `112 MB` ব্লার করা `.jpg` ফাইলগুলো ডিলিট হয়ে রিপোজিটরি হালকা হয়ে যাবে)।
+2. আপনার রিপোজিটরির **Actions** ট্যাবে যান -> **Clean Chinese Text From Product Images** সিলেক্ট করুন -> **Run workflow** বাটনে ক্লিক করুন।
+3. কাজ শেষ হলে `cleaned-images/*.webp` এবং আপডেটেড **`output/three_groups_products_cleaned.csv`** সরাসরি রিপোজিটরিতে সেভ হয়ে যাবে এবং প্রতিটি jsDelivr লিংক তাৎক্ষণিকভাবে কাজ করবে!
