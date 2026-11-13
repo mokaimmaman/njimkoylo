@@ -1,0 +1,70 @@
+name: Clean Chinese Text From Product Images
+
+on:
+  workflow_dispatch:
+    inputs:
+      gh_repo:
+        description: "GitHub owner/repo for jsDelivr links"
+        required: true
+        default: "mokaimmaman/njimkoylo"
+      gh_branch:
+        description: "Branch name for jsDelivr links and git push"
+        required: true
+        default: "main"
+      inpainter:
+        description: "Inpainting mode (auto / opencv / lama)"
+        required: true
+        default: "auto"
+
+permissions:
+  contents: write
+
+jobs:
+  clean-images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.gh_branch }}
+          fetch-depth: 1
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install OCR and Inpainting dependencies
+        run: |
+          chmod +x setup_env.sh
+          ./setup_env.sh
+
+      - name: Configure Git author
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Run Chinese-Only Text Eraser & Push to GitHub (jsDelivr)
+        run: |
+          python3 remove_chinese_text.py \
+            --input data/three_groups_products.csv \
+            --output output/three_groups_products_cleaned.csv \
+            --image-dir cleaned-images \
+            --repo-root . \
+            --gh-repo "${{ inputs.gh_repo }}" \
+            --gh-branch "${{ inputs.gh_branch }}" \
+            --inpainter "${{ inputs.inpainter }}" \
+            --workers 16 \
+            --git-push \
+            --push-batch-size 200
+
+      - name: Upload cleaned CSV & report as downloadable artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cleaned-products-csv
+          path: |
+            output/three_groups_products_cleaned.csv
+            output/cleaning_report.csv
+            output/progress_manifest.json
