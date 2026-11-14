@@ -205,14 +205,16 @@
        ===================================================================== */
     (function () {
         // ---- CSV location (GitHub) ----
+        // ?branch=xyz দিলে ওই ব্রাঞ্চ, ?csv=... দিলে ওই ফাইল আগে চেষ্টা হবে
+        var PARAMS = new URLSearchParams(location.search);
         var GH_REPO = 'mokaimmaman/njimkoylo';
-        var GH_BRANCH = 'main';
+        var GH_BRANCH = PARAMS.get('branch') || 'main';
         var CSV_PATH = 'data/products.csv';
         var CSV_SOURCES = [
+            // page-এর পাশেই ফাইল থাকলে (একই ব্রাঞ্চ/Pages) সেটাই আগে
+            PARAMS.get('csv') || CSV_PATH,
             'https://raw.githubusercontent.com/' + GH_REPO + '/' + GH_BRANCH + '/' + CSV_PATH,
-            'https://cdn.jsdelivr.net/gh/' + GH_REPO + '@' + GH_BRANCH + '/' + CSV_PATH,
-            // লোকাল টেস্ট/প্রিভিউ: page.html?csv=data/products.csv দিলে আগে সেটাই
-            new URLSearchParams(location.search).get('csv') || CSV_PATH
+            'https://cdn.jsdelivr.net/gh/' + GH_REPO + '@' + GH_BRANCH + '/' + CSV_PATH
         ];
 
         // CSV-র যে কলামগুলো ব্যবহার করা হয় (নাম বদলালে শুধু এখানে বদলাতে হবে)
@@ -416,7 +418,7 @@
         }
 
         function loadMore() {
-            if (busy || done) return;
+            if (busy || done || !view.length) return;
             busy = true;
             var sp = $('load-more-spinner'); if (sp) sp.classList.remove('hidden');
 
@@ -625,15 +627,15 @@
 
         function start() {
             initUI();
-            setupObserver();
             fetchCsv().then(function (list) {
                 RAW = list;
                 ALL = RAW;
                 TOTAL = ALL.length;
                 renderCategories();
+                setupObserver();     // ডেটা আসার পরেই infinite scroll চালু
                 restart();
             }).catch(function () {
-                showLoadError('Could not load products from GitHub. Check your connection and refresh.');
+                showLoadError('Could not load products. Please refresh the page.');
             });
         }
 

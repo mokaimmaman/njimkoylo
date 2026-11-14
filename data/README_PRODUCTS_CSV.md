@@ -79,9 +79,12 @@ CSV_PATH  = 'data/products.csv'
 
 তিনটি সোর্স ক্রমান্বয়ে চেষ্টা করা হয়:
 
-1. `https://raw.githubusercontent.com/mokaimmaman/njimkoylo/main/data/products.csv`
-2. `https://cdn.jsdelivr.net/gh/mokaimmaman/njimkoylo@main/data/products.csv`
-3. `data/products.csv` (একই ফোল্ডারে থাকলে — `products.html?csv=data/products.csv` দিয়েও দেওয়া যায়)
+1. `data/products.csv` (page-এর পাশেই ফাইল থাকলে — যেমন GitHub Pages/একই ফোল্ডার)
+2. `https://raw.githubusercontent.com/mokaimmaman/njimkoylo/main/data/products.csv`
+3. `https://cdn.jsdelivr.net/gh/mokaimmaman/njimkoylo@main/data/products.csv`
+
+প্রয়োজনে URL দিয়ে বদলানো যায়: `products.html?branch=my-branch` বা
+`products.html?csv=data/products.csv`।
 
 UI/ডিজাইন আগের মতোই আছে; শুধু ডেটা এখন লাইভ CSV থেকে আসে (SKU, নাম, দাম,
 ক্যাটাগরি, প্রথম ছবি)। CSV বদলালে সাইটে পরের রিলোডেই নতুন ডেটা দেখা যাবে।
