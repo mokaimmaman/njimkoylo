@@ -1,0 +1,44 @@
+name: Rebuild Product CSV (data/products.csv)
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "data/three_groups_products.csv"
+      - "build_products_csv.py"
+      - "sku_codec.py"
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build data/products.csv
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 build_products_csv.py
+
+      - name: Commit rebuilt CSV if it changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- data/products.csv; then
+            echo "data/products.csv is already up to date."
+            exit 0
+          fi
+          git add data/products.csv
+          git commit -m "Rebuild data/products.csv (new SKUs, cleaned columns)"
+          git push
