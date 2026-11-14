@@ -1,4 +1,5 @@
-name: Rebuild Product CSV (data/products.csv)
+# Template: copy to .github/workflows/ to enable automatic rebuilds.
+name: Rebuild Product CSVs and Per-SKU Detail Files
 
 on:
   workflow_dispatch:
@@ -6,6 +7,7 @@ on:
     paths:
       - "data/three_groups_products.csv"
       - "build_products_csv.py"
+      - "build_product_detail_csvs.py"
       - "sku_codec.py"
 
 permissions:
@@ -26,19 +28,19 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Build data/products.csv
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python3 build_products_csv.py
+      - name: Rebuild catalog and per-SKU detail CSVs
+        run: |
+          python3 build_products_csv.py
+          python3 build_product_detail_csvs.py
 
-      - name: Commit rebuilt CSV if it changed
+      - name: Commit rebuilt CSVs if they changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git diff --quiet -- data/products.csv; then
-            echo "data/products.csv is already up to date."
+          if git diff --quiet -- data/products.csv data/products; then
+            echo "Product CSVs are already up to date."
             exit 0
           fi
-          git add data/products.csv
-          git commit -m "Rebuild data/products.csv (new SKUs, cleaned columns)"
+          git add data/products.csv data/products
+          git commit -m "Rebuild product CSVs and per-SKU detail files"
           git push

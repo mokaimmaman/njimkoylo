@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """
-build_products_csv.py — product.html-এর জন্য পরিষ্কার প্রোডাক্ট CSV
-=====================================================================
+build_products_csv.py — products.html / product-detail.html-এর জন্য পরিষ্কার CSV
+================================================================================
 
-নতুন `data/products.csv` বানায় যা সরাসরি product.html পড়তে পারে।
+নতুন `data/products.csv` বানায় যা সরাসরি products.html পড়তে পারে।
+এরপর `build_product_detail_csvs.py` একই SKU ধরে `data/products/<SKU>.csv`
+গুলো তৈরি করে; সেগুলো product-detail.html GitHub থেকে লোড করে।
 
 কী কী বাদ যায়
 --------------
@@ -408,7 +410,8 @@ def write_csv(rows: list[dict], out_csv: Path = OUT_CSV) -> None:
     out_csv.parent.mkdir(parents=True, exist_ok=True)
     with out_csv.open("w", encoding="utf-8", newline="") as fh:
         writer = csv.DictWriter(
-            fh, fieldnames=OUT_FIELDS, quoting=csv.QUOTE_MINIMAL, extrasaction="ignore"
+            fh, fieldnames=OUT_FIELDS, quoting=csv.QUOTE_MINIMAL,
+            extrasaction="ignore", lineterminator="\n"
         )
         writer.writeheader()
         writer.writerows(rows)

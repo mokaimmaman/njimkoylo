@@ -1,32 +1,50 @@
-# প্রোডাক্ট CSV + product.html (নতুন সিস্টেম)
+# প্রোডাক্ট CSV + products.html + product-detail.html
 
-এই ফোল্ডারের `products.csv` হলো **একমাত্র পাবলিক প্রোডাক্ট CSV** — `products.html` সরাসরি
-GitHub থেকে এটাই লোড করে। হাতে এডিট করার দরকার নেই; স্ক্রিপ্ট দিয়ে তৈরি হয়।
+এই ফোল্ডারে এখন দুই ধরনের পাবলিক CSV আছে:
+
+* `data/products.csv` — `products.html`-এর পুরো ক্যাটালগ (SKU, নাম, দাম, ক্যাটাগরি, ছবি)।
+* `data/products/<SKU>.csv` — প্রতিটি SKU-র জন্য একটি করে ডিটেইল ফাইল; `product-detail.html` এটি লোড করে।
 
 ```
-data/three_groups_products.csv   ← কাঁচা সোর্স (সাপ্লায়ার রিপোর্ট)
+data/three_groups_products.csv   ← কিউরেটেড কাঁচা সোর্স (৩৬ কলাম)
         │  python3 build_products_csv.py
         ▼
-data/products.csv                ← পাবলিক CSV (SKU + পরিচ্ছন্ন টেক্সট + ছবি)
-        │  products.html  fetch()
+data/products.csv                ← ৬৯১টি SKU + ১৭টি পরিচ্ছন্ন কলাম
+        │  python3 build_product_detail_csvs.py
         ▼
-সাইটে প্রোডাক্ট গ্রিড
+data/products/<SKU>.csv          ← ৬৯১টি ফাইল; প্রতিটিতে header + ১টি সারি
+        │  product-detail.html?sku=<SKU>  →  GitHub raw/jsDelivr fetch()
+        ▼
+নির্দিষ্ট পণ্যের ডিটেইল পেইজ
 ```
+
+`three_groups_products.csv`-এর আপলোড করা ভার্সনে ৬৫৩টি সারি ছিল, কিন্তু
+`products.csv`-এ ৬৯১টি SKU আছে। ৪১টি অনুপস্থিত সারি আগের রিপো-সোর্স থেকে যোগ
+করা হয়েছে, যেন `products.html`-এর **প্রতিটি কার্ডের** জন্য ডিটেইল CSV থাকে।
+SKU-র ক্রম ও কোড আগের `products.csv`-এর সাথে হুবহু মিলে যায়। যে ৩টি পণ্য
+ইচ্ছাকৃতভাবে বাদ দেওয়া হয় তাদের কোনো SKU নেই, তাই তাদের ফাইলও তৈরি হয় না।
 
 ## ১. কী কী বাদ যায়
 
-**কলাম** (`build_products_csv.py` → `DROP_COLUMNS`):
+**কলাম** (`build_products_csv.py` → `DROP_COLUMNS` + `OUT_FIELDS` whitelist): `Group`, `Also curated?`,
+`Photo Status`, `SKU Codes` (পুরনো কোড), `Photos (n)`, `Product IDs (all variants)`,
+`Source Price Min/Max (USD)`, `Variant Source`, `Colours seen in photo`,
+`Photo Note`, `1688 Links`, `Review Status`, `Notes`, `Price Note`,
+`Dropped Offer Prices`, `Price Confidence`, `Variant Note`, `Feature Note`,
+`MOQ`, `MOQ Note` — অর্থাৎ ক্রেতার পেইজে যেগুলো লাগে না, সব। ৩৬টি কাঁচা
+কলাম থেকে ১৭টি পাবলিক কলাম রাখা হয়:
 
-`Group`, `Also curated?`, `Photo Status`, `Variant Source`, `Colours seen in photo`,
-`Photo Note`, `1688 Links`, `Notes`, `Photos (n)`, `Review Status`, `Price Note`,
-`Dropped Offer Prices`, `Price Confidence`, `Variant Note`, `Feature Note`, `MOQ`,
-`MOQ Note`, `SKU Codes` (পুরনো কোড) — অর্থাৎ product.html-এ যেগুলো লাগে না, সব।
+`SKU`, `Product Name`, `Category`, `Model`, `Price (USD)`, `Description`,
+`Specifications`, `Features`, `Variants`, `Variant Count`, `Offers (n)`,
+`Image 1` … `Image 5`, `Image Count`।
 
 **টেক্সট থেকে** (`NOISE_PATTERNS`): `1688`, `অবাঞ্জিত` / `অবাঞ্ছিত`,
 `[from photo]`, `[from photo + specs]` ইত্যাদি মার্কার, `check the 1688 link`,
 `Source price $x to $y`, চাইনিজ অক্ষর ও চাইনিজ যতিচিহ্ন।
 
 `Variants` কলাম থেকে দাম ও "N offers" অংশ বাদ যায় — শুধু ভ্যারিয়েন্টের নাম থাকে।
+`Product ID` আর সাপ্লায়ারের কাঁচা দাম পাবলিক ফাইলে রাখা হয়নি; GitHub-এ ফাইলগুলো
+সবার পড়ার যোগ্য, তাই শুধু বিক্রয়মূল্য `Price (USD)`-ই থাকে।
 
 ## ২. বাদ দেওয়া পণ্য ও ছবি
 
@@ -55,7 +73,7 @@ id = ((y − 104729) × 48271⁻¹) mod 36^8
 ```
 
 * key = `KEY_A = 48271`, `KEY_B = 104729`, `MODULUS = 36^8` (`sku_codec.py`-তে)
-* ছোট, পড়ার উপযোগী, লেটার কম — কিন্তু key ছাড়া কেউ আইডি বের করতে পারবে না
+* ছোট, পড়ার উপযোগী — কিন্তু key ছাড়া কেউ আইডি বের করতে পারবে না
 * কোনো তথ্য হারায় না: সব ১২–১৩ ডিজিটের 1688 আইডি হুবহু ফেরত আসে
 
 ```bash
@@ -63,39 +81,54 @@ python3 sku_codec.py encode 1078479825767     # 1078479825767 -> HC3W20MA
 python3 sku_codec.py decode HC3W20MA          # HC3W20MA -> 1078479825767
 ```
 
-## ৪. পাবলিক CSV-তে যা ইচ্ছাকৃতভাবে নেই
+## ৪. products.html → product-detail.html রিকুয়েস্ট
 
-`Product ID` আর `Source Price Min/Max` পাবলিক ফাইলে রাখা হয়নি — ফাইলটা GitHub-এ
-সবাই পড়তে পারে, তাই কাঁচা আইডি বা সাপ্লায়ারের দাম সরাসরি দেখা যাবে না।
-আইডি দরকার হলে SKU decode করুন; দাম দরকার হলে সোর্স CSV-ই আছে।
+`products.html`-এর প্রতিটি কার্ড এখন এই লিংক তৈরি করে:
 
-## ৫. product.html কীভাবে লোড করে
-
-```js
-GH_REPO   = 'mokaimmaman/njimkoylo'
-GH_BRANCH = 'main'
-CSV_PATH  = 'data/products.csv'
+```
+product-detail.html?sku=Y3GX2OTP
 ```
 
-সোর্সগুলো ক্রমান্বয়ে চেষ্টা করা হয় (একটা না পেলে পরেরটা):
+`?branch=...`, `?ref=...`, `?product_discount=...` বা `?csv=...` দিলে সেগুলোও
+ডিটেইল লিংকে পৌঁছে যায়। পুরনো `?id=<SKU>` লিংকও কাজ করে।
 
-1. `data/products.csv` — page-এর পাশেই ফাইল থাকলে (GitHub Pages/একই ফোল্ডার)
-2. `raw.githubusercontent.com/.../main/data/products.csv`
-3. `cdn.jsdelivr.net/gh/...@main/data/products.csv`
-4. `raw.githubusercontent.com/.../master/...` এবং jsDelivr `@master` (ব্যাকআপ)
+`product-detail.html` প্রথমে URL/from referrer থেকে SKU বের করে, SKU-টি শুধু
+`A-Z a-z 0-9 _ -` পর্যন্ত সীমাবদ্ধ রেখে পাথ ট্র্যাভার্সাল আটকায়, তারপর ক্রমান্বয়ে
+চেষ্টা করে:
 
-প্রয়োজনে URL দিয়ে বদলানো যায়: `products.html?branch=my-branch` বা
-`products.html?csv=data/products.csv`।
+1. `data/products/<SKU>.csv` — পেইজের পাশেই থাকলে (GitHub Pages / লোকাল)
+2. `raw.githubusercontent.com/mokaimmaman/njimkoylo/<branch>/data/products/<SKU>.csv`
+3. `cdn.jsdelivr.net/gh/mokaimmaman/njimkoylo@<branch>/data/products/<SKU>.csv`
+4. `main` / `master` ব্যাকআপ ব্রাঞ্চ
 
-UI/ডিজাইন আগের মতোই আছে; শুধু ডেটা এখন লাইভ CSV থেকে আসে (SKU, নাম, দাম,
-ক্যাটাগরি, প্রথম ছবি)। CSV বদলালে সাইটে পরের রিলোডেই নতুন ডেটা দেখা যাবে।
+কাজের ব্রাঞ্চে থাকা অবস্থায় ডেটা দেখতে চাইলে লিংকে ব্রাঞ্চটি দিন:
 
-## ৬. আবার বানানো
+```
+products.html?branch=arena/a8e34751-njimkoylo
+product-detail.html?sku=Y3GX2OTP&branch=arena/a8e34751-njimkoylo
+```
+
+`main`-এ মার্জ করার পর সাধারণ `product-detail.html?sku=Y3GX2OTP`-ই যথেষ্ট।
+
+CSV পাওয়া গেলে পেইজে নাম, ক্যাটাগরি, SKU, দাম, ছবির গ্যালারি, বর্ণনা,
+Features, Variants, Specifications, Model, Offers ও Image Count দেখায়; কার্ট,
+Wishlist, Share, quantity ও variant sheet-ও ওই CSV-র তথ্য ব্যবহার করে।
+`You may also like` একই ক্যাটাগরির অন্য SKU-তে `?sku=...` লিংক দেয়।
+
+## ৫. আবার বানানো
 
 ```bash
-python3 build_products_csv.py            # data/products.csv নতুন করে লেখে
-python3 build_products_csv.py --check    # শুধু সারাংশ দেখায়
+python3 build_products_csv.py             # data/products.csv নতুন করে লেখে
+python3 build_product_detail_csvs.py      # data/products/<SKU>.csv গুলো লেখে
+python3 build_product_detail_csvs.py --check   # শুধু সারাংশ দেখায়
 ```
 
-`data/three_groups_products.csv` বদলালে GitHub Action
-(**Rebuild Product CSV**) নিজে থেকেই CSV আবার বানিয়ে কমিট করে দেয়।
+`build_product_detail_csvs.py` `products.csv`-কেই SKU-র মূল উৎস ধরে, তাই
+ফাইলের নাম সবসময় ক্যাটালগের SKU-র সাথে মেলে। পুরনো/অপ্রচলিত `*.csv`
+ফাইল অটোম্যাটিক মুছে যায়।
+
+`workflows/rebuild-products-csv.yml` একটি GitHub Actions টেমপ্লেট। প্রয়োজনে
+`.github/workflows/`-এ কপি করলে `data/three_groups_products.csv` বা বিল্ড
+স্ক্রিপ্ট বদলালে ক্যাটালগ ও ৬৯১টি ডিটেইল ফাইল অটোম্যাটিক আবার তৈরি হয়।
+এই ব্রাঞ্চে workflow file সরাসরি যোগ করার অনুমতি না থাকায় টেমপ্লেটটি
+`workflows/` ফোল্ডারেই রাখা হয়েছে।

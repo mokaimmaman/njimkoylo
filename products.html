@@ -200,6 +200,8 @@
        CSV -> Product list (GitHub থেকে লাইভ লোড)
        • ডেটা আসে data/products.csv থেকে — রিপো: mokaimmaman/njimkoylo
        • একাধিক সোর্স চেষ্টা করা হয়: raw.githubusercontent -> jsDelivr -> লোকাল
+       • কার্ডে ক্লিক করলে product-detail.html?sku=<SKU> তৈরি হয়; ডিটেইল পেইজ
+         data/products/<SKU>.csv থেকে GitHub-এ ওই পণ্যের তথ্য লোড করে।
        • DOM-এ কার্ড BATCH টা করে বসে -> স্ক্রল করে নিচে গেলে পরের ব্যাচ।
        • সার্চ পুরো ডেটাসেটে চলে, শুধু লোড হওয়াগুলোর উপর নয় => কিছুই বাদ পড়ে না।
        ===================================================================== */
@@ -378,9 +380,21 @@
             return u;
         }
 
+        // আগের পেইজ থেকে কী রিকুয়েস্ট যাচ্ছে তা query string-এ স্পষ্ট রাখি।
+        // ?branch / ?ref / ?product_discount / ?csv থাকলে ডিটেইল পেইজেও পৌঁছে দিই।
+        function detailHref(sku) {
+            var href = 'product-detail.html?sku=' + encodeURIComponent(sku);
+            ['branch', 'ref', 'product_discount'].forEach(function (key) {
+                var value = PARAMS.get(key);
+                if (value) href += '&' + key + '=' + encodeURIComponent(value);
+            });
+            if (PARAMS.get('csv')) href += '&catalog=' + encodeURIComponent(PARAMS.get('csv'));
+            return href;
+        }
+
         /* ---------------- card ---------------- */
         function card(p) {
-            var href = encodeURIComponent(p.sku) + '.html';
+            var href = detailHref(p.sku);
             return '<div class="custom-card bg-white dark:bg-zinc-900 rounded-md flex flex-col h-full overflow-hidden">' +
                 '<a href="' + href + '" class="relative w-full aspect-square overflow-hidden bg-gray-100 dark:bg-zinc-800 block">' +
                     '<img src="' + esc(thumb(p.img)) + '" alt="' + esc(p.name) + '" loading="lazy" decoding="async" ' +

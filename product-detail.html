@@ -1,0 +1,1362 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <link rel="icon" href="data:,">
+<meta charset="utf-8">
+    <script src="site-common.js"></script><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Product details loaded from the FIADSHOP GitHub catalog">
+<title>Product Details — FIADSHOP</title>
+<script>
+(function () {
+    try {
+        var saved = null;
+        try { saved = localStorage.getItem('theme') || localStorage.getItem('fiad_theme'); } catch (e) {}
+        var dark = saved === 'dark';
+        document.documentElement.classList.toggle('dark', !!dark);
+    } catch (e) {}
+})();
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: { extend: { colors: { cta: {
+            50: '#fff7ed', 100: '#ffedd5', 200: '#fed7aa', 300: '#fdba74', 400: '#f97316',
+            500: '#f97316', 600: '#ea580c', 700: '#c2410c', 800: '#9a3412', 900: '#7c2d12'
+        } } } }
+    };
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{color-scheme:light;--bg:#ffffff;--surface:#ffffff;--ink:#111827;--muted:#4b5563;--soft:#f9fafb;--line:#e5e7eb;--accent:#f97316;--subtle:#6b7280;--green:#16a34a;--shadow:0 1px 2px rgba(0,0,0,.05)}
+:root.dark{color-scheme:dark;--bg:#000000;--surface:#18181b;--ink:#f3f4f6;--muted:#a1a1aa;--soft:#09090b;--line:#27272a;--accent:#f97316;--subtle:#a1a1aa;--green:#4ade80;--shadow:0 1px 2px rgba(0,0,0,.24)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent}button,a{font:inherit}a{color:inherit;text-decoration:none}main{max-width:1120px;margin:22px auto;padding:0 16px}.product-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}.product-top{display:grid;grid-template-columns:minmax(280px,.95fr) minmax(340px,1.05fr) minmax(205px,.68fr);gap:22px;padding:20px}.gallery{min-width:0}.photo-space{width:100%;aspect-ratio:1/1;max-height:430px;background:var(--soft);border:1px solid var(--line);border-radius:9px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--subtle)}.photo-space strong{display:block;font-size:14px;font-weight:500}.photo-space small{display:block;margin-top:5px;font-size:11px}.thumbs{display:flex;gap:7px;justify-content:center;padding-top:10px}.thumb{height:38px;width:38px;border:1px solid var(--line);background:var(--soft);border-radius:4px}.details{min-width:0}.category{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:650}.details h1{font-size:21px;line-height:1.4;font-weight:600;letter-spacing:-.3px;margin:5px 0 10px}.rating{font-size:12px;color:var(--muted);padding:0 0 12px;border-bottom:1px solid var(--line)}.stars{color:#f59e0b;letter-spacing:1px}.price-row{padding:14px 0 8px}.price{font-size:29px;font-weight:650;color:var(--accent)}.stock{font-size:12px;color:var(--green);margin-top:3px}.featureline{display:flex;gap:12px;padding:8px 0;color:var(--ink);font-size:13px}.label{width:78px;flex:none;color:var(--ink);font-weight:550}.option-chip{border:1px solid var(--line);padding:5px 10px;border-radius:5px;color:var(--ink)}.quantity{display:flex;align-items:center;border:1px solid var(--line);border-radius:6px;width:max-content;overflow:hidden}.quantity span{padding:5px 12px}.quantity b{padding:5px 11px;font-weight:500;background:var(--soft)}.action-row{display:flex;gap:9px;margin:17px 0 0}.action-row button,.mobile-buy button{height:42px;border:0;border-radius:6px;cursor:default;font-weight:650}.buy{background:var(--accent);color:#fff;flex:1}.add{background:color-mix(in srgb,var(--accent) 12%,var(--surface));color:var(--accent);flex:1}.delivery{border-left:1px solid var(--line);padding-left:16px}.delivery h2{font-weight:550;font-size:14px;margin:2px 0 10px}.delivery-row{font-size:12px;color:var(--ink);padding:11px 0;border-bottom:1px solid var(--line)}.delivery-row strong{display:block;font-size:13px;font-weight:600;margin-bottom:3px;color:var(--ink)}
+.content-section{border-top:1px solid var(--line);padding:19px 22px}.content-section h2{font-size:17px;font-weight:650;margin:0 0 12px}.description{font-size:13px;line-height:1.7;color:var(--ink)}.description ul{padding-left:20px;margin:8px 0}.description li{padding:3px 0}.specs{width:100%;max-width:700px;border-collapse:collapse;font-size:13px}.specs th,.specs td{border:1px solid var(--line);padding:9px 11px;text-align:left;color:var(--ink)}.specs th{width:34%;font-weight:550;background:var(--soft)}.review-empty{padding:13px;background:var(--soft);border-radius:7px;color:var(--ink);font-size:13px}.suggestion-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.suggestion{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:13px;min-height:72px}.suggestion strong{display:block;font-weight:600;font-size:13px}.suggestion span{display:block;color:var(--muted);font-size:11px;margin-top:5px}.source{font-size:12px;color:var(--muted);overflow-wrap:anywhere}.source a{color:var(--accent);text-decoration:underline}.mobile-buy{display:none}.fineprint{font-size:11px;color:var(--muted);padding:14px 0 24px}
+@media(max-width:800px){main{margin:12px auto;padding:0 10px}.nav-inner{padding:10px 12px;gap:10px}.links,.nav-user,.nav-heart{display:none}.menu-btn{display:grid}.product-top{grid-template-columns:1fr;gap:0;padding:0}.photo-space{aspect-ratio:1/1;max-height:none;border-radius:0;border:0;background:var(--soft)}.thumbs{position:relative;margin-top:-25px;padding:0 0 0;z-index:1;height:15px}.thumb{width:7px;height:7px;border:0;border-radius:50%;background:#a1a1aa}.thumb:first-child{background:var(--accent)}.details{padding:14px 15px 16px}.category{font-size:10px}.details h1{font-size:17px;line-height:1.4;margin:4px 0 8px}.rating{font-size:11px;padding-bottom:10px}.price-row{padding:11px 0 6px}.price{font-size:25px}.stock{font-size:11px}.featureline{font-size:12px;padding:7px 0}.label{width:72px}.action-row{display:none}.delivery{border-left:0;border-top:1px solid var(--line);padding:10px 15px 12px;display:grid;grid-template-columns:1fr 1fr;gap:0 14px}.delivery h2{grid-column:1/-1;margin:0 0 4px}.delivery-row{padding:8px 0;font-size:11px}.delivery-row strong{font-size:12px}.content-section{padding:16px 15px}.content-section h2{font-size:16px}.description{font-size:12.5px}.specs th,.specs td{padding:8px;font-size:12px}.suggestion-grid{grid-template-columns:repeat(3,minmax(150px,1fr));overflow:auto}.suggestion{padding:11px}.fineprint{padding:12px 0 76px}.mobile-buy{position:fixed;bottom:0;left:0;right:0;z-index:15;height:54px;display:flex;gap:0;background:var(--surface);box-shadow:0 -2px 10px rgba(0,0,0,.12);padding-bottom:env(safe-area-inset-bottom)}.mobile-buy button{height:54px;border-radius:0;font-size:13px}.mobile-buy .buy,.mobile-buy .add{flex:1}}
+@media(max-width:380px){.brand{font-size:18px}.controls{gap:7px}.details h1{font-size:16px}.photo-space{min-height:240px}}
+
+/* ===== FIADSHOP product-page colour system =====
+   These explicit surfaces/text rules make this legacy detail layout use the exact
+   white/gray/orange and black/zinc/orange treatment used by Products, Cart and Home. */
+.product-card,.suggestion{background:#fff;border-color:#e5e7eb}
+.photo-space,.thumb,.review-empty,.specs th{background:#f9fafb;border-color:#e5e7eb;color:#6b7280}
+.details h1,.featureline,.label,.option-chip,.delivery-row,.delivery-row strong,.description,.specs th,.specs td,.content-section h2{color:#111827}
+.rating,.suggestion span,.source,.fineprint{color:#4b5563}
+.category{color:#f97316}
+.price,.stars,.source a{color:#ea580c}
+.stock{color:#16a34a}
+.buy{background:#f97316;color:#fff}
+.add{background:#f9fafb!important;color:#000!important;border:1px solid #fb923c!important}
+.mobile-buy{background:#fff}
+
+:root.dark .product-card,:root.dark .suggestion{background:#18181b;border-color:#27272a}
+:root.dark .photo-space,:root.dark .thumb,:root.dark .review-empty,:root.dark .specs th{background:#09090b;border-color:#27272a;color:#a1a1aa}
+:root.dark .details h1,:root.dark .featureline,:root.dark .label,:root.dark .option-chip,:root.dark .delivery-row,:root.dark .delivery-row strong,:root.dark .description,:root.dark .specs th,:root.dark .specs td,:root.dark .content-section h2{color:#f3f4f6}
+:root.dark .rating,:root.dark .suggestion span,:root.dark .source,:root.dark .fineprint{color:#a1a1aa}
+:root.dark .category{color:#f97316}
+:root.dark .price,:root.dark .stars,:root.dark .source a{color:#f97316}
+:root.dark .stock{color:#4ade80}
+:root.dark .buy{background:#f97316;color:#fff}
+:root.dark .add{background:rgba(124,45,18,.20)!important;color:#f97316!important;border-color:#7c2d12!important}
+:root.dark .mobile-buy{background:#18181b;color:#f97316;border-color:#27272a}
+
+/* Mobile image gallery: side-swipe বোঝানোর জন্য আগের pagination dots ফিরিয়ে আনা হলো। */
+@media(max-width:800px){
+    .thumb{background:#d1d5db}
+    .thumb:first-child{background:#f97316}
+    :root.dark .thumb{background:#52525b}
+    :root.dark .thumb:first-child{background:#f97316}
+}
+</style>
+
+    <style id="fiad-dark-contrast-fix">
+      .dark [class~="text-gray-600"]:not(:hover):not(:focus):not([class*="dark:text-"]) { color: #d1d5db !important; }
+      .dark [class~="text-gray-500"]:not(:hover):not(:focus):not([class*="dark:text-"]) { color: #9ca3af !important; }
+      .dark [class~="text-gray-700"]:not(:hover):not(:focus):not([class*="dark:text-"]) { color: #d1d5db !important; }
+      .dark [class~="text-gray-800"]:not(:hover):not(:focus):not([class*="dark:text-"]) { color: #e5e7eb !important; }
+    </style>
+<style>
+.product-share{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:9px 0 2px}
+.product-share button{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:6px;background:var(--soft);color:var(--ink);padding:6px 10px;font-size:11px;font-weight:600;cursor:pointer}
+.product-share button:hover{border-color:var(--accent);color:var(--accent)}
+:root.dark .product-share button{background:#09090b;color:#f3f4f6;border-color:#3f3f46}
+:root.dark .product-share button:hover{color:#fb923c;border-color:#f97316}
+.action-row button,.mobile-buy button{cursor:pointer}
+.quantity button{border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;padding:0 5px}
+.wishlist-action{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-width:42px;padding:0 12px;background:var(--surface);color:var(--accent);border:1px solid var(--line)!important}
+.wishlist-action.active{background:color-mix(in srgb,var(--accent) 12%,var(--surface));}
+.mobile-buy .wishlist-action{width:52px;flex:0 0 52px;padding:0;border-top:1px solid var(--line);font-size:19px}
+.mobile-buy .wishlist-action span{display:none}
+</style>
+
+<style>
+/* ===== Variant bottom sheet (opens from Add to Cart / Buy Now) ===== */
+.variant-overlay{position:fixed;inset:0;z-index:80;display:flex;align-items:flex-end;justify-content:center;background:rgba(17,24,39,.55);opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease}
+.variant-overlay.open{opacity:1;visibility:visible}
+.variant-sheet{width:100%;max-width:480px;max-height:min(86vh,640px);max-height:min(86dvh,640px);display:flex;flex-direction:column;overflow:hidden;background:var(--surface);color:var(--ink);border-radius:16px 16px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.25);transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,.25,1);outline:none}
+.variant-overlay.open .variant-sheet{transform:translateY(0)}
+.sheet-grab{width:42px;height:4px;border-radius:999px;background:var(--line);margin:9px auto 2px;flex:none}
+.sheet-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:8px 16px 10px;border-bottom:1px solid var(--line)}
+.sheet-product{display:flex;gap:10px;min-width:0}
+.sheet-thumb{width:46px;height:46px;flex:none;border-radius:8px;background:var(--soft);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--subtle);font-size:16px}
+.sheet-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.sheet-meta{min-width:0}
+.sheet-name{font-weight:600;font-size:12.5px;line-height:1.35;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.sheet-price-line{margin-top:3px;color:var(--accent);font-weight:650;font-size:15px}
+.sheet-selected-note{margin-left:7px;color:var(--subtle);font-weight:500;font-size:11px}
+.sheet-close{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--soft);color:var(--muted);cursor:pointer;font-size:13px;line-height:1;display:flex;align-items:center;justify-content:center}
+.sheet-close:hover{color:var(--ink);border-color:var(--accent)}
+.sheet-body{padding:12px 16px 4px;overflow-y:auto}
+.sheet-body h3{margin:0 0 10px;font-size:13.5px;font-weight:650;color:var(--ink)}
+.variant-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding-bottom:10px}
+.variant-card{position:relative;display:flex;flex-direction:column;gap:5px;padding:7px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);cursor:pointer;text-align:left;font:inherit;transition:border-color .15s ease,box-shadow .15s ease}
+.variant-card:hover{border-color:var(--accent)}
+.variant-card.selected{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.variant-media{position:relative;aspect-ratio:1/1;border-radius:7px;overflow:hidden;background:var(--soft);display:flex;align-items:center;justify-content:center}
+.variant-media img{width:100%;height:100%;object-fit:cover;display:block}
+.variant-letter{font-size:24px;font-weight:650;color:var(--muted)}
+.variant-oos-tag{position:absolute;left:4px;bottom:4px;background:rgba(17,24,39,.78);color:#fff;font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px;letter-spacing:.02em}
+.variant-name{font-size:11.5px;font-weight:550;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.variant-price{font-size:12.5px;font-weight:650;color:var(--accent)}
+.variant-card.oos{cursor:not-allowed;opacity:.55}
+.variant-card.oos .variant-media img{filter:grayscale(1)}
+.variant-check{position:absolute;top:5px;right:5px;width:17px;height:17px;border-radius:50%;background:var(--accent);color:#fff;font-size:10px;display:none;align-items:center;justify-content:center}
+.variant-card.selected .variant-check{display:flex}
+.sheet-foot{flex:none;display:flex;align-items:center;gap:10px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line);background:var(--surface)}
+.sheet-quantity{flex:none}
+.sheet-confirm{flex:1;height:42px;border:0;border-radius:6px;font-weight:650;font-size:14px}
+.sheet-confirm:disabled{opacity:.45;cursor:not-allowed}
+@media (prefers-reduced-motion:reduce){.variant-overlay,.variant-sheet{transition:none}}
+</style>
+<style>
+/* ===== Remarkbox review widget (Customer Reviews section) =====
+   সাইটের অন্য কার্ডের মতো surface/line ট্রিটমেন্ট, dark mode-সহ। */
+.remarkbox-review{margin-top:2px;border:1px solid var(--line);border-radius:9px;background:var(--surface);padding:10px;overflow:hidden}
+.remarkbox-review iframe{width:100%!important;border:none!important;min-height:600px;display:block}
+:root.dark .remarkbox-review{background:#18181b;border-color:#27272a}
+</style>
+<style>
+/* ===== Dynamic CSV-driven gallery & product information ===== */
+.thumb{appearance:none;padding:0;overflow:hidden;cursor:pointer}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.photo-space img{width:100%;height:100%;object-fit:contain;border-radius:inherit;display:block}
+.variant-chips{display:flex;flex-wrap:wrap;gap:7px}
+.variant-chips .option-chip{font-size:12px;line-height:1.35}
+.info-empty{font-size:13px;color:var(--muted)}
+.description h3{font-size:14px;font-weight:650;margin:14px 0 6px}
+.description p{margin:0 0 9px}
+.loading-note{color:var(--muted)}
+@media(max-width:800px){
+    .thumb img{display:none}
+    .thumb.active{background:var(--accent)!important}
+}
+</style>
+</head>
+<body class="bg-white dark:bg-black text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+    <nav class="relative bg-white/95 dark:bg-zinc-950/95 backdrop-blur-sm sticky top-0 z-50 border-b-2 border-gray-300 dark:border-zinc-700 shadow-sm">
+        <div class="container mx-auto px-3 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold tracking-tight hover:opacity-80 transition">
+                <span class="text-cta-500">FIAD</span>SHOP
+            </a>
+
+
+            <div class="flex items-center gap-3">
+                <a href="login.html" class="hidden md:block text-gray-600 dark:text-gray-400 hover:text-cta-500 dark:hover:text-cta-400 transition" aria-label="Account">
+                    <i class="fa-regular fa-user text-lg"></i>
+                </a>
+
+                <a href="wishlist.html" class="hidden md:block text-gray-600 dark:text-gray-400 hover:text-cta-500 dark:hover:text-cta-400 transition relative" aria-label="Wishlist">
+                    <i class="fa-regular fa-heart text-lg"></i>
+                    <span id="wishlist-count" class="absolute -top-2 -right-2 bg-cta-500 text-white text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center shadow-md hidden">0</span>
+                </a>
+
+                <button id="dark-mode-toggle" class="p-2 rounded-full bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-cta-400 transition-all hover:scale-105 focus:outline-none" aria-label="Toggle dark mode">
+                    <span id="theme-icon" class="text-sm">🌙</span>
+                </button>
+
+                <a href="cart.html" class="relative cursor-pointer group" aria-label="Shopping cart">
+                    <i class="fa-solid fa-cart-shopping text-xl text-gray-700 dark:text-gray-300"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-cta-500 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-md cart-pulse">0</span>
+                </a>
+
+                <!-- Plain three-dot button: no background, border, or coloured circle. -->
+                <button id="menu-toggle" class="ml-2 p-1 text-gray-700 dark:text-gray-300 transition-colors hover:text-cta-500 dark:hover:text-cta-400 focus:outline-none" aria-label="Open menu" aria-expanded="false" aria-controls="quick-menu">
+                    <i class="fa-solid fa-ellipsis-vertical text-xl" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Small dropdown window, aligned with the right side of the three-dot button. -->
+        <div id="quick-menu" class="hidden absolute right-3 top-full mt-2 w-56 overflow-hidden rounded-xl border border-gray-200 bg-white p-2 shadow-xl dark:border-zinc-700 dark:bg-zinc-900" role="menu" aria-label="Site navigation">
+            <a href="products.html" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-800 transition hover:bg-cta-50 hover:text-cta-600 dark:text-gray-100 dark:hover:bg-zinc-800 dark:hover:text-cta-400" role="menuitem"><i class="fa-solid fa-bag-shopping w-4 text-center" aria-hidden="true"></i><span>Shop Now</span></a>
+            <a href="earn-with-us.html" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-800 transition hover:bg-cta-50 hover:text-cta-600 dark:text-gray-100 dark:hover:bg-zinc-800 dark:hover:text-cta-400" role="menuitem"><i class="fa-solid fa-lightbulb w-4 text-center" aria-hidden="true"></i><span>Earn With Us</span></a>
+            <a href="ai-chat.html" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-800 transition hover:bg-cta-50 hover:text-cta-600 dark:text-gray-100 dark:hover:bg-zinc-800 dark:hover:text-cta-400" role="menuitem"><svg class="w-[18px] h-[18px] shrink-0" viewBox="0 0 384 312" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" fill-rule="evenodd" d="M131 309.59C130.52 309.54 128.38 309.32 126.26 309.1C106.03 307.02 86.68 293.69 76.78 275.01C70.78 263.7 69.07 256.43 68.79 240.96C68.7 236.19 68.55 232.21 68.45 232.11C67.98 231.65 67.53 232.36 67.12 234.17C61.41 259.97 36.49 272.41 17.88 258.75C-5.66 241.49 -4.57 195.68 19.74 179.99C23.7 177.44 23.41 178.24 23.74 169C23.88 164.94 24.16 160.39 24.36 158.88C24.55 157.36 24.79 155.17 24.88 154C25.87 141.16 30.62 123.24 37 108.26C41.64 97.38 44.28 92.57 52.68 79.67C54.4 77.03 57.94 72.15 59.62 70.12C63.45 65.48 64.66 64.05 66.99 61.39C72.13 55.55 79.78 48.2 85.74 43.36C93.65 36.95 94.13 36.59 100.25 32.59C134.21 10.37 174.71 1.76 216.5 7.87C219.87 8.36 222.81 8.82 223.03 8.89C223.25 8.96 224.71 9.28 226.28 9.61C227.84 9.93 230.47 10.56 232.12 11C233.78 11.44 235.57 11.9 236.12 12.03C248.51 14.97 267.21 23.47 280.82 32.35C299.28 44.39 318.27 63.27 329.87 81.12C330.95 82.78 332.83 85.64 334.06 87.49C338.11 93.6 345.02 108.27 348.67 118.5C354.24 134.11 357.49 152.13 357.96 170.02C358.16 177.59 358.14 177.54 360.28 178.69C364.19 180.82 365.53 181.76 367.95 184.1C395.4 210.71 379.21 267.78 345.19 264.31C310.63 260.8 301.96 200.42 333.07 179.9C337.16 177.21 336.86 178.04 336.67 169.8C336.5 162.9 336.27 160.16 335.09 151.62C330.96 121.69 316.07 92.52 293.71 70.58C285.36 62.39 279.81 57.77 271.54 52.17C255.22 41.09 232.68 31.9 217.12 29.98C216.03 29.84 214.33 29.57 213.35 29.37C197.43 26.14 170.38 27.55 152.75 32.53C139.15 36.38 125.74 42.14 115.39 48.58C76.67 72.69 49.76 114.65 45.87 157C44.27 174.39 44.46 176.97 47.48 178.49C56.77 183.18 64.95 194.89 67.25 206.78C67.58 208.48 68.11 209.32 68.49 208.75C68.66 208.5 68.75 198.22 68.75 178.5C68.75 162.07 68.85 147.39 68.98 145.87C71.49 116.13 94.59 90.65 123.48 85.75C129.08 84.81 241.12 84.15 253.12 85C279.91 86.89 305.01 109.32 310.76 136.5C312.44 144.45 312.35 140.97 312.44 196.38C312.53 248.51 312.47 251.65 311.49 255.25C311.36 255.73 310.91 257.59 310.48 259.38C304.15 285.85 281.95 305.87 255.25 309.17C252.13 309.56 134.48 309.95 131 309.59ZM253.33 288.29C274.65 284.92 289.82 268.3 291.48 246.5C291.92 240.73 291.62 148.52 291.15 145.12C288.21 123.84 271.57 107.82 250.38 105.88C244.24 105.32 136.02 105.31 130.44 105.87C109.37 107.99 92.11 125.35 89.78 146.75C89.42 150 89.38 239.29 89.73 245.25C91.12 269.07 108.33 287.02 131.42 288.74C138.61 289.28 249.69 288.87 253.33 288.29ZM185.25 257.85C184.91 257.79 183.33 257.56 181.75 257.35C169.85 255.74 157.82 249.52 149.54 240.68C140.23 230.76 152 219.36 162 228.62C169.78 235.83 176.98 239.33 185.81 240.2C198.47 241.45 209.54 237.57 218.65 228.71C223.47 224.02 227.81 223.53 231.8 227.21C237.75 232.69 234.14 240.4 221.71 248.8C212.1 255.3 194.91 259.57 185.25 257.85ZM143.44 194.01C127.34 191.07 121.24 171.94 132.75 160.5C145.16 148.16 165.79 156.91 165.74 174.49C165.71 186.31 154.59 196.05 143.44 194.01ZM233.5 194.01C217.12 191.65 210.73 171.18 222.89 160.04C239 145.28 263.2 163.67 253.63 183.41C250.15 190.57 241.44 195.16 233.5 194.01Z"/></svg><span>AI Chat</span></a>
+<a href="#" id="report-product-menu-item" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-800 transition hover:bg-cta-50 hover:text-cta-600 dark:text-gray-100 dark:hover:bg-zinc-800 dark:hover:text-cta-400" role="menuitem"><i class="fa-regular fa-flag w-4 text-center" aria-hidden="true"></i><span>Report Product</span></a>
+                        <a href="login.html" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-800 transition hover:bg-cta-50 hover:text-cta-600 dark:text-gray-100 dark:hover:bg-zinc-800 dark:hover:text-cta-400" role="menuitem"><i class="fa-solid fa-right-to-bracket w-4 text-center" aria-hidden="true"></i><span>Login/Register</span></a>
+        </div>
+    </nav>
+
+<script>
+        // Dark Mode
+        (function() {
+            const toggleBtn = document.getElementById('dark-mode-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            const htmlElement = document.documentElement;
+
+            function setTheme(theme) {
+                if (theme === 'dark') {
+                    htmlElement.classList.add('dark');
+                    if (themeIcon) themeIcon.textContent = '🔆';
+                } else {
+                    htmlElement.classList.remove('dark');
+                    if (themeIcon) themeIcon.textContent = '🌙';
+                }
+                localStorage.setItem('theme', theme);
+            }
+
+            // guard: data-theme-bound আগেই সেট করা হচ্ছে যেন পরের theme-sync স্ক্রিপ্ট আর
+            // একটি বিপরীতমুখী লিসেনার বসাতে না পারে — আগে দুটো লিসেনার একে অপরের পরিবর্তন
+            // বাতিল করে দেওয়ায় টগল বাটন আসলে কাজ করত না।
+            if (toggleBtn && toggleBtn.dataset.themeBound !== '1') {
+                toggleBtn.dataset.themeBound = '1';
+                toggleBtn.addEventListener('click', () => {
+                    setTheme(htmlElement.classList.contains('dark') ? 'light' : 'dark');
+                });
+            }
+
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') setTheme('dark');
+            else if (savedTheme === 'light') setTheme('light');
+            else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme('dark');
+
+            // Three-dot dropdown menu (works on desktop and mobile)
+            const menuToggle = document.getElementById('menu-toggle');
+            const quickMenu = document.getElementById('quick-menu');
+
+            function setMenuOpen(isOpen) {
+                if (!menuToggle || !quickMenu) return;
+                quickMenu.classList.toggle('hidden', !isOpen);
+                menuToggle.setAttribute('aria-expanded', String(isOpen));
+                menuToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+            }
+
+            if (menuToggle && quickMenu) {
+                menuToggle.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    setMenuOpen(quickMenu.classList.contains('hidden'));
+                });
+
+                document.addEventListener('click', (event) => {
+                    if (!quickMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+                        setMenuOpen(false);
+                    }
+                });
+
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape') setMenuOpen(false);
+                });
+            }
+        })();
+    </script>
+
+
+<main id="top">
+<article class="product-card" id="product" data-sku="">
+ <div class="product-top">
+  <div class="gallery" aria-label="Product image gallery">
+   <div class="photo-space" id="product-photo"><div><strong>Loading product</strong><small>Fetching details from GitHub…</small></div></div>
+   <div class="thumbs" id="product-thumbs" aria-label="Product images" aria-hidden="true"></div>
+  </div>
+  <div class="details">
+   <div class="category" id="product-category">Catalog</div>
+   <h1 id="product-name">Loading product…</h1>
+   <div class="rating" id="product-rating"><span class="stars">★★★★★</span> &nbsp;Verified catalog item</div>
+   <div class="product-share" aria-label="Share this product">
+    <button type="button" id="copy-product-link-btn"><i class="fa-solid fa-link" aria-hidden="true"></i> Copy link</button>
+    <span id="share-feedback" class="sr-only" role="status" aria-live="polite"></span>
+   </div>
+   <div class="price-row"><div class="price" id="product-price">$—</div><div class="stock" id="product-stock">Loading product data…</div></div>
+   <div class="featureline"><span class="label">Highlights</span><span id="product-highlights">Loading highlights…</span></div>
+   <div class="featureline"><span class="label">Options</span><span class="option-chip" id="product-variant-chip">Default</span></div>
+   <div class="featureline"><span class="label">Quantity</span><span class="quantity"><button type="button" class="qty-minus" aria-label="Decrease quantity">−</button><span id="product-quantity">1</span><button type="button" class="qty-plus" aria-label="Increase quantity">+</button></span></div>
+   <div class="action-row"><button type="button" class="buy" data-action="buy-now">Buy Now</button><button type="button" class="add" data-action="add-to-cart">Add to Cart</button><button type="button" class="wishlist-action" aria-label="Add to Wishlist" title="Add to Wishlist"><i class="fa-regular fa-heart" aria-hidden="true"></i><span>Wishlist</span></button></div>
+  </div>
+  <aside class="delivery"><h2>Delivery Options</h2><div class="delivery-row"><strong>Delivery</strong>Location and fee are shown at checkout.</div><div class="delivery-row"><strong>Returns &amp; Warranty</strong>Refer to current listing terms.</div></aside>
+ </div>
+ <section class="content-section" id="description-section"><h2>Product details</h2><div class="description" id="product-description"><p class="loading-note">Loading description and features…</p></div></section>
+ <section class="content-section" id="variants-section"><h2>Available variants</h2><div class="variant-chips" id="product-variants"><span class="info-empty">Loading variants…</span></div></section>
+ <section class="content-section" id="specs-section"><h2>Specifications</h2><table class="specs"><tbody id="product-specs"><tr><th>Status</th><td>Loading specifications…</td></tr></tbody></table></section>
+ <section class="content-section"><h2>Customer Reviews</h2><div class="remarkbox-review">
+  <!-- Remarkbox - Your readers want to communicate with you -->
+  <div id="remarkbox-div">
+    <noscript>
+      <iframe id=remarkbox-iframe src="https://my.remarkbox.com/embed?nojs=true&mode=light" style="height:600px;width:100%;border:none!important" tabindex=0></iframe>
+    </noscript>
+  </div>
+ </div></section>
+ <section class="content-section" id="suggestions-section"><h2>You may also like</h2><div class="suggestion-grid" id="suggestion-grid"><div class="suggestion"><strong>Related products</strong><span>Loading catalog…</span></div></div></section>
+</article>
+<p class="fineprint" id="product-fineprint">Product data loads from data/products/&lt;SKU&gt;.csv on GitHub · Cart and Wishlist are stored in this browser.</p>
+</main>
+
+<!-- Product pages-এর সাধারণ footer: Products page-এর একই neutral/light-dark treatment। -->
+<footer class="bg-white dark:bg-zinc-950 border-t border-gray-200 dark:border-zinc-800 py-8">
+        <div class="container mx-auto px-3">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
+                <div>
+                    <h4 class="font-bold text-sm mb-2">
+                        <span class="text-cta-500 dark:text-cta-400">FIAD</span>SHOP
+                    </h4>
+                    <p class="text-[10px] text-gray-600 dark:text-gray-400 leading-relaxed">Privacy, quality, customization, and factory-direct pricing — all in one place.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-xs mb-3 text-gray-700 dark:text-gray-300">Quick Links</h4>
+                    <ul class="space-y-1.5">
+                        <li><a href="about.html" class="text-xs text-gray-600 dark:text-gray-400 hover:text-cta-500 dark:hover:text-cta-400 transition">About Us</a></li>
+                        <li><a href="contact.html" class="text-xs text-gray-600 dark:text-gray-400 hover:text-cta-500 dark:hover:text-cta-400 transition">Contact</a></li>
+                        <li><a href="faq.html" class="text-xs text-gray-600 dark:text-gray-400 hover:text-cta-500 dark:hover:text-cta-400 transition">FAQ</a></li>
+                        <li><a href="products.html" class="text-xs text-gray-600 dark:text-gray-400 hover:text-cta-500 dark:hover:text-cta-400 transition">Shop</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-xs mb-3 text-gray-700 dark:text-gray-300">Customer Service</h4>
+                    <ul class="space-y-1.5">
+                        <li><a href="privacy.html" class="text-xs text-gray-600 dark:text-gray-400 hover:text-cta-500 dark:hover:text-cta-400 transition">Privacy Policy</a></li>
+                        <li><a href="terms.html" class="text-xs text-gray-600 dark:text-gray-400 hover:text-cta-500 dark:hover:text-cta-400 transition">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-xs mb-3 text-gray-700 dark:text-gray-300">Follow Us</h4>
+                    <div class="flex gap-2">
+                        <a href="#" class="w-8 h-8 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-cta-500 hover:text-white dark:hover:bg-cta-500 transition" aria-label="Facebook">
+                            <i class="fa-brands fa-facebook-f text-xs"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-cta-500 hover:text-white dark:hover:bg-cta-500 transition" aria-label="Twitter">
+                            <i class="fa-brands fa-twitter text-xs"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-cta-500 hover:text-white dark:hover:bg-cta-500 transition" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram text-xs"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-cta-500 hover:text-white dark:hover:bg-cta-500 transition" aria-label="YouTube">
+                            <i class="fa-brands fa-youtube text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 dark:border-zinc-800 pt-4 text-center">
+                <p class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs">&copy; 2026 FIADSHOP. All transactions are encrypted and secure.</p>
+            </div>
+        </div>
+    </footer>
+
+<div class="mobile-buy"><button type="button" class="wishlist-action" aria-label="Add to Wishlist" title="Add to Wishlist"><i class="fa-regular fa-heart" aria-hidden="true"></i></button><button type="button" class="buy" data-action="buy-now">Buy Now</button><button type="button" class="add" data-action="add-to-cart">Add to Cart</button></div>
+<!-- Variant bottom sheet: opens when Add to Cart / Buy Now is clicked -->
+<div class="variant-overlay" id="variant-overlay" aria-hidden="true">
+  <div class="variant-sheet" id="variant-sheet" role="dialog" aria-modal="true" aria-labelledby="variant-sheet-title" tabindex="-1">
+    <div class="sheet-grab" aria-hidden="true"></div>
+    <div class="sheet-head">
+      <div class="sheet-product">
+        <div class="sheet-thumb" id="sheet-thumb" aria-hidden="true"><i class="fa-regular fa-image"></i></div>
+        <div class="sheet-meta">
+          <div class="sheet-name" id="sheet-product-name"></div>
+          <div class="sheet-price-line"><span id="sheet-price"></span><span class="sheet-selected-note" id="sheet-selected-note"></span></div>
+        </div>
+      </div>
+      <button type="button" class="sheet-close" id="variant-sheet-close" aria-label="Close variant options"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    </div>
+    <div class="sheet-body">
+      <h3 id="variant-sheet-title">Choose a variant</h3>
+      <div class="variant-grid" id="variant-grid"></div>
+    </div>
+    <div class="sheet-foot">
+      <div class="quantity sheet-quantity">
+        <button type="button" class="sheet-qty-minus" aria-label="Decrease quantity">−</button>
+        <span id="sheet-qty-value">1</span>
+        <button type="button" class="sheet-qty-plus" aria-label="Increase quantity">+</button>
+      </div>
+      <button type="button" class="buy sheet-confirm" id="variant-confirm-btn" disabled>Add to Cart</button>
+    </div>
+  </div>
+</div>
+<div id="toast-container" class="fixed top-20 right-4 z-[100] space-y-2"></div>
+<script>
+(function () {
+    var root = document.documentElement;
+    var toggleBtn = document.getElementById('dark-mode-toggle');
+    var themeIcon = document.getElementById('site-theme-icon');
+    var mobileToggle = document.getElementById('mobile-menu-toggle');
+    var mobileMenu = document.getElementById('mobile-menu');
+
+    function applyTheme(theme) {
+        var isDark = theme === 'dark';
+        root.classList.toggle('dark', isDark);
+        if (themeIcon) themeIcon.textContent = isDark ? '🔆' : '🌙';
+        if (toggleBtn) {
+            toggleBtn.setAttribute('aria-pressed', String(isDark));
+            toggleBtn.setAttribute('aria-label', isDark ? 'Switch to day mode' : 'Switch to dark mode');
+        }
+        try {
+            localStorage.setItem('theme', theme);
+            localStorage.setItem('fiad_theme', theme);
+        } catch (e) {}
+    }
+
+    // Keep icon and ARIA state in sync with the early no-flash theme decision.
+    applyTheme(root.classList.contains('dark') ? 'dark' : 'light');
+
+    if (toggleBtn && toggleBtn.dataset.themeBound !== '1') {
+        toggleBtn.dataset.themeBound = '1';
+        toggleBtn.addEventListener('click', function () {
+            var wanted = !root.classList.contains('dark');
+            applyTheme(wanted ? 'dark' : 'light');
+            // If a shared bundle also binds this button, preserve the visitor's requested state.
+            setTimeout(function () {
+                if (root.classList.contains('dark') !== wanted) applyTheme(wanted ? 'dark' : 'light');
+            }, 0);
+        });
+    }
+
+    if (mobileToggle && mobileMenu) {
+        mobileToggle.addEventListener('click', function () {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+})();
+</script>
+
+<!-- FIADSHOP shared modules: menus/counts hydrate when available; page remains usable without them. -->
+
+
+
+
+<script>
+(function () {
+  'use strict';
+
+  const GH_REPO = 'mokaimmaman/njimkoylo';
+  const CSV_DIR = 'data/products';
+  const CATALOG_PATH = 'data/products.csv';
+  const esc = s => window.FiadAPI?.escapeHtml ? window.FiadAPI.escapeHtml(s) : String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  const PLACEHOLDER = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#f3f4f6"/>' +
+    '<text x="200" y="205" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" fill="#9ca3af">No image</text></svg>');
+
+  const params = new URLSearchParams(window.location.search);
+  let refParams = new URLSearchParams();
+  try {
+    const ref = new URL(document.referrer);
+    if (/(^|\/)products\.html$/.test(ref.pathname)) refParams = ref.searchParams;
+  } catch (_) {}
+
+  // products.html থেকে আসা রিকুয়েস্ট: ?sku=<SKU>. পুরনো ?id=<SKU> লিংকও চলে।
+  const requestedSku = (params.get('sku') || params.get('id') || params.get('product') ||
+                        refParams.get('sku') || refParams.get('id') || '').trim();
+  const sku = requestedSku.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 64).toUpperCase();
+  let branch = (params.get('branch') || refParams.get('branch') || '').trim()
+    .replace(/[^A-Za-z0-9._\/-]/g, '').replace(/\/{2,}/g, '/').replace(/^\/+|\/+$/g, '');
+  const catalogOverride = params.get('catalog') || params.get('csv') || '';
+  const detailCsvOverride = params.get('detail') || '';
+  const rawDiscountPct = Number(params.get('product_discount') || 0);
+  let storedRef = '';
+  try { storedRef = localStorage.getItem('fiad_ref') || ''; } catch (_) {}
+  const refParam = (params.get('ref') || storedRef || '').trim().toUpperCase();
+
+  const branchList = [];
+  [branch, 'main', 'master'].forEach(b => { if (b && branchList.indexOf(b) === -1) branchList.push(b); });
+  function encodeBranch(b) {
+    return b.split('/').filter(s => s && s !== '.' && s !== '..').map(encodeURIComponent).join('/');
+  }
+
+  // URL-টাকে canonical রাখি যেন Copy/Share লিংকে SKU ও branch থেকে যায়।
+  try {
+    const canonical = new URL(window.location.href);
+    let changed = false;
+    if (sku && canonical.searchParams.get('sku') !== sku) { canonical.searchParams.set('sku', sku); changed = true; }
+    if (branch && canonical.searchParams.get('branch') !== branch) { canonical.searchParams.set('branch', branch); changed = true; }
+    if (changed) history.replaceState(null, '', canonical.toString());
+  } catch (_) {}
+
+  const DETAIL_PATH = CSV_DIR + '/' + encodeURIComponent(sku) + '.csv';
+  if (sku) document.title = 'SKU ' + sku + ' — FIADSHOP';
+
+  const PRODUCT = {
+    ready: false,
+    id: sku,
+    sku: sku,
+    name: sku ? 'SKU ' + sku : 'Product unavailable',
+    price: 0,
+    basePrice: 0,
+    originalPrice: 0,
+    productDiscountPct: 0,
+    refCode: refParam || undefined,
+    category: 'Catalog',
+    image_url: '',
+    images: [],
+    variants: []
+  };
+
+  let variants = [];
+  let selectedVariant = null;
+  let sheetMode = 'cart';
+  let sheetQty = 1;
+  let quantity = 1;
+
+  function $(selector, root) { return (root || document).querySelector(selector); }
+  function $all(selector, root) { return Array.from((root || document).querySelectorAll(selector)); }
+  function unique(list) { return list.filter((v, i, a) => a.indexOf(v) === i); }
+  function setText(selector, value) { const el = $(selector); if (el) el.textContent = value; }
+
+  function formatPrice(num) {
+    const n = Number(num || 0);
+    if (!Number.isFinite(n)) return '$0.00';
+    return Number.isInteger(n) ? '$' + n : '$' + n.toFixed(2);
+  }
+  function formatFixed(num) {
+    const n = Number(num || 0);
+    return '$' + (Number.isFinite(n) ? n.toFixed(2) : '0.00');
+  }
+  function discountPct() {
+    const affState = window.FiadAffiliate?.getState?.();
+    const maxAllowed = affState ? (Number(affState.commissionRate) || 12) : 90;
+    return (Number.isFinite(rawDiscountPct) && rawDiscountPct > 0) ? Math.min(rawDiscountPct, maxAllowed) : 0;
+  }
+  function discountedPrice(base) {
+    const pct = discountPct();
+    return pct > 0 ? Math.round(base * (1 - pct / 100) * 100) / 100 : base;
+  }
+
+  function notify(message, type) {
+    if (window.FiadAPI && typeof window.FiadAPI.toast === 'function') {
+      window.FiadAPI.toast(message, type || 'success');
+      return;
+    }
+    const box = $('#toast-container');
+    if (!box) return;
+    const el = document.createElement('div');
+    el.textContent = message;
+    el.style.cssText = 'padding:9px 12px;border-radius:8px;background:#18181b;color:#fff;font-size:12px;box-shadow:0 6px 20px rgba(0,0,0,.2)';
+    box.appendChild(el);
+    setTimeout(() => el.remove(), 3200);
+  }
+
+  // RFC-4180 ধাঁচের CSV parser: quoted comma, "" escape, embedded newline, CRLF সামলায়।
+  function parseCsv(text) {
+    text = String(text || '').replace(/^\uFEFF/, '');
+    const rows = [];
+    let row = [], field = '', inQuotes = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text.charAt(i);
+      if (inQuotes) {
+        if (ch === '"') {
+          if (text.charAt(i + 1) === '"') { field += '"'; i++; }
+          else inQuotes = false;
+        } else field += ch;
+      } else if (ch === '"') inQuotes = true;
+      else if (ch === ',') { row.push(field); field = ''; }
+      else if (ch === '\n') { row.push(field); field = ''; rows.push(row); row = []; }
+      else if (ch !== '\r') field += ch;
+    }
+    if (field.length || row.length) { row.push(field); rows.push(row); }
+    return rows;
+  }
+
+  function csvObjects(text) {
+    const rows = parseCsv(text);
+    if (rows.length < 2) return [];
+    const header = rows[0].map(h => String(h).trim());
+    const out = [];
+    for (let r = 1; r < rows.length; r++) {
+      const row = rows[r];
+      if (!row || !row.length || row.every(v => !String(v).trim())) continue;
+      const obj = {};
+      header.forEach((h, i) => { obj[h] = row[i] === undefined ? '' : String(row[i]).trim(); });
+      out.push(obj);
+    }
+    return out;
+  }
+  function csvObject(text) { return csvObjects(text)[0] || null; }
+  function get(obj, keys) {
+    for (let i = 0; i < keys.length; i++) {
+      const v = obj && obj[keys[i]];
+      if (v !== undefined && String(v).trim()) return String(v).trim();
+    }
+    return '';
+  }
+  function splitParts(text, delimiter) {
+    return unique(String(text || '').split(delimiter).map(s => s.trim()).filter(Boolean));
+  }
+  function safeImage(raw) {
+    const src = String(raw || '').trim();
+    if (!src || /^javascript:/i.test(src)) return '';
+    if (/^https?:\/\//i.test(src) || /^data:image\//i.test(src)) return src;
+    return 'https://cdn.jsdelivr.net/gh/' + GH_REPO + '@' + (branchList[0] || 'main') + '/' + src.replace(/^\/+/, '');
+  }
+
+  function sourcesFor(relativePath, override) {
+    const sources = [];
+    if (override) sources.push(override);
+    sources.push(relativePath);
+    branchList.forEach(b => {
+      const encoded = encodeBranch(b);
+      sources.push('https://raw.githubusercontent.com/' + GH_REPO + '/' + encoded + '/' + relativePath);
+      sources.push('https://cdn.jsdelivr.net/gh/' + GH_REPO + '@' + encoded + '/' + relativePath);
+    });
+    return sources.filter((u, i, a) => u && a.indexOf(u) === i);
+  }
+
+  async function fetchFirst(urls, validate) {
+    let lastError = null;
+    for (let i = 0; i < urls.length; i++) {
+      try {
+        const res = await fetch(urls[i], { cache: 'no-cache' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const text = await res.text();
+        const value = validate(text);
+        if (!value) throw new Error('Unexpected CSV content');
+        return value;
+      } catch (error) { lastError = error; }
+    }
+    throw lastError || new Error('All CSV sources failed');
+  }
+
+  function renderGallery(images, name) {
+    const photo = $('#product-photo');
+    const thumbs = $('#product-thumbs');
+    if (!photo || !thumbs) return;
+    if (!images.length) {
+      photo.innerHTML = '<div><strong>No image available</strong><small>This product has no image in the CSV.</small></div>';
+      thumbs.innerHTML = '';
+      thumbs.setAttribute('aria-hidden', 'true');
+      return;
+    }
+    thumbs.removeAttribute('aria-hidden');
+    thumbs.innerHTML = images.map((u, i) =>
+      '<button type="button" class="thumb' + (i === 0 ? ' active' : '') + '" data-image="' + i +
+      '" aria-label="Show image ' + (i + 1) + '"><img src="' + esc(u) + '" alt="" loading="lazy" referrerpolicy="no-referrer"></button>'
+    ).join('');
+
+    function show(index) {
+      const u = images[index];
+      if (!u) return;
+      const img = document.createElement('img');
+      img.src = u;
+      img.alt = name + ' — image ' + (index + 1);
+      img.setAttribute('referrerpolicy', 'no-referrer');
+      img.addEventListener('error', function () {
+        if (img.dataset.fallback) return;
+        img.dataset.fallback = '1';
+        img.src = PLACEHOLDER;
+      });
+      photo.innerHTML = '';
+      photo.appendChild(img);
+      $all('.thumb', thumbs).forEach((btn, i) => {
+        const active = i === index;
+        btn.classList.toggle('active', active);
+        if (active) btn.setAttribute('aria-current', 'true'); else btn.removeAttribute('aria-current');
+      });
+    }
+    $all('.thumb', thumbs).forEach(btn => {
+      btn.addEventListener('click', () => show(Number(btn.dataset.image)));
+    });
+    show(0);
+  }
+
+  function renderDescription(name, description, features) {
+    const el = $('#product-description');
+    if (!el) return;
+    let html = '<p><strong>' + esc(name) + '</strong></p>';
+    if (description) html += '<p>' + esc(description).replace(/\n+/g, '<br>') + '</p>';
+    else html += '<p class="loading-note">No description is listed for this product.</p>';
+    if (features.length) {
+      html += '<h3>Features</h3><ul>' + features.map(item => '<li>' + esc(item) + '</li>').join('') + '</ul>';
+    }
+    el.innerHTML = html;
+  }
+
+  function renderVariants(names, finalPrice, images) {
+    const container = $('#product-variants');
+    const chip = $('#product-variant-chip');
+    const list = names.length ? names : ['Default'];
+    if (container) {
+      container.innerHTML = names.length
+        ? names.map(n => '<span class="option-chip">' + esc(n) + '</span>').join('')
+        : '<span class="info-empty">No separate variants listed; the standard option is available.</span>';
+    }
+    if (chip) chip.textContent = list[0];
+    variants = list.map((name, i) => ({
+      id: names.length ? 'v' + (i + 1) : 'default',
+      name: name,
+      price: finalPrice,
+      stock: true,
+      image: images[0] || ''
+    }));
+    selectedVariant = null;
+    renderVariantGrid();
+  }
+
+  function renderSpecs(specsText, extraRows) {
+    const section = $('#specs-section');
+    const body = $('#product-specs');
+    if (!body) return;
+    const pairs = splitParts(specsText, /\s*;\s*/).map(item => {
+      const pos = item.indexOf(':');
+      if (pos > 0) return [item.slice(0, pos).trim(), item.slice(pos + 1).trim()];
+      return ['Specification', item];
+    });
+    const rows = pairs.concat(extraRows.filter(pair => pair[1]));
+    if (!rows.length) {
+      if (section) section.style.display = 'none';
+      body.innerHTML = '';
+      return;
+    }
+    if (section) section.style.display = '';
+    body.innerHTML = rows.map(pair =>
+      '<tr><th>' + esc(pair[0]) + '</th><td>' + esc(pair[1]) + '</td></tr>'
+    ).join('');
+  }
+
+  function detailLink(nextSku) {
+    const q = new URLSearchParams();
+    q.set('sku', nextSku);
+    if (branch) q.set('branch', branch);
+    if (refParam) q.set('ref', refParam);
+    if (rawDiscountPct) q.set('product_discount', rawDiscountPct);
+    if (catalogOverride) q.set('catalog', catalogOverride);
+    return 'product-detail.html?' + q.toString();
+  }
+
+  function catalogItems(text) {
+    return csvObjects(text).map(row => ({
+      sku: get(row, ['SKU']).toUpperCase(),
+      name: get(row, ['Product Name', 'Name']),
+      price: parseFloat(get(row, ['Price (USD)', 'Price']).replace(/[^0-9.-]/g, '')) || 0,
+      category: get(row, ['Category']) || 'Catalog'
+    })).filter(p => p.sku && p.name);
+  }
+
+  async function loadRelated(category) {
+    const grid = $('#suggestion-grid');
+    if (!grid) return;
+    try {
+      const items = await fetchFirst(sourcesFor(CATALOG_PATH, catalogOverride), text => {
+        const list = catalogItems(text);
+        return list.length ? list : null;
+      });
+      const same = items.filter(p => p.sku !== sku && p.category.toLowerCase() === String(category || '').toLowerCase());
+      const others = items.filter(p => p.sku !== sku && p.category.toLowerCase() !== String(category || '').toLowerCase());
+      const related = same.concat(others).slice(0, 3);
+      if (!related.length) {
+        const section = $('#suggestions-section');
+        if (section) section.style.display = 'none';
+        return;
+      }
+      grid.innerHTML = related.map(p =>
+        '<a class="suggestion" href="' + esc(detailLink(p.sku)) + '"><strong>' + esc(p.name) + '</strong><span>' +
+        formatFixed(p.price) + ' · ' + esc(p.category) + '</span></a>'
+      ).join('');
+    } catch (_) {
+      grid.innerHTML = '<div class="suggestion"><strong>Related products</strong><span>Catalog unavailable right now.</span></div>';
+    }
+  }
+
+  function renderProduct(row) {
+    const basePrice = parseFloat(get(row, ['Price (USD)', 'Price']).replace(/[^0-9.-]/g, '')) || 0;
+    const pct = discountPct();
+    const finalPrice = discountedPrice(basePrice);
+    const name = get(row, ['Product Name', 'Name']) || ('Product ' + sku);
+    const category = get(row, ['Category']) || 'Catalog';
+    const description = get(row, ['Description']);
+    const features = splitParts(get(row, ['Features']), /\s*;\s*|\n+/);
+    const specsText = get(row, ['Specifications']);
+    const variantNames = splitParts(get(row, ['Variants', 'Variants (name – price)']), /\s*\|\s*/);
+    const model = get(row, ['Model', 'Model (different product)']);
+    const variantCount = get(row, ['Variant Count']);
+    const offers = get(row, ['Offers (n)']);
+    const imageCountCsv = get(row, ['Image Count']);
+    const images = [];
+    for (let i = 1; i <= 5; i++) {
+      const u = safeImage(get(row, ['Image ' + i]));
+      if (u && images.indexOf(u) === -1) images.push(u);
+    }
+
+    Object.assign(PRODUCT, {
+      ready: true,
+      id: sku,
+      sku: sku,
+      name: name,
+      price: finalPrice,
+      basePrice: basePrice,
+      originalPrice: basePrice,
+      productDiscountPct: pct,
+      refCode: refParam || undefined,
+      category: category,
+      image_url: images[0] || '',
+      images: images,
+      variants: variantNames,
+      model: model,
+      description: description,
+      features: features,
+      specifications: specsText,
+      offers: offers,
+      variantCount: variantCount,
+      imageCount: imageCountCsv
+    });
+
+    document.title = name + ' — FIADSHOP';
+    window.thread_title = document.title;
+    const meta = $('meta[name="description"]');
+    if (meta) meta.content = name + ' — ' + category + ' | FIADSHOP';
+    const article = $('#product');
+    if (article) article.dataset.sku = sku;
+
+    setText('#product-category', category);
+    setText('#product-name', name);
+    const rating = $('#product-rating');
+    if (rating) rating.innerHTML = '<span class="stars">★★★★★</span> &nbsp;Verified catalog item &nbsp;·&nbsp; SKU ' + esc(sku);
+    setText('#product-price', formatPrice(finalPrice));
+    setText('#product-stock', pct > 0
+      ? 'In stock · ' + pct + '% referral discount applied (was ' + formatFixed(basePrice) + ')'
+      : 'In stock · Ready to ship');
+    const highlights = features.length ? features.slice(0, 2).join(' · ') : (specsText || 'No highlights listed');
+    setText('#product-highlights', highlights.length > 180 ? highlights.slice(0, 177) + '…' : highlights);
+
+    renderGallery(images, name);
+    renderDescription(name, description, features);
+    renderVariants(variantNames, finalPrice, images);
+
+    const imageLabel = images.length + ' shown' + (imageCountCsv ? ' · ' + imageCountCsv + ' in CSV' : '');
+    renderSpecs(specsText, [
+      ['SKU', sku],
+      ['Category', category],
+      ['Model', model],
+      ['Variant Count', variantCount],
+      ['Offers (n)', offers],
+      ['Images', imageLabel]
+    ]);
+
+    const fineprint = $('#product-fineprint');
+    if (fineprint) {
+      fineprint.textContent = 'Loaded from ' + DETAIL_PATH + ' on GitHub · Cart and Wishlist are stored in this browser.';
+    }
+    syncWishlist();
+    loadRelated(category);
+  }
+
+  function showError(message) {
+    PRODUCT.ready = false;
+    PRODUCT.name = 'Product unavailable';
+    document.title = 'Product unavailable — FIADSHOP';
+    window.thread_title = document.title;
+    setText('#product-category', 'Catalog');
+    setText('#product-name', 'Product not found');
+    setText('#product-price', '$—');
+    setText('#product-stock', message);
+    setText('#product-highlights', 'Please choose a product from products.html.');
+    setText('#product-variant-chip', 'Unavailable');
+    const rating = $('#product-rating');
+    if (rating) rating.innerHTML = '<span class="stars">★★★★★</span> &nbsp;Catalog item unavailable';
+    const photo = $('#product-photo');
+    if (photo) photo.innerHTML = '<div><strong>Product unavailable</strong><small>' + esc(message) + '</small></div>';
+    const thumbs = $('#product-thumbs');
+    if (thumbs) { thumbs.innerHTML = ''; thumbs.setAttribute('aria-hidden', 'true'); }
+    const desc = $('#product-description');
+    if (desc) desc.innerHTML = '<p>' + esc(message) + '</p>';
+    const variantBox = $('#product-variants');
+    if (variantBox) variantBox.innerHTML = '<span class="info-empty">No variants available.</span>';
+    const specs = $('#product-specs');
+    if (specs) specs.innerHTML = '';
+    const suggestions = $('#suggestions-section');
+    if (suggestions) suggestions.style.display = 'none';
+    const fineprint = $('#product-fineprint');
+    if (fineprint) fineprint.textContent = 'Open a product card from products.html to load its SKU CSV.';
+    variants = [];
+    selectedVariant = null;
+    $all('[data-action], .wishlist-action, #copy-product-link-btn').forEach(btn => { btn.disabled = true; });
+  }
+
+  async function loadProduct() {
+    if (!sku) {
+      showError('No SKU was supplied. Open a product from products.html.');
+      return;
+    }
+    try {
+      const row = await fetchFirst(sourcesFor(DETAIL_PATH, detailCsvOverride), text => {
+        const obj = csvObject(text);
+        if (!obj) return null;
+        return get(obj, ['Product Name', 'Name', 'SKU']) ? obj : null;
+      });
+      renderProduct(row);
+    } catch (_) {
+      showError('Could not load ' + DETAIL_PATH + ' from GitHub.');
+    }
+  }
+
+  /* ---------------- quantity / share / wishlist ---------------- */
+  const qtyDisplay = $('#product-quantity');
+  function updateQuantity(next) {
+    quantity = Math.max(1, Math.min(99, Number(next) || 1));
+    if (qtyDisplay) qtyDisplay.textContent = String(quantity);
+  }
+  $('.qty-minus')?.addEventListener('click', () => updateQuantity(quantity - 1));
+  $('.qty-plus')?.addEventListener('click', () => updateQuantity(quantity + 1));
+
+  const shareFeedback = $('#share-feedback');
+  function announceShare(message) {
+    if (shareFeedback) shareFeedback.textContent = message;
+    notify(message, 'success');
+  }
+  async function copyProductLink() {
+    const url = window.location.href;
+    let copied = false;
+    try {
+      if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(url); copied = true; }
+    } catch (_) {}
+    if (!copied) {
+      const field = document.createElement('textarea');
+      field.value = url;
+      field.setAttribute('readonly', '');
+      field.style.position = 'fixed';
+      field.style.opacity = '0';
+      document.body.appendChild(field);
+      field.select();
+      try { copied = document.execCommand('copy'); } catch (_) { copied = false; }
+      field.remove();
+    }
+    announceShare(copied ? 'Product link copied.' : 'Copy failed. You can copy the product URL from your address bar.');
+  }
+  $('#copy-product-link-btn')?.addEventListener('click', copyProductLink);
+  $('#share-product-btn')?.addEventListener('click', async () => {
+    if (navigator.share) {
+      try { await navigator.share({ title: PRODUCT.name, text: 'View this product on FIADSHOP', url: window.location.href }); }
+      catch (error) { if (error?.name !== 'AbortError') await copyProductLink(); }
+    } else await copyProductLink();
+  });
+
+  function syncWishlist() {
+    let saved = false;
+    if (window.FiadAPI?.wishlist?.has) saved = !!window.FiadAPI.wishlist.has(PRODUCT.id);
+    else {
+      try {
+        const list = JSON.parse(localStorage.getItem('fiad_wishlist') || '[]');
+        saved = list.some(item => String(item.id) === PRODUCT.id);
+      } catch (_) {}
+    }
+    $all('.wishlist-action').forEach(button => {
+      button.classList.toggle('active', saved);
+      button.setAttribute('aria-pressed', String(saved));
+      button.setAttribute('aria-label', saved ? 'Remove from Wishlist' : 'Add to Wishlist');
+      button.title = saved ? 'Remove from Wishlist' : 'Add to Wishlist';
+      const icon = button.querySelector('i');
+      if (icon) icon.className = (saved ? 'fa-solid' : 'fa-regular') + ' fa-heart';
+      const label = button.querySelector('span');
+      if (label) label.textContent = saved ? 'Saved' : 'Wishlist';
+    });
+  }
+  const wishButtons = $all('.wishlist-action');
+  wishButtons.forEach(button => button.addEventListener('click', () => {
+    if (!PRODUCT.ready) { notify('Product data is still loading. Please wait.', 'info'); return; }
+    if (window.FiadAPI?.wishlist?.toggle) window.FiadAPI.wishlist.toggle(PRODUCT);
+    else {
+      let list = [];
+      try { list = JSON.parse(localStorage.getItem('fiad_wishlist') || '[]'); } catch (_) {}
+      const at = list.findIndex(item => String(item.id) === String(PRODUCT.id));
+      if (at >= 0) list.splice(at, 1); else list.push(PRODUCT);
+      localStorage.setItem('fiad_wishlist', JSON.stringify(list));
+    }
+    syncWishlist();
+  }));
+
+  /* ---------------- dynamic variant bottom sheet ---------------- */
+  const sheetOverlay = $('#variant-overlay');
+  const sheetEl = $('#variant-sheet');
+  const sheetNameEl = $('#sheet-product-name');
+  const sheetPriceEl = $('#sheet-price');
+  const sheetNoteEl = $('#sheet-selected-note');
+  const sheetThumbEl = $('#sheet-thumb');
+  const sheetGrid = $('#variant-grid');
+  const sheetQtyEl = $('#sheet-qty-value');
+  const confirmBtn = $('#variant-confirm-btn');
+
+  function renderVariantGrid() {
+    if (!sheetGrid) return;
+    if (!PRODUCT.ready || !variants.length) {
+      sheetGrid.innerHTML = '<p class="info-empty">Product data is still loading.</p>';
+      return;
+    }
+    sheetGrid.innerHTML = variants.map(v => {
+      const media = v.image
+        ? '<img src="' + esc(v.image) + '" alt="' + esc(v.name) + '">'
+        : '<span class="variant-letter" aria-hidden="true">' + esc(v.name.charAt(0).toUpperCase()) + '</span>';
+      const on = !!selectedVariant && selectedVariant.id === v.id;
+      return '<button type="button" class="variant-card' + (on ? ' selected' : '') + '"' +
+        ' data-variant="' + esc(v.id) + '" aria-pressed="' + on + '"' +
+        ' aria-label="' + esc(v.name) + ', ' + formatPrice(v.price) + '">' +
+        '<span class="variant-media">' + media + '</span>' +
+        '<span class="variant-check" aria-hidden="true">✓</span>' +
+        '<span class="variant-name">' + esc(v.name) + '</span>' +
+        '<span class="variant-price">' + formatPrice(v.price) + '</span>' +
+        '</button>';
+    }).join('');
+    $all('.variant-card', sheetGrid).forEach(card => {
+      card.addEventListener('click', () => {
+        const v = variants.find(x => x.id === card.dataset.variant);
+        if (v && v.stock) selectVariant(v);
+      });
+    });
+  }
+
+  function selectVariant(v) {
+    selectedVariant = v;
+    if (sheetPriceEl) sheetPriceEl.textContent = formatPrice(v.price);
+    if (sheetNoteEl) sheetNoteEl.textContent = 'Selected: ' + v.name;
+    if (sheetThumbEl) {
+      sheetThumbEl.innerHTML = v.image
+        ? '<img src="' + esc(v.image) + '" alt="">'
+        : '<span class="variant-letter" style="font-size:18px">' + esc(v.name.charAt(0).toUpperCase()) + '</span>';
+    }
+    if (confirmBtn) confirmBtn.disabled = false;
+    $all('.variant-card', sheetGrid).forEach(card => {
+      const on = card.dataset.variant === v.id;
+      card.classList.toggle('selected', on);
+      card.setAttribute('aria-pressed', String(on));
+    });
+  }
+
+  function openVariantSheet(mode) {
+    if (!PRODUCT.ready) { notify('Product data is still loading. Please wait.', 'info'); return; }
+    sheetMode = mode === 'buy' ? 'buy' : 'cart';
+    if (confirmBtn) {
+      confirmBtn.textContent = sheetMode === 'buy' ? 'Buy Now' : 'Add to Cart';
+      confirmBtn.disabled = true;
+    }
+    if (sheetNameEl) sheetNameEl.textContent = PRODUCT.name;
+    if (sheetPriceEl) sheetPriceEl.textContent = formatPrice(PRODUCT.price);
+    if (sheetNoteEl) sheetNoteEl.textContent = variants.length === 1 ? 'Default option' : 'Select a variant';
+    if (sheetThumbEl) sheetThumbEl.innerHTML = '<i class="fa-regular fa-image" aria-hidden="true"></i>';
+    renderVariantGrid();
+    if (variants.length === 1 && !selectedVariant) selectVariant(variants[0]);
+    if (sheetOverlay) {
+      sheetOverlay.classList.add('open');
+      sheetOverlay.setAttribute('aria-hidden', 'false');
+    }
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => sheetEl && sheetEl.focus({ preventScroll: true }), 60);
+  }
+
+  function closeVariantSheet() {
+    if (sheetOverlay) {
+      sheetOverlay.classList.remove('open');
+      sheetOverlay.setAttribute('aria-hidden', 'true');
+    }
+    document.body.style.overflow = '';
+  }
+
+  function sheetQuantityUpdate(next) {
+    sheetQty = Math.max(1, Math.min(99, Number(next) || 1));
+    if (sheetQtyEl) sheetQtyEl.textContent = String(sheetQty);
+  }
+
+  function updateMainPageForVariant(v) {
+    const chip = $('#product-variant-chip');
+    if (chip) chip.textContent = v.name;
+    setText('#product-price', formatPrice(v.price));
+  }
+
+  function buildVariantItem(v) {
+    const isDefault = v.id === 'default';
+    return {
+      id: isDefault ? PRODUCT.id : PRODUCT.id + '::' + v.id,
+      name: isDefault ? PRODUCT.name : PRODUCT.name + ' — ' + v.name,
+      sku: PRODUCT.sku,
+      category: PRODUCT.category,
+      price: v.price,
+      basePrice: v.price,
+      originalPrice: PRODUCT.originalPrice,
+      image_url: v.image || PRODUCT.image_url || '',
+      images: PRODUCT.images,
+      variant: v.name,
+      refCode: PRODUCT.refCode,
+      productDiscountPct: PRODUCT.productDiscountPct
+    };
+  }
+
+  function addVariantToCart(item, qty) {
+    if (window.FiadAPI?.cart?.add) window.FiadAPI.cart.add(item, qty);
+    else {
+      let cart = [];
+      try { cart = JSON.parse(localStorage.getItem('fiad_cart') || '[]'); } catch (_) {}
+      const entry = cart.find(e => String(e.id) === String(item.id));
+      if (entry) { entry.quantity = (Number(entry.quantity) || 0) + qty; entry.price = item.price; }
+      else cart.push(Object.assign({}, item, { quantity: qty }));
+      localStorage.setItem('fiad_cart', JSON.stringify(cart));
+    }
+  }
+
+  function confirmVariant() {
+    if (!selectedVariant) return;
+    const item = buildVariantItem(selectedVariant);
+    updateMainPageForVariant(selectedVariant);
+    if (sheetMode === 'buy') {
+      try { sessionStorage.setItem('fiad_buy_now', JSON.stringify([Object.assign({}, item, { quantity: sheetQty })])); } catch (_) {}
+      closeVariantSheet();
+      window.location.href = 'checkout.html?buyNow=1';
+      return;
+    }
+    addVariantToCart(item, sheetQty);
+    notify('Added to cart — ' + selectedVariant.name + ' × ' + sheetQty, 'success');
+    closeVariantSheet();
+  }
+
+  $all('[data-action="add-to-cart"]').forEach(button => button.addEventListener('click', () => openVariantSheet('cart')));
+  $all('[data-action="buy-now"]').forEach(button => button.addEventListener('click', () => openVariantSheet('buy')));
+  $('#variant-sheet-close')?.addEventListener('click', closeVariantSheet);
+  sheetOverlay?.addEventListener('click', event => { if (event.target === sheetOverlay) closeVariantSheet(); });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && sheetOverlay && sheetOverlay.classList.contains('open')) closeVariantSheet();
+  });
+  confirmBtn?.addEventListener('click', confirmVariant);
+  $('.sheet-qty-minus')?.addEventListener('click', () => sheetQuantityUpdate(sheetQty - 1));
+  $('.sheet-qty-plus')?.addEventListener('click', () => sheetQuantityUpdate(sheetQty + 1));
+
+  document.addEventListener('fiad:wishlist-updated', syncWishlist);
+  window.addEventListener('storage', event => { if (event.key === 'fiad_wishlist') syncWishlist(); });
+
+  function start() {
+    syncWishlist();
+    renderVariantGrid();
+    loadProduct();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
+  else start();
+})();
+</script>
+<!-- ===== Report Product (modal) ===== -->
+<style>
+.report-overlay{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(17,24,39,.55);opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease}
+.report-overlay.open{opacity:1;visibility:visible}
+.report-modal{width:100%;max-width:420px;max-height:min(86vh,620px);display:flex;flex-direction:column;overflow:hidden;background:var(--surface,#fff);color:var(--ink,#111827);border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.28);transform:translateY(16px) scale(.97);transition:transform .25s ease}
+.report-overlay.open .report-modal{transform:translateY(0) scale(1)}
+.report-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:16px 18px 12px;border-bottom:1px solid var(--line,#e5e7eb)}
+.report-head h3{margin:0;font-size:16px;font-weight:650;color:var(--ink,#111827)}
+.report-sub{margin:4px 0 0;font-size:12px;color:var(--muted,#4b5563)}
+.report-close{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--line,#e5e7eb);background:var(--soft,#f9fafb);color:var(--muted,#6b7280);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center}
+.report-close:hover{color:var(--ink,#111827);border-color:#f97316}
+.report-body{padding:14px 18px;overflow-y:auto}
+.report-reason{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-bottom:8px;border:1px solid var(--line,#e5e7eb);border-radius:10px;cursor:pointer;font-size:13px;color:var(--ink,#111827);transition:border-color .15s ease}
+.report-reason:hover{border-color:#fb923c}
+.report-reason.selected{border-color:#f97316;box-shadow:0 0 0 1px #f97316;background:color-mix(in srgb,#f97316 8%,transparent)}
+.report-reason input{accent-color:#f97316;margin:0}
+.report-body label{display:block;font-size:12px;font-weight:600;color:var(--ink,#111827);margin:10px 0 5px}
+.report-body textarea,.report-body input[type=email]{width:100%;border:1px solid var(--line,#e5e7eb);border-radius:8px;background:var(--soft,#f9fafb);color:var(--ink,#111827);padding:9px 11px;font:inherit;font-size:13px;resize:vertical}
+.report-body textarea:focus,.report-body input[type=email]:focus{outline:none;border-color:#f97316}
+.report-note{display:flex;gap:9px;align-items:flex-start;margin-top:12px;padding:10px 12px;border-radius:9px;background:color-mix(in srgb,#f97316 10%,transparent);font-size:12px;color:var(--ink,#111827)}
+.report-note i{color:#f97316;margin-top:1px}
+.report-foot{flex:none;padding:12px 18px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line,#e5e7eb)}
+.report-submit{width:100%;height:42px;border:0;border-radius:8px;background:#f97316;color:#fff;font-weight:650;font-size:14px;cursor:pointer}
+.report-submit:disabled{opacity:.45;cursor:not-allowed}
+.report-success{text-align:center;padding:26px 18px}
+.report-success i{font-size:34px;color:#16a34a}
+.report-success strong{display:block;margin:10px 0 6px;font-size:15px;color:var(--ink,#111827)}
+.report-success p{margin:0;font-size:12.5px;color:var(--muted,#4b5563);line-height:1.6}
+:root.dark .report-modal{background:#18181b}
+:root.dark .report-head{border-color:#27272a}
+:root.dark .report-head h3{color:#f3f4f6}
+:root.dark .report-sub{color:#a1a1aa}
+:root.dark .report-reason{border-color:#27272a;color:#f3f4f6}
+:root.dark .report-reason.selected{background:rgba(124,45,18,.25);color:#fb923c}
+:root.dark .report-body label{color:#f3f4f6}
+:root.dark .report-body textarea,:root.dark .report-body input[type=email]{background:#09090b;border-color:#27272a;color:#f3f4f6}
+:root.dark .report-note{background:rgba(124,45,18,.20);color:#fdba74}
+:root.dark .report-success strong{color:#f3f4f6}
+:root.dark .report-success p{color:#a1a1aa}
+:root.dark .report-close{background:#09090b;border-color:#27272a;color:#a1a1aa}
+@media (prefers-reduced-motion:reduce){.report-overlay,.report-modal{transition:none}}
+</style>
+
+<div class="report-overlay" id="report-overlay" aria-hidden="true">
+  <div class="report-modal" id="report-modal" role="dialog" aria-modal="true" aria-labelledby="report-title" tabindex="-1">
+    <div class="report-head">
+      <div>
+        <h3 id="report-title">Report this product</h3>
+        <p class="report-sub">Report a problem and get a discount.</p>
+      </div>
+      <button type="button" class="report-close" id="report-close" aria-label="Close report form"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    </div>
+    <div class="report-body" id="report-form-wrap">
+      <form id="report-form">
+        <span style="display:block;font-size:12px;font-weight:600;margin-bottom:8px">What is the problem?</span>
+        <label class="report-reason"><input type="radio" name="report-reason" value="Wrong image, information"><span> Wrong image, information</span></label>
+        
+        <label class="report-reason"><input type="radio" name="report-reason" value="Wrong variant information"><span> Wrong variant information</span></label>
+        <label class="report-reason"><input type="radio" name="report-reason" value="Product is bad, illegal or prohibited"><span> Product is bad, illegal or prohibited</span></label>
+        <label class="report-reason"><input type="radio" name="report-reason" value="Overpriced compared to the market"><span> Overpriced compared to the market</span></label>
+        <label for="report-details">Details (optional)</label>
+        <textarea id="report-details" rows="3" placeholder="Describe the problem briefly…"></textarea>
+        <label for="report-email">Your email</label>
+        <input type="email" id="report-email" required placeholder="you@example.com">
+        <div class="report-note"><i class="fa-solid fa-circle-info" aria-hidden="true"></i><span>If your report is correct, a 5–10% discount coupon code will be sent to your email.</span></div>
+      </form>
+    </div>
+    <div class="report-foot" id="report-foot">
+      <button type="submit" form="report-form" class="report-submit" id="report-submit" disabled>Submit Report</button>
+    </div>
+    <div class="report-success" id="report-success" style="display:none">
+      <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+      <strong>Report submitted</strong>
+      <p>Thank you for helping us improve FIADSHOP.<br>If your report is verified, a 5–10% discount coupon code will be sent to your email.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+    'use strict';
+    var overlay = document.getElementById('report-overlay');
+    if (!overlay) return;
+    var modal = document.getElementById('report-modal');
+    var closeBtn = document.getElementById('report-close');
+    var form = document.getElementById('report-form');
+    var formWrap = document.getElementById('report-form-wrap');
+    var foot = document.getElementById('report-foot');
+    var success = document.getElementById('report-success');
+    var submitBtn = document.getElementById('report-submit');
+    var reasonInputs = form ? Array.prototype.slice.call(form.querySelectorAll('input[name="report-reason"]')) : [];
+
+    function openReport() {
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        setTimeout(function () { modal.focus({ preventScroll: true }); }, 60);
+    }
+    function closeReport() {
+        overlay.classList.remove('open');
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    }
+    document.getElementById('report-product-menu-item')?.addEventListener('click', function (event) {
+        event.preventDefault();
+        var quickMenu = document.getElementById('quick-menu');
+        var menuToggle = document.getElementById('menu-toggle');
+        if (quickMenu) quickMenu.classList.add('hidden');
+        if (menuToggle) menuToggle.setAttribute('aria-expanded', 'false');
+        openReport();
+    });
+    closeBtn?.addEventListener('click', closeReport);
+    overlay.addEventListener('click', function (event) { if (event.target === overlay) closeReport(); });
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && overlay.classList.contains('open')) closeReport();
+    });
+    reasonInputs.forEach(function (input) {
+        input.addEventListener('change', function () {
+            submitBtn.disabled = !reasonInputs.some(function (r) { return r.checked; });
+            var cards = form.querySelectorAll('.report-reason');
+            cards.forEach(function (card) {
+                card.classList.toggle('selected', card.querySelector('input').checked);
+            });
+        });
+    });
+    form?.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var reason = (form.querySelector('input[name="report-reason"]:checked') || {}).value || '';
+        var entry = {
+            reason: reason,
+            details: (document.getElementById('report-details') || {}).value || '',
+            email: (document.getElementById('report-email') || {}).value || '',
+            page: window.location.pathname.split('/').pop() + window.location.search,
+            product: (document.querySelector('.details h1') || {}).textContent || null,
+            time: new Date().toISOString()
+        };
+        try {
+            var list = JSON.parse(localStorage.getItem('fiad_reports') || '[]');
+            list.push(entry);
+            localStorage.setItem('fiad_reports', JSON.stringify(list));
+        } catch (e) {}
+        if (window.FiadAPI?.toast) window.FiadAPI.toast('Report submitted. Thank you!', 'success');
+        formWrap.style.display = 'none';
+        foot.style.display = 'none';
+        success.style.display = 'block';
+        setTimeout(function () {
+            closeReport();
+            setTimeout(function () {
+                formWrap.style.display = '';
+                foot.style.display = '';
+                success.style.display = 'none';
+                form.reset();
+                submitBtn.disabled = true;
+                form.querySelectorAll('.report-reason').forEach(function (card) { card.classList.remove('selected'); });
+            }, 300);
+        }, 2600);
+    });
+})();
+</script>
+<!-- ===== End Report Product ===== -->
+
+<!-- ===== Remarkbox review widget scripts (Customer Reviews section) ===== -->
+<script src="https://my.remarkbox.com/static/js/iframe-resizer/iframeResizer.min.js"></script>
+<script>
+  var rb_owner_key = "caae613d-de85-11f1-8000-040140774501";
+  var thread_uri = window.location.href;
+  var thread_title = window.document.title;
+  var thread_fragment = window.location.hash;
+
+  // সাইটের dark class অনুযায়ী remarkbox-এর mode নির্ধারণ (faq.remarkbox.com-এর dark mode গাইড অনুযায়ী)।
+  function rb_theme_mode() {
+    return document.documentElement.classList.contains("dark") ? "dark" : "light";
+  }
+  var rb_applied_mode = null;
+
+  // rb owner was here.
+  function rb_build_src(mode) {
+    return "https://my.remarkbox.com/embed" +
+        "?rb_owner_key=" + rb_owner_key +
+        "&thread_title=" + encodeURI(thread_title) +
+        "&thread_uri=" + encodeURIComponent(thread_uri) +
+        "&mode=" + mode +
+        thread_fragment;
+  }
+
+  function create_remarkbox_iframe() {
+    var ifrm = document.createElement("iframe");
+    ifrm.setAttribute("id", "remarkbox-iframe");
+    ifrm.setAttribute("scrolling", "no");
+    ifrm.setAttribute("frameborder", "0");
+    ifrm.setAttribute("tabindex", "0");
+    ifrm.setAttribute("title", "Remarkbox");
+    ifrm.style.width = "100%";
+    ifrm.src = rb_build_src(rb_theme_mode());
+    rb_applied_mode = rb_theme_mode();
+    document.getElementById("remarkbox-div").appendChild(ifrm);
+  }
+  create_remarkbox_iframe();
+
+  // Dark mode toggle হলে remarkbox-ও সেই mode-এ রিলোড হয়।
+  if (window.MutationObserver) {
+    new MutationObserver(function () {
+      var wanted = rb_theme_mode();
+      if (wanted === rb_applied_mode) return;
+      var ifrm = document.getElementById("remarkbox-iframe");
+      if (!ifrm) return;
+      rb_applied_mode = wanted;
+      ifrm.src = rb_build_src(wanted);
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+  }
+
+  if (typeof iFrameResize === "function") {
+    iFrameResize(
+      {
+        checkOrigin: ["https://my.remarkbox.com"],
+        inPageLinks: true,
+        initCallback: function(e) {e.iFrameResizer.moveToAnchor(thread_fragment)}
+      },
+      document.getElementById("remarkbox-iframe")
+    );
+  }
+</script>
+
+</body>
+</html>
