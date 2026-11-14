@@ -101,7 +101,10 @@ product-detail.html?sku=Y3GX2OTP
 3. `cdn.jsdelivr.net/gh/mokaimmaman/njimkoylo@<branch>/data/products/<SKU>.csv`
 4. `main` / `master` ব্যাকআপ ব্রাঞ্চ
 
-কাজের ব্রাঞ্চে থাকা অবস্থায় ডেটা দেখতে চাইলে লিংকে ব্রাঞ্চটি দিন:
+`main`-এ মার্জ না হওয়া পর্যন্ত `arena/a8e34751-njimkoylo` দুই পেইজেই
+অটোম্যাটিক fallback ব্রাঞ্চ হিসেবে যোগ করা আছে। তাই প্রিভিউ সার্ভার বন্ধ
+থাকলেও বা `?branch=...` না দিলেও এই ব্রাঞ্চের CSV GitHub raw/jsDelivr থেকে
+পাওয়া যায়। শেয়ার করা লিংকে ব্রাঞ্চটি স্পষ্ট রাখতে চাইলে দিতে পারেন:
 
 ```
 products.html?branch=arena/a8e34751-njimkoylo

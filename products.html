@@ -211,11 +211,16 @@
         var PARAMS = new URLSearchParams(location.search);
         var GH_REPO = 'mokaimmaman/njimkoylo';
         var GH_BRANCH = PARAMS.get('branch') || 'main';
+        // main-এ মার্জ না হওয়া পর্যন্ত এই working branch-টিও GitHub fallback হিসেবে চেষ্টা করি।
+        var GH_FALLBACK_BRANCH = 'arena/a8e34751-njimkoylo';
         var CSV_PATH = 'data/products.csv';
 
-        // যে ব্রাঞ্চগুলো ক্রমান্বয়ে চেষ্টা করা হবে (main আগে, তারপর master)
-        var CSV_BRANCHES = [GH_BRANCH];
-        ['main', 'master'].forEach(function (b) {
+        // যে ব্রাঞ্চগুলো ক্রমান্বয়ে চেষ্টা করা হবে।
+        // ?branch না দিলে আগে working branch, তারপর main/master ব্যাকআপ।
+        var CSV_BRANCHES = PARAMS.get('branch')
+            ? [GH_BRANCH]
+            : [GH_FALLBACK_BRANCH, GH_BRANCH];
+        ['main', 'master', GH_FALLBACK_BRANCH].forEach(function (b) {
             if (CSV_BRANCHES.indexOf(b) === -1) CSV_BRANCHES.push(b);
         });
 
@@ -247,7 +252,7 @@
             '<text x="200" y="205" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" fill="#9ca3af">No image</text></svg>');
 
         // ছবি: CSV-তে পুরো URL থাকলে সেটাই, নইলে jsDelivr CDN
-        var CDN = 'https://cdn.jsdelivr.net/gh/' + GH_REPO + '@' + GH_BRANCH + '/';
+        var CDN = 'https://cdn.jsdelivr.net/gh/' + GH_REPO + '@' + CSV_BRANCHES[0] + '/';
         function imgUrl(src) {
             if (!src) return PLACEHOLDER;
             if (/^https?:\/\//i.test(src) || src.indexOf('data:') === 0) return src;

@@ -439,6 +439,8 @@
   'use strict';
 
   const GH_REPO = 'mokaimmaman/njimkoylo';
+  // main-এ মার্জ না হওয়া পর্যন্ত এই working branch-টিও GitHub fallback হিসেবে চেষ্টা করি।
+  const GH_FALLBACK_BRANCH = 'arena/a8e34751-njimkoylo';
   const CSV_DIR = 'data/products';
   const CATALOG_PATH = 'data/products.csv';
   const esc = s => window.FiadAPI?.escapeHtml ? window.FiadAPI.escapeHtml(s) : String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
@@ -467,7 +469,9 @@
   const refParam = (params.get('ref') || storedRef || '').trim().toUpperCase();
 
   const branchList = [];
-  [branch, 'main', 'master'].forEach(b => { if (b && branchList.indexOf(b) === -1) branchList.push(b); });
+  [branch, GH_FALLBACK_BRANCH, 'main', 'master'].forEach(b => {
+    if (b && branchList.indexOf(b) === -1) branchList.push(b);
+  });
   function encodeBranch(b) {
     return b.split('/').filter(s => s && s !== '.' && s !== '..').map(encodeURIComponent).join('/');
   }
