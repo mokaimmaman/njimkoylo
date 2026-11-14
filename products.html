@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="data:,">
+    <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer">
+    <script src="site-common.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>All Products - FIADSHOP</title>
+    <meta name="description" content="Browse all premium products at FIADSHOP.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { cta: { 50: '#fff7ed', 100: '#ffedd5', 200: '#fed7aa', 300: '#fdba74', 400: '#fb923c', 500: '#f97316', 600: '#ea580c', 700: '#c2410c', 800: '#9a3412', 900: '#7c2d12' } } } } }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .custom-card { transition: all 0.2s ease-in-out; border: 1px solid #e5e7eb; }
+        .dark .custom-card { border-color: #27272a; }
+        .custom-card:hover { box-shadow: 0 8px 20px rgba(0,0,0,0.1); transform: translateY(-2px); border-color: #f97316; }
+        .dark .custom-card:hover { border-color: #f97316; box-shadow: 0 0 12px rgba(249,115,22,0.15); }
+        .price-tag { color: #ea580c; }
+        .dark .price-tag { color: #fb923c; }
+        .filter-btn.active-filter { background-color: #f97316 !important; color: white !important; border-color: #f97316 !important; }
+        .category-scroll { overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
+        .category-scroll .filter-btn { display: inline-flex; white-space: nowrap; flex-shrink: 0; }
+        .toast { animation: slideIn 0.3s ease-out, fadeOut 0.3s ease-in 2.7s forwards; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes fadeOut { to { opacity: 0; transform: translateX(100%); } }
+
+        /* ---- CSV product list ---- */
+        .name-clamp { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+        @supports not (-webkit-line-clamp: 2) { .name-clamp { display: block; max-height: 2.4em; overflow: hidden; } }
+        #load-status { min-height: 2.5rem; }
+    </style>
+
+
+
+    <style id="fiad-dark-contrast-fix">
+      .dark [class~="text-gray-600"]:not(:hover):not(:focus):not([class*="dark:text-"]) { color: #d1d5db !important; }
+      .dark [class~="text-gray-500"]:not(:hover):not(:focus):not([class*="dark:text-"]) { color: #9ca3af !important; }
+      .dark [class~="text-gray-700"]:not(:hover):not(:focus):not([class*="dark:text-"]) { color: #d1d5db !important; }
+      .dark [class~="text-gray-800"]:not(:hover):not(:focus):not([class*="dark:text-"]) { color: #e5e7eb !important; }
+    </style>
+</head>
+<body class="bg-white dark:bg-black text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+    <nav class="relative bg-white/95 dark:bg-zinc-950/95 backdrop-blur-sm z-50 border-b-2 border-gray-300 dark:border-zinc-700 shadow-sm">
+<div class="container mx-auto px-3 py-3 flex justify-between items-center">
+<a class="text-xl font-bold tracking-tight hover:opacity-80 transition" href="index.html">
+<span class="text-cta-500">FIAD</span>SHOP
+            </a>
+<div class="flex items-center gap-3">
+<a aria-label="Login/Register" class="hidden md:block text-gray-600 dark:text-gray-400 hover:text-cta-500 dark:hover:text-cta-400 transition" data-auth-top-link="" href="login.html">
+<i class="fa-regular fa-user text-lg"></i>
+</a>
+
+<button aria-label="Switch to dark mode" aria-pressed="false" class="p-2 rounded-full bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-cta-400 transition-all hover:scale-105 focus:outline-none" id="site-theme-toggle">
+<span class="text-sm" id="site-theme-icon">🌙</span>
+</button>
+<a aria-label="Shopping cart" class="relative cursor-pointer group" href="cart.html">
+<i class="fa-solid fa-cart-shopping text-xl text-gray-700 dark:text-gray-300"></i>
+<span class="absolute -top-2 -right-2 bg-cta-500 text-white text-[10px] font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-md cart-pulse" id="cart-count">0</span>
+</a>
+<!-- Plain three-dot button: no background, border, or coloured circle. -->
+<button aria-controls="quick-menu" aria-expanded="false" aria-label="Open menu" class="ml-2 p-1 text-gray-700 dark:text-gray-300 transition-colors hover:text-cta-500 dark:hover:text-cta-400 focus:outline-none" id="menu-toggle">
+<i aria-hidden="true" class="fa-solid fa-ellipsis-vertical text-xl"></i>
+</button>
+</div>
+</div>
+<!-- Small dropdown window, aligned with the right side of the three-dot button. -->
+<div aria-label="Site navigation" class="hidden absolute right-3 top-full mt-2 w-56 overflow-hidden rounded-xl border border-gray-200 bg-white p-2 shadow-xl dark:border-zinc-700 dark:bg-zinc-900" id="quick-menu" role="menu"><a aria-label="Wishlist" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-800 transition hover:bg-cta-50 hover:text-cta-600 dark:text-gray-100 dark:hover:bg-zinc-800 dark:hover:text-cta-400" href="wishlist.html" role="menuitem"><i aria-hidden="true" class="fa-regular fa-heart w-4 text-center"></i><span>Wishlist</span></a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-800 transition hover:bg-cta-50 hover:text-cta-600 dark:text-gray-100 dark:hover:bg-zinc-800 dark:hover:text-cta-400" href="products.html" role="menuitem"><i aria-hidden="true" class="fa-solid fa-bag-shopping w-4 text-center"></i><span>Shop Now</span></a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-800 transition hover:bg-cta-50 hover:text-cta-600 dark:text-gray-100 dark:hover:bg-zinc-800 dark:hover:text-cta-400" href="earn-with-us.html" role="menuitem"><i aria-hidden="true" class="fa-solid fa-lightbulb w-4 text-center"></i><span>Earn With Us</span></a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-800 transition hover:bg-cta-50 hover:text-cta-600 dark:text-gray-100 dark:hover:bg-zinc-800 dark:hover:text-cta-400" href="ai.html" role="menuitem"><svg aria-hidden="true" class="w-[18px] h-[18px] shrink-0" focusable="false" viewbox="0 0 384 312" xmlns="http://www.w3.org/2000/svg"><path d="M131 309.59C130.52 309.54 128.38 309.32 126.26 309.1C106.03 307.02 86.68 293.69 76.78 275.01C70.78 263.7 69.07 256.43 68.79 240.96C68.7 236.19 68.55 232.21 68.45 232.11C67.98 231.65 67.53 232.36 67.12 234.17C61.41 259.97 36.49 272.41 17.88 258.75C-5.66 241.49 -4.57 195.68 19.74 179.99C23.7 177.44 23.41 178.24 23.74 169C23.88 164.94 24.16 160.39 24.36 158.88C24.55 157.36 24.79 155.17 24.88 154C25.87 141.16 30.62 123.24 37 108.26C41.64 97.38 44.28 92.57 52.68 79.67C54.4 77.03 57.94 72.15 59.62 70.12C63.45 65.48 64.66 64.05 66.99 61.39C72.13 55.55 79.78 48.2 85.74 43.36C93.65 36.95 94.13 36.59 100.25 32.59C134.21 10.37 174.71 1.76 216.5 7.87C219.87 8.36 222.81 8.82 223.03 8.89C223.25 8.96 224.71 9.28 226.28 9.61C227.84 9.93 230.47 10.56 232.12 11C233.78 11.44 235.57 11.9 236.12 12.03C248.51 14.97 267.21 23.47 280.82 32.35C299.28 44.39 318.27 63.27 329.87 81.12C330.95 82.78 332.83 85.64 334.06 87.49C338.11 93.6 345.02 108.27 348.67 118.5C354.24 134.11 357.49 152.13 357.96 170.02C358.16 177.59 358.14 177.54 360.28 178.69C364.19 180.82 365.53 181.76 367.95 184.1C395.4 210.71 379.21 267.78 345.19 264.31C310.63 260.8 301.96 200.42 333.07 179.9C337.16 177.21 336.86 178.04 336.67 169.8C336.5 162.9 336.27 160.16 335.09 151.62C330.96 121.69 316.07 92.52 293.71 70.58C285.36 62.39 279.81 57.77 271.54 52.17C255.22 41.09 232.68 31.9 217.12 29.98C216.03 29.84 214.33 29.57 213.35 29.37C197.43 26.14 170.38 27.55 152.75 32.53C139.15 36.38 125.74 42.14 115.39 48.58C76.67 72.69 49.76 114.65 45.87 157C44.27 174.39 44.46 176.97 47.48 178.49C56.77 183.18 64.95 194.89 67.25 206.78C67.58 208.48 68.11 209.32 68.49 208.75C68.66 208.5 68.75 198.22 68.75 178.5C68.75 162.07 68.85 147.39 68.98 145.87C71.49 116.13 94.59 90.65 123.48 85.75C129.08 84.81 241.12 84.15 253.12 85C279.91 86.89 305.01 109.32 310.76 136.5C312.44 144.45 312.35 140.97 312.44 196.38C312.53 248.51 312.47 251.65 311.49 255.25C311.36 255.73 310.91 257.59 310.48 259.38C304.15 285.85 281.95 305.87 255.25 309.17C252.13 309.56 134.48 309.95 131 309.59ZM253.33 288.29C274.65 284.92 289.82 268.3 291.48 246.5C291.92 240.73 291.62 148.52 291.15 145.12C288.21 123.84 271.57 107.82 250.38 105.88C244.24 105.32 136.02 105.31 130.44 105.87C109.37 107.99 92.11 125.35 89.78 146.75C89.42 150 89.38 239.29 89.73 245.25C91.12 269.07 108.33 287.02 131.42 288.74C138.61 289.28 249.69 288.87 253.33 288.29ZM185.25 257.85C184.91 257.79 183.33 257.56 181.75 257.35C169.85 255.74 157.82 249.52 149.54 240.68C140.23 230.76 152 219.36 162 228.62C169.78 235.83 176.98 239.33 185.81 240.2C198.47 241.45 209.54 237.57 218.65 228.71C223.47 224.02 227.81 223.53 231.8 227.21C237.75 232.69 234.14 240.4 221.71 248.8C212.1 255.3 194.91 259.57 185.25 257.85ZM143.44 194.01C127.34 191.07 121.24 171.94 132.75 160.5C145.16 148.16 165.79 156.91 165.74 174.49C165.71 186.31 154.59 196.05 143.44 194.01ZM233.5 194.01C217.12 191.65 210.73 171.18 222.89 160.04C239 145.28 263.2 163.67 253.63 183.41C250.15 190.57 241.44 195.16 233.5 194.01Z" fill="currentColor" fill-rule="evenodd"></path></svg><span>AI Chat</span></a>
+<a aria-label="Login/Register" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-800 transition hover:bg-cta-50 hover:text-cta-600 dark:text-gray-100 dark:hover:bg-zinc-800 dark:hover:text-cta-400" data-auth-menu-link="" href="login.html" role="menuitem"><i aria-hidden="true" class="fa-solid fa-right-to-bracket w-4 text-center" data-auth-icon=""></i><span data-auth-label="">Login/Register</span></a>
+</div>
+</nav>
+
+
+    
+
+    <div class="bg-gray-50 dark:bg-zinc-900 py-6 px-3 border-b-2 border-gray-300 dark:border-zinc-700">
+        <div class="container mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+                <h1 class="text-xl font-bold">All Products</h1>
+                <p class="text-xs text-gray-600 mt-1 dark:text-gray-300" id="product-count">Loading...</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <input id="search-input" type="text" placeholder="Search products..." class="px-3 py-2 text-xs border border-gray-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-cta-500 w-48">
+                <button id="search-btn" class="px-3 py-2 bg-cta-500 hover:bg-cta-600 text-white rounded-lg text-xs font-bold"><i class="fa-solid fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <section class="py-4 px-3 border-b-2 border-gray-300 dark:border-zinc-700">
+        <div class="container mx-auto">
+            <div class="flex items-center gap-2 mb-3">
+                <span class="text-xs font-medium text-gray-600 mr-1 flex-shrink-0 dark:text-gray-300">Category:</span>
+                <div id="category-filters" class="category-scroll flex gap-2">
+                    <button class="filter-btn active-filter px-3 py-1.5 text-xs rounded-full border bg-white dark:bg-zinc-900" data-filter="all">All</button>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-xs font-medium text-gray-600 mr-1 dark:text-gray-300">Sort:</span>
+                <select id="sort-select" class="px-3 py-1.5 text-xs border border-gray-300 dark:border-zinc-700 rounded-full bg-white dark:bg-zinc-900">
+                    <option value="default">Default</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="name-asc">Name: A-Z</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-6 px-3">
+        <div class="container mx-auto">
+            <div id="loading-spinner" class="flex flex-col justify-center items-center py-20">
+                <div class="animate-spin rounded-full h-8 w-8 border-4 border-cta-500 border-t-transparent"></div>
+                <p class="text-xs text-gray-600 mt-2 dark:text-gray-300">Loading products...</p>
+            </div>
+
+            <!-- মোবাইলে ২ কলাম, sm+ এ ৩ কলাম -->
+            <div id="products-grid" class="hidden grid grid-cols-2 sm:grid-cols-3 gap-3"></div>
+
+            <div id="no-results" class="hidden text-center py-10 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-lg p-6">
+                <i class="fa-solid fa-box-open text-4xl text-gray-300 dark:text-zinc-700 mb-3"></i>
+                <p class="text-sm text-gray-600 mb-2 dark:text-gray-300">No products found</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-4" id="no-results-hint"></p>
+                <button id="clear-filters" class="text-xs text-cta-500 hover:underline">Clear filters</button>
+            </div>
+
+            <!-- infinite scroll: এই element ভিউতে আসলেই পরের ব্যাচ লোড হয় -->
+            <div id="sentinel" aria-hidden="true" style="height:1px"></div>
+
+            <div id="load-status" class="flex flex-col justify-center items-center py-6 gap-2">
+                <div id="load-more-spinner" class="hidden animate-spin rounded-full h-6 w-6 border-4 border-cta-500 border-t-transparent"></div>
+                <p id="load-status-text" class="text-[11px] text-gray-500 dark:text-gray-400 text-center"></p>
+                <button id="load-more-btn" class="hidden px-4 py-2 text-xs font-bold rounded-full bg-cta-500 text-white hover:bg-cta-600 transition">Load more</button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white dark:bg-zinc-950 border-t border-gray-200 dark:border-zinc-800 py-8">
+        <div class="container mx-auto px-3">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
+                <div>
+                    <h4 class="font-bold text-sm mb-2">
+                        <span class="text-cta-500 dark:text-cta-400">FIAD</span>SHOP
+                    </h4>
+                    <p class="text-[10px] text-gray-600 dark:text-gray-400 leading-relaxed">Privacy, quality, customization, and factory-direct pricing — all in one place.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-xs mb-3 text-gray-700 dark:text-gray-300">Quick Links</h4>
+                    <ul class="space-y-1.5">
+                        <li><a href="about.html" class="text-xs text-gray-600 dark:text-gray-400 hover:text-cta-500 dark:hover:text-cta-400 transition">About Us</a></li>
+                        <li><a href="contact.html" class="text-xs text-gray-600 dark:text-gray-400 hover:text-cta-500 dark:hover:text-cta-400 transition">Contact</a></li>
+                        <li><a href="faq.html" class="text-xs text-gray-600 dark:text-gray-400 hover:text-cta-500 dark:hover:text-cta-400 transition">FAQ</a></li>
+                        <li><a href="products.html" class="text-xs text-gray-600 dark:text-gray-400 hover:text-cta-500 dark:hover:text-cta-400 transition">Shop</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-xs mb-3 text-gray-700 dark:text-gray-300">Customer Service</h4>
+                    <ul class="space-y-1.5">
+                        <li><a href="privacy.html" class="text-xs text-gray-600 dark:text-gray-400 hover:text-cta-500 dark:hover:text-cta-400 transition">Privacy Policy</a></li>
+                        <li><a href="terms.html" class="text-xs text-gray-600 dark:text-gray-400 hover:text-cta-500 dark:hover:text-cta-400 transition">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-xs mb-3 text-gray-700 dark:text-gray-300">Follow Us</h4>
+                    <div class="flex gap-2">
+                        <a href="#" class="w-8 h-8 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-cta-500 hover:text-white dark:hover:bg-cta-500 transition" aria-label="Facebook">
+                            <i class="fa-brands fa-facebook-f text-xs"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-cta-500 hover:text-white dark:hover:bg-cta-500 transition" aria-label="Twitter">
+                            <i class="fa-brands fa-twitter text-xs"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-cta-500 hover:text-white dark:hover:bg-cta-500 transition" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram text-xs"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-400 hover:bg-cta-500 hover:text-white dark:hover:bg-cta-500 transition" aria-label="YouTube">
+                            <i class="fa-brands fa-youtube text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 dark:border-zinc-800 pt-4 text-center">
+                <p class="text-gray-600 dark:text-gray-400 text-[10px] sm:text-xs">&copy; 2026 FIADSHOP. All transactions are encrypted and secure.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="toast-container" class="fixed top-20 right-4 z-[100] space-y-2"></div>
+
+    <script>
+    /* =====================================================================
+       CSV -> Product list (GitHub থেকে লাইভ লোড)
+       • ডেটা আসে data/products.csv থেকে — রিপো: mokaimmaman/njimkoylo
+       • একাধিক সোর্স চেষ্টা করা হয়: raw.githubusercontent -> jsDelivr -> লোকাল
+       • DOM-এ কার্ড BATCH টা করে বসে -> স্ক্রল করে নিচে গেলে পরের ব্যাচ।
+       • সার্চ পুরো ডেটাসেটে চলে, শুধু লোড হওয়াগুলোর উপর নয় => কিছুই বাদ পড়ে না।
+       ===================================================================== */
+    (function () {
+        // ---- CSV location (GitHub) ----
+        var GH_REPO = 'mokaimmaman/njimkoylo';
+        var GH_BRANCH = 'main';
+        var CSV_PATH = 'data/products.csv';
+        var CSV_SOURCES = [
+            'https://raw.githubusercontent.com/' + GH_REPO + '/' + GH_BRANCH + '/' + CSV_PATH,
+            'https://cdn.jsdelivr.net/gh/' + GH_REPO + '@' + GH_BRANCH + '/' + CSV_PATH,
+            // লোকাল টেস্ট/প্রিভিউ: page.html?csv=data/products.csv দিলে আগে সেটাই
+            new URLSearchParams(location.search).get('csv') || CSV_PATH
+        ];
+
+        // CSV-র যে কলামগুলো ব্যবহার করা হয় (নাম বদলালে শুধু এখানে বদলাতে হবে)
+        var F = {
+            sku: 'SKU',
+            name: 'Product Name',
+            price: 'Price (USD)',
+            category: 'Category',
+            image: 'Image 1',
+            imageCount: 'Image Count'
+        };
+
+
+        var RAW = [];
+        var ALL = [];
+        var TOTAL = 0;
+
+        var BATCH = 24;                 // একবারে কতগুলো কার্ড DOM-এ বসবে
+        var PLACEHOLDER = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="#f3f4f6"/>' +
+            '<text x="200" y="205" text-anchor="middle" font-family="Arial,sans-serif" font-size="20" fill="#9ca3af">No image</text></svg>');
+
+        // ছবি: CSV-তে পুরো URL থাকলে সেটাই, নইলে jsDelivr CDN
+        var CDN = 'https://cdn.jsdelivr.net/gh/' + GH_REPO + '@' + GH_BRANCH + '/';
+        function imgUrl(src) {
+            if (!src) return PLACEHOLDER;
+            if (/^https?:\/\//i.test(src) || src.indexOf('data:') === 0) return src;
+            return CDN + src.replace(/^\/+/, '');
+        }
+
+        /* ---------------- CSV parsing ---------------- */
+        // RFC-4180 ধাঁচের ছোট parser: quote, ভেতরের কমা, "" escape, \r\n সব সামলায়
+        function parseCsv(text) {
+            text = String(text || '').replace(/^\uFEFF/, '');
+            var rows = [], row = [], field = '', inQuotes = false, i = 0, ch;
+            for (i = 0; i < text.length; i++) {
+                ch = text.charAt(i);
+                if (inQuotes) {
+                    if (ch === '"') {
+                        if (text.charAt(i + 1) === '"') { field += '"'; i++; }
+                        else inQuotes = false;
+                    } else field += ch;
+                } else if (ch === '"') {
+                    inQuotes = true;
+                } else if (ch === ',') {
+                    row.push(field); field = '';
+                } else if (ch === '\n') {
+                    row.push(field); field = '';
+                    rows.push(row); row = [];
+                } else if (ch !== '\r') {
+                    field += ch;
+                }
+            }
+            if (field.length || row.length) { row.push(field); rows.push(row); }
+            return rows;
+        }
+
+        // CSV টেক্সট -> [{sku,name,price,img,cat}]
+        function toProducts(text) {
+            var rows = parseCsv(text);
+            if (!rows.length) return [];
+            var header = rows[0].map(function (h) { return h.trim(); });
+            var idx = {};
+            header.forEach(function (h, i) { idx[h] = i; });
+            function cell(row, key) {
+                var i = idx[key];
+                return (i === undefined || row[i] === undefined) ? '' : String(row[i]).trim();
+            }
+            var out = [];
+            for (var r = 1; r < rows.length; r++) {
+                var row = rows[r];
+                if (!row || !row.length) continue;
+                var sku = cell(row, F.sku);
+                var name = cell(row, F.name);
+                if (!sku || !name) continue;
+                var price = parseFloat(cell(row, F.price));
+                out.push({
+                    sku: sku,
+                    name: name,
+                    price: isNaN(price) ? 0 : price,
+                    img: imgUrl(cell(row, F.image)),
+                    cat: cell(row, F.category) || 'Other'
+                });
+            }
+            return out;
+        }
+
+        // একাধিক সোর্স — যেটা আগে পাওয়া যায় সেটাই ব্যবহার
+        function fetchCsv() {
+            var i = 0;
+            function attempt() {
+                if (i >= CSV_SOURCES.length) return Promise.reject(new Error('CSV not found'));
+                var url = CSV_SOURCES[i++];
+                return fetch(url, { cache: 'no-cache' })
+                    .then(function (res) {
+                        if (!res.ok) throw new Error('HTTP ' + res.status);
+                        return res.text();
+                    })
+                    .then(function (text) {
+                        var list = toProducts(text);
+                        if (!list.length) throw new Error('empty CSV');
+                        return list;
+                    })
+                    .catch(function () { return attempt(); });
+            }
+            return attempt();
+        }
+
+
+        function $(id) { return document.getElementById(id); }
+        function esc(s) {
+            return String(s == null ? '' : s)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        var currentFilter = 'all';
+        var currentSort = 'default';
+        var currentSearch = '';
+
+        var view = [];
+        var rendered = 0;
+        var busy = false;
+        var done = false;
+
+        /* ---------------- filter + sort ---------------- */
+        function buildView() {
+            var q = currentSearch.trim().toLowerCase();
+            var terms = q ? q.split(/\s+/) : [];
+            var list = ALL.filter(function (p) {
+                if (currentFilter !== 'all' && p.cat.toLowerCase() !== currentFilter) return false;
+                if (terms.length) {
+                    var hay = (p.name + ' ' + p.sku + ' ' + p.cat).toLowerCase();
+                    for (var i = 0; i < terms.length; i++) {
+                        if (hay.indexOf(terms[i]) === -1) return false;
+                    }
+                }
+                return true;
+            });
+
+            if (currentSort === 'price-asc') list.sort(function (a, b) { return a.price - b.price; });
+            else if (currentSort === 'price-desc') list.sort(function (a, b) { return b.price - a.price; });
+            else if (currentSort === 'name-asc') list.sort(function (a, b) { return a.name.localeCompare(b.name); });
+
+            view = list;
+        }
+
+        // aliCDN: মূল ছবির লিংকের শেষে _400x400.jpg যোগ করলে ছোট থাম্বনেইল আসে
+        // _400x400 থাম্বনেইল শুধু aliCDN হোস্টে কাজ করে; অন্য হোস্টে মূল লিংকই দিই
+        function thumb(u) {
+            if (!u) return PLACEHOLDER;
+            if (/_\d+x\d+\.[a-z]+$/i.test(u)) return u;
+            if (/alicdn\.com|alibaba/i.test(u) && !/_\.webp$/i.test(u)) return u + '_400x400.jpg';
+            return u;
+        }
+
+        /* ---------------- card ---------------- */
+        function card(p) {
+            var href = encodeURIComponent(p.sku) + '.html';
+            return '<div class="custom-card bg-white dark:bg-zinc-900 rounded-md flex flex-col h-full overflow-hidden">' +
+                '<a href="' + href + '" class="relative w-full aspect-square overflow-hidden bg-gray-100 dark:bg-zinc-800 block">' +
+                    '<img src="' + esc(thumb(p.img)) + '" alt="' + esc(p.name) + '" loading="lazy" decoding="async" ' +
+                        'referrerpolicy="no-referrer" ' +
+                        'onerror="if(this.dataset.f){this.onerror=null;this.src=\'' + PLACEHOLDER + '\';}else{this.dataset.f=1;this.src=\'' + esc(p.img || PLACEHOLDER) + '\';}" ' +
+                        'class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">' +
+                '</a>' +
+                '<div class="p-2 flex flex-col flex-grow">' +
+                    '<span class="text-[9px] uppercase tracking-wider text-cta-500 font-medium mb-0.5">' + esc(p.cat) + '</span>' +
+                    '<a href="' + href + '" title="' + esc(p.name) + '">' +
+                        '<h3 class="name-clamp text-xs font-medium text-gray-800 dark:text-gray-200 mb-1 leading-tight min-h-[2rem] hover:text-cta-500 transition">' + esc(p.name) + '</h3>' +
+                    '</a>' +
+                    '<p class="price-tag font-bold text-sm mb-2">$' + p.price.toFixed(2) + '</p>' +
+                    '<div class="mt-auto flex gap-1">' +
+                        '<button class="add-to-cart-btn flex-1 py-1.5 bg-cta-500 text-white rounded text-xs font-bold hover:bg-cta-600 transition" data-sku="' + esc(p.sku) + '">' +
+                            '<i class="fa-solid fa-cart-plus mr-1"></i>Add</button>' +
+                        '<button class="wishlist-btn w-8 py-1.5 border border-gray-200 dark:border-zinc-700 rounded flex items-center justify-center hover:border-cta-500 transition" data-sku="' + esc(p.sku) + '" aria-label="Wishlist">' +
+                            '<i class="fa-regular fa-heart text-xs"></i></button>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        }
+
+        /* ---------------- batch render ---------------- */
+        function updateStatus() {
+            var txt = $('load-status-text');
+            var cnt = $('product-count');
+            if (cnt) {
+                if (currentSearch || currentFilter !== 'all') {
+                    cnt.textContent = 'Showing ' + view.length + ' products';
+                } else {
+                    cnt.textContent = 'Showing ' + TOTAL + ' products';
+                }
+            }
+            var sp = $('load-more-spinner'); if (sp) sp.classList.add('hidden');
+            var btn = $('load-more-btn'); if (btn) btn.classList.toggle('hidden', done || !view.length);
+            if (txt) {
+                if (!view.length) txt.textContent = '';
+                else if (done) txt.textContent = 'All Products Shown';
+                else txt.textContent = 'Scroll down to load more';
+            }
+        }
+
+        function loadMore() {
+            if (busy || done) return;
+            busy = true;
+            var sp = $('load-more-spinner'); if (sp) sp.classList.remove('hidden');
+
+            var grid = $('products-grid');
+            var slice = view.slice(rendered, rendered + BATCH);
+            var html = slice.map(card).join('');
+
+            requestAnimationFrame(function () {
+                grid.insertAdjacentHTML('beforeend', html);
+                rendered += slice.length;
+                if (rendered >= view.length) done = true;
+                busy = false;
+                bindCards(grid);
+                updateStatus();
+                fillIfNeeded();
+            });
+        }
+
+        // স্ক্রিনে জায়গা বাকি থাকলে সাথে সাথে আরও ব্যাচ
+        function fillIfNeeded() {
+            if (done || busy) return;
+            var sentinel = $('sentinel');
+            if (!sentinel) return;
+            var rect = sentinel.getBoundingClientRect();
+            if (rect.top < (window.innerHeight || 800) + 700) loadMore();
+        }
+
+        /* ---------------- cart / wishlist ---------------- */
+        function bySku(sku) {
+            for (var i = 0; i < ALL.length; i++) if (ALL[i].sku === sku) return ALL[i];
+            return null;
+        }
+        function bindCards(scope) {
+            var carts = scope.querySelectorAll('.add-to-cart-btn');
+            for (var i = 0; i < carts.length; i++) {
+                (function (btn) {
+                    if (btn.dataset.bound) return;
+                    btn.dataset.bound = '1';
+                    btn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        var p = bySku(btn.getAttribute('data-sku'));
+                        if (!p) return;
+                        if (window.FiadAPI && window.FiadAPI.cart && window.FiadAPI.cart.add) {
+                            window.FiadAPI.cart.add({ id: p.sku, name: p.name, basePrice: p.price, images: [p.img], sku: p.sku }, 1, null);
+                        } else {
+                            var el = $('cart-count');
+                            if (el) el.textContent = (parseInt(el.textContent, 10) || 0) + 1;
+                            if (window.FiadAPI && window.FiadAPI.toast) window.FiadAPI.toast('Added: ' + p.name, 'success');
+                        }
+                    });
+                })(carts[i]);
+            }
+            var wish = scope.querySelectorAll('.wishlist-btn');
+            for (var j = 0; j < wish.length; j++) {
+                (function (btn) {
+                    if (btn.dataset.bound) return;
+                    btn.dataset.bound = '1';
+                    btn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        var p = bySku(btn.getAttribute('data-sku'));
+                        if (window.FiadAPI && window.FiadAPI.wishlist && p) {
+                            window.FiadAPI.wishlist.toggle({ id: p.sku, name: p.name, basePrice: p.price, images: [p.img] });
+                        }
+                        var icon = btn.querySelector('i');
+                        if (!icon) return;
+                        var on = !icon.classList.contains('fa-solid');
+                        icon.classList.toggle('fa-regular', !on);
+                        icon.classList.toggle('fa-solid', on);
+                        icon.classList.toggle('text-red-500', on);
+                    });
+                })(wish[j]);
+            }
+        }
+
+        /* ---------------- categories ---------------- */
+        function renderCategories() {
+            var counts = {};
+            ALL.forEach(function (p) { counts[p.cat] = (counts[p.cat] || 0) + 1; });
+            var cats = Object.keys(counts).sort();
+            var container = $('category-filters');
+            if (!container) return;
+            var html = '<button class="filter-btn px-3 py-1.5 text-xs rounded-full border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-gray-600 dark:text-gray-300 hover:border-cta-500 transition" data-filter="all">All</button>';
+            html += cats.map(function (c) {
+                return '<button class="filter-btn px-3 py-1.5 text-xs rounded-full border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-gray-600 dark:text-gray-300 hover:border-cta-500 transition" data-filter="' +
+                    esc(c.toLowerCase()) + '">' + esc(c) + '</button>';
+            }).join('');
+            container.innerHTML = html;
+            var btns = container.querySelectorAll('.filter-btn');
+            for (var i = 0; i < btns.length; i++) {
+                (function (btn) {
+                    if (btn.getAttribute('data-filter') === currentFilter) btn.classList.add('active-filter');
+                    btn.addEventListener('click', function () {
+                        var all = container.querySelectorAll('.filter-btn');
+                        for (var z = 0; z < all.length; z++) all[z].classList.remove('active-filter');
+                        btn.classList.add('active-filter');
+                        currentFilter = btn.getAttribute('data-filter');
+                        restart();
+                    });
+                })(btns[i]);
+            }
+        }
+
+        /* ---------------- reset ---------------- */
+        function restart() {
+            buildView();
+            rendered = 0;
+            done = false;
+            busy = false;
+            var grid = $('products-grid');
+            var noRes = $('no-results');
+            grid.innerHTML = '';
+            var spin = $('loading-spinner'); if (spin) spin.classList.add('hidden');
+
+            if (!view.length) {
+                grid.classList.add('hidden');
+                if (noRes) noRes.classList.remove('hidden');
+                var hint = $('no-results-hint');
+                if (hint) hint.textContent = 'No product matches “' + currentSearch + '”. Clear the filters to see all ' + TOTAL + ' products.';
+                updateStatus();
+                return;
+            }
+            if (noRes) noRes.classList.add('hidden');
+            grid.classList.remove('hidden');
+            loadMore();
+            window.scrollTo({ top: 0, behavior: 'auto' });
+        }
+
+        /* ---------------- infinite scroll ---------------- */
+        function setupObserver() {
+            var sentinel = $('sentinel');
+            if (!sentinel) return;
+            if ('IntersectionObserver' in window) {
+                var io = new IntersectionObserver(function (entries) {
+                    for (var i = 0; i < entries.length; i++) if (entries[i].isIntersecting) loadMore();
+                }, { root: null, rootMargin: '800px 0px', threshold: 0 });
+                io.observe(sentinel);
+            } else {
+                window.addEventListener('scroll', function () {
+                    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 900) loadMore();
+                }, { passive: true });
+            }
+        }
+
+        /* ---------------- UI ---------------- */
+        function initUI() {
+            var timer = null;
+            var input = $('search-input');
+
+            function commitSearch() {
+                currentSearch = (input && input.value || '').trim();
+                var url = new URL(location.href);
+                if (currentSearch) url.searchParams.set('q', currentSearch); else url.searchParams.delete('q');
+                history.replaceState(null, '', url.toString());
+                restart();
+            }
+            function onSearch() {
+                clearTimeout(timer);
+                timer = setTimeout(commitSearch, 200);
+            }
+            if (input) {
+                input.addEventListener('input', onSearch);
+                input.addEventListener('keypress', function (e) { if (e.key === 'Enter') { e.preventDefault(); clearTimeout(timer); commitSearch(); } });
+            }
+            var sBtn = $('search-btn');
+            if (sBtn) sBtn.addEventListener('click', function (e) { e.preventDefault(); clearTimeout(timer); commitSearch(); });
+
+            var sel = $('sort-select');
+            if (sel) sel.addEventListener('change', function () { currentSort = this.value; restart(); });
+
+            var clear = $('clear-filters');
+            if (clear) clear.addEventListener('click', function () {
+                currentFilter = 'all';
+                currentSearch = '';
+                currentSort = 'default';
+                if (input) input.value = '';
+                if (sel) sel.value = 'default';
+                var all = document.querySelectorAll('.filter-btn');
+                for (var i = 0; i < all.length; i++) all[i].classList.remove('active-filter');
+                var allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+                if (allBtn) allBtn.classList.add('active-filter');
+                var url = new URL(location.href);
+                url.searchParams.delete('q'); url.searchParams.delete('filter');
+                history.replaceState(null, '', url.toString());
+                restart();
+            });
+
+            var lm = $('load-more-btn');
+            if (lm) lm.addEventListener('click', loadMore);
+
+            var params = new URLSearchParams(location.search);
+            var q = params.get('q') || '';
+            var f = (params.get('filter') || '').toLowerCase();
+            if (q) { currentSearch = q; if (input) input.value = q; }
+            if (f) currentFilter = f;
+        }
+
+        /* ---------------- load + error UI ---------------- */
+        function showLoadError(msg) {
+            var spin = $('loading-spinner'); if (spin) spin.classList.add('hidden');
+            var grid = $('products-grid'); if (grid) grid.classList.add('hidden');
+            var st = $('load-status-text');
+            if (st) st.textContent = msg || 'Could not load products. Please refresh the page.';
+            var cnt = $('product-count');
+            if (cnt) cnt.textContent = 'Products unavailable';
+        }
+
+        function start() {
+            initUI();
+            setupObserver();
+            fetchCsv().then(function (list) {
+                RAW = list;
+                ALL = RAW;
+                TOTAL = ALL.length;
+                renderCategories();
+                restart();
+            }).catch(function () {
+                showLoadError('Could not load products from GitHub. Check your connection and refresh.');
+            });
+        }
+
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+        else start();
+    })();
+    </script>
+
+</body>
+</html>
