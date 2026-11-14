@@ -77,11 +77,12 @@ GH_BRANCH = 'main'
 CSV_PATH  = 'data/products.csv'
 ```
 
-তিনটি সোর্স ক্রমান্বয়ে চেষ্টা করা হয়:
+সোর্সগুলো ক্রমান্বয়ে চেষ্টা করা হয় (একটা না পেলে পরেরটা):
 
-1. `data/products.csv` (page-এর পাশেই ফাইল থাকলে — যেমন GitHub Pages/একই ফোল্ডার)
-2. `https://raw.githubusercontent.com/mokaimmaman/njimkoylo/main/data/products.csv`
-3. `https://cdn.jsdelivr.net/gh/mokaimmaman/njimkoylo@main/data/products.csv`
+1. `data/products.csv` — page-এর পাশেই ফাইল থাকলে (GitHub Pages/একই ফোল্ডার)
+2. `raw.githubusercontent.com/.../main/data/products.csv`
+3. `cdn.jsdelivr.net/gh/...@main/data/products.csv`
+4. `raw.githubusercontent.com/.../master/...` এবং jsDelivr `@master` (ব্যাকআপ)
 
 প্রয়োজনে URL দিয়ে বদলানো যায়: `products.html?branch=my-branch` বা
 `products.html?csv=data/products.csv`।

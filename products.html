@@ -210,12 +210,19 @@
         var GH_REPO = 'mokaimmaman/njimkoylo';
         var GH_BRANCH = PARAMS.get('branch') || 'main';
         var CSV_PATH = 'data/products.csv';
-        var CSV_SOURCES = [
-            // page-এর পাশেই ফাইল থাকলে (একই ব্রাঞ্চ/Pages) সেটাই আগে
-            PARAMS.get('csv') || CSV_PATH,
-            'https://raw.githubusercontent.com/' + GH_REPO + '/' + GH_BRANCH + '/' + CSV_PATH,
-            'https://cdn.jsdelivr.net/gh/' + GH_REPO + '@' + GH_BRANCH + '/' + CSV_PATH
-        ];
+
+        // যে ব্রাঞ্চগুলো ক্রমান্বয়ে চেষ্টা করা হবে (main আগে, তারপর master)
+        var CSV_BRANCHES = [GH_BRANCH];
+        ['main', 'master'].forEach(function (b) {
+            if (CSV_BRANCHES.indexOf(b) === -1) CSV_BRANCHES.push(b);
+        });
+
+        // page-এর পাশেই ফাইল থাকলে সেটাই আগে, তারপর raw.githubusercontent, তারপর jsDelivr
+        var CSV_SOURCES = [PARAMS.get('csv') || CSV_PATH];
+        CSV_BRANCHES.forEach(function (b) {
+            CSV_SOURCES.push('https://raw.githubusercontent.com/' + GH_REPO + '/' + b + '/' + CSV_PATH);
+            CSV_SOURCES.push('https://cdn.jsdelivr.net/gh/' + GH_REPO + '@' + b + '/' + CSV_PATH);
+        });
 
         // CSV-র যে কলামগুলো ব্যবহার করা হয় (নাম বদলালে শুধু এখানে বদলাতে হবে)
         var F = {
