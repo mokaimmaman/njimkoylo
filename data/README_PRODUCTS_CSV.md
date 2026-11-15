@@ -1,50 +1,55 @@
 # প্রোডাক্ট CSV + products.html + product-detail.html
 
-এই ফোল্ডারে এখন দুই ধরনের পাবলিক CSV আছে:
-
-* `data/products.csv` — `products.html`-এর পুরো ক্যাটালগ (SKU, নাম, দাম, ক্যাটাগরি, ছবি)।
-* `data/products/<SKU>.csv` — প্রতিটি SKU-র জন্য একটি করে ডিটেইল ফাইল; `product-detail.html` এটি লোড করে।
+**সঠিক সোর্স এখন `data/three_groups_products_cleaned.csv`** — ব্যবহারকারীর পরে
+পাঠানো `three_groups_products_cleaned.csv`। আগে ভুল করে পুরনো/অসম্পূর্ণ
+`three_groups_products.csv` দেওয়া হয়েছিল; সেটি এখন শুধু কাঁচা সাপ্লায়ার
+রিপোর্ট হিসেবে রাখা হয়েছে (Chinese-text remover workflow-এর ইনপুট)।
 
 ```
-data/three_groups_products.csv   ← কিউরেটেড কাঁচা সোর্স (৩৬ কলাম)
+data/three_groups_products.csv          ← কাঁচা রিপোর্ট (পুরনো/মূল ইনপুট)
+        │  Chinese-text / image cleaning
+        ▼
+data/three_groups_products_cleaned.csv  ← সঠিক পরিচ্ছন্ন সোর্স (২৯ কলাম, ৬৯৪ সারি)
+output/three_groups_products_cleaned.csv ← একই ফাইলের আউটপুট কপি
         │  python3 build_products_csv.py
         ▼
-data/products.csv                ← ৬৯১টি SKU + ১৭টি পরিচ্ছন্ন কলাম
+data/products.csv                       ← ৬৯১টি SKU + ১৭টি পাবলিক কলাম
         │  python3 build_product_detail_csvs.py
         ▼
-data/products/<SKU>.csv          ← ৬৯১টি ফাইল; প্রতিটিতে header + ১টি সারি
-        │  product-detail.html?sku=<SKU>  →  GitHub raw/jsDelivr fetch()
+data/products/<SKU>.csv                 ← ৬৯১টি ফাইল; প্রতিটিতে header + ১টি সারি
+        │  product-detail.html?sku=<SKU> → GitHub raw/jsDelivr fetch()
         ▼
 নির্দিষ্ট পণ্যের ডিটেইল পেইজ
 ```
 
-`three_groups_products.csv`-এর আপলোড করা ভার্সনে ৬৫৩টি সারি ছিল, কিন্তু
-`products.csv`-এ ৬৯১টি SKU আছে। ৪১টি অনুপস্থিত সারি আগের রিপো-সোর্স থেকে যোগ
-করা হয়েছে, যেন `products.html`-এর **প্রতিটি কার্ডের** জন্য ডিটেইল CSV থাকে।
-SKU-র ক্রম ও কোড আগের `products.csv`-এর সাথে হুবহু মিলে যায়। যে ৩টি পণ্য
-ইচ্ছাকৃতভাবে বাদ দেওয়া হয় তাদের কোনো SKU নেই, তাই তাদের ফাইলও তৈরি হয় না।
+নতুন cleaned ফাইলে **৬৯৪টি সারি** আছে; ইচ্ছাকৃতভাবে বাদ দেওয়া ৩টি পণ্য
+কেটে **৬৯১টি SKU** তৈরি হয়। আগের মতো ৪১টি সারি আলাদা করে merge করার দরকার
+নেই। `products.csv`-এর **SKU কোড ও ক্রম হুবহু আগের মতোই** আছে; শুধু পরিচ্ছন্ন
+ছবি/টেক্সট দিয়ে ক্যাটালগ ও ডিটেইল ফাইলগুলো আবার তৈরি করা হয়েছে।
 
 ## ১. কী কী বাদ যায়
 
-**কলাম** (`build_products_csv.py` → `DROP_COLUMNS` + `OUT_FIELDS` whitelist): `Group`, `Also curated?`,
-`Photo Status`, `SKU Codes` (পুরনো কোড), `Photos (n)`, `Product IDs (all variants)`,
-`Source Price Min/Max (USD)`, `Variant Source`, `Colours seen in photo`,
-`Photo Note`, `1688 Links`, `Review Status`, `Notes`, `Price Note`,
-`Dropped Offer Prices`, `Price Confidence`, `Variant Note`, `Feature Note`,
-`MOQ`, `MOQ Note` — অর্থাৎ ক্রেতার পেইজে যেগুলো লাগে না, সব। ৩৬টি কাঁচা
-কলাম থেকে ১৭টি পাবলিক কলাম রাখা হয়:
+বর্তমান cleaned সোর্সে ২৯টি কলাম আছে; `build_products_csv.py`-এর
+`DROP_COLUMNS` + `OUT_FIELDS` whitelist দিয়ে **১৭টি পাবলিক কলাম** রাখা হয়:
 
 `SKU`, `Product Name`, `Category`, `Model`, `Price (USD)`, `Description`,
 `Specifications`, `Features`, `Variants`, `Variant Count`, `Offers (n)`,
 `Image 1` … `Image 5`, `Image Count`।
 
+সরাসরি বাদ যায়: `Group`, `Also curated?`, `Photo Status`, `SKU Codes`
+(পুরনো কোড), `Photos (n)`, `Variant Source`, `Colours seen in photo`,
+`Photo Note`, `1688 Links`, `Review Status`, `Notes`। Whitelist দিয়ে আরও বাদ
+যায় `No`, `Product IDs (all variants)`, `Source Price Min/Max (USD)`; কিছু
+কলাম পরিচ্ছন্ন নামে রূপান্তরিত হয় (`Model (different product)` → `Model`,
+`Variants (name – price)` → `Variants`)।
+
 **টেক্সট থেকে** (`NOISE_PATTERNS`): `1688`, `অবাঞ্জিত` / `অবাঞ্ছিত`,
 `[from photo]`, `[from photo + specs]` ইত্যাদি মার্কার, `check the 1688 link`,
 `Source price $x to $y`, চাইনিজ অক্ষর ও চাইনিজ যতিচিহ্ন।
 
-`Variants` কলাম থেকে দাম ও "N offers" অংশ বাদ যায় — শুধু ভ্যারিয়েন্টের নাম থাকে।
-`Product ID` আর সাপ্লায়ারের কাঁচা দাম পাবলিক ফাইলে রাখা হয়নি; GitHub-এ ফাইলগুলো
-সবার পড়ার যোগ্য, তাই শুধু বিক্রয়মূল্য `Price (USD)`-ই থাকে।
+`Variants` থেকে দাম ও "N offers" অংশ বাদ যায় — শুধু ভ্যারিয়েন্টের নাম থাকে।
+`Product ID` আর সাপ্লায়ারের কাঁচা দাম পাবলিক ফাইলে রাখা হয়নি; GitHub-এ
+ফাইলগুলো সবার পড়ার যোগ্য, তাই শুধু বিক্রয়মূল্য `Price (USD)`-ই থাকে।
 
 ## ২. বাদ দেওয়া পণ্য ও ছবি
 
@@ -99,7 +104,7 @@ product-detail.html?sku=Y3GX2OTP
 1. `data/products/<SKU>.csv` — পেইজের পাশেই থাকলে (GitHub Pages / লোকাল)
 2. `raw.githubusercontent.com/mokaimmaman/njimkoylo/<branch>/data/products/<SKU>.csv`
 3. `cdn.jsdelivr.net/gh/mokaimmaman/njimkoylo@<branch>/data/products/<SKU>.csv`
-4. `main` / `master` ব্যাকআপ ব্রাঞ্চ
+4. working branch / `main` / `master` ব্যাকআপ ব্রাঞ্চ
 
 `main`-এ মার্জ না হওয়া পর্যন্ত `arena/a8e34751-njimkoylo` দুই পেইজেই
 অটোম্যাটিক fallback ব্রাঞ্চ হিসেবে যোগ করা আছে। তাই প্রিভিউ সার্ভার বন্ধ
@@ -121,7 +126,7 @@ Wishlist, Share, quantity ও variant sheet-ও ওই CSV-র তথ্য ব�
 ## ৫. আবার বানানো
 
 ```bash
-python3 build_products_csv.py             # data/products.csv নতুন করে লেখে
+python3 build_products_csv.py             # cleaned সোর্স থেকে data/products.csv লেখে
 python3 build_product_detail_csvs.py      # data/products/<SKU>.csv গুলো লেখে
 python3 build_product_detail_csvs.py --check   # শুধু সারাংশ দেখায়
 ```
@@ -131,7 +136,7 @@ python3 build_product_detail_csvs.py --check   # শুধু সারাংশ
 ফাইল অটোম্যাটিক মুছে যায়।
 
 `workflows/rebuild-products-csv.yml` একটি GitHub Actions টেমপ্লেট। প্রয়োজনে
-`.github/workflows/`-এ কপি করলে `data/three_groups_products.csv` বা বিল্ড
-স্ক্রিপ্ট বদলালে ক্যাটালগ ও ৬৯১টি ডিটেইল ফাইল অটোম্যাটিক আবার তৈরি হয়।
-এই ব্রাঞ্চে workflow file সরাসরি যোগ করার অনুমতি না থাকায় টেমপ্লেটটি
-`workflows/` ফোল্ডারেই রাখা হয়েছে।
+`.github/workflows/`-এ কপি করলে cleaned সোর্স বা বিল্ড স্ক্রিপ্ট বদলালে
+ক্যাটালগ ও ৬৯১টি ডিটেইল ফাইল অটোম্যাটিক আবার তৈরি হয়। এই ব্রাঞ্চে
+workflow file সরাসরি যোগ করার অনুমতি না থাকায় টেমপ্লেটটি `workflows/`
+ফোল্ডারেই রাখা হয়েছে।

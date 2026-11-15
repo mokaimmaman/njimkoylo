@@ -6,6 +6,8 @@ on:
   push:
     paths:
       - "data/three_groups_products.csv"
+      - "data/three_groups_products_cleaned.csv"
+      - "output/three_groups_products_cleaned.csv"
       - "build_products_csv.py"
       - "build_product_detail_csvs.py"
       - "sku_codec.py"

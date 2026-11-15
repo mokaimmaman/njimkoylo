@@ -3,9 +3,11 @@
 build_products_csv.py — products.html / product-detail.html-এর জন্য পরিষ্কার CSV
 ================================================================================
 
-নতুন `data/products.csv` বানায় যা সরাসরি products.html পড়তে পারে।
-এরপর `build_product_detail_csvs.py` একই SKU ধরে `data/products/<SKU>.csv`
-গুলো তৈরি করে; সেগুলো product-detail.html GitHub থেকে লোড করে।
+এখন সোর্স হলো `data/three_groups_products_cleaned.csv` — ছবি/টেক্সট পরিষ্কার
+করা সঠিক CSV। এটি থেকে নতুন `data/products.csv` বানায় যা সরাসরি
+products.html পড়তে পারে। এরপর `build_product_detail_csvs.py` একই SKU ধরে
+`data/products/<SKU>.csv` গুলো তৈরি করে; সেগুলো product-detail.html GitHub
+থেকে লোড করে।
 
 কী কী বাদ যায়
 --------------
@@ -13,7 +15,9 @@ build_products_csv.py — products.html / product-detail.html-এর জন্�
   ``Colours seen in photo``, ``Photo Note``, ``1688 Links``, ``Notes``
   এবং product.html-এ দরকার নেই এমন সব কলাম
   (``Photos (n)``, ``Review Status``, ``Price Note``, ``Dropped Offer Prices``,
-  ``Price Confidence``, ``Variant Note``, ``Feature Note``, ``MOQ``, ``MOQ Note``)
+  ``Price Confidence``, ``Variant Note``, ``Feature Note``, ``MOQ``, ``MOQ Note``)।
+  বর্তমান cleaned সোর্সে শেষের extra কলামগুলো নেই; পুরনো ফাইলের সাথে
+  compatibility-র জন্য ``DROP_COLUMNS``-এ রাখা আছে।
 * টেক্সট থেকে: `1688`, ``অবাঞ্জিত``/``অবাঞ্ছিত``, ``[from photo]`` জাতীয়
   আন্তর্জাতিক মার্কার, ``check the 1688 link`` বাক্য।
 
@@ -41,7 +45,7 @@ from sku_codec import decode, encode
 
 # ---------------------------------------------------------------- paths
 ROOT = Path(__file__).resolve().parent
-SRC_CSV = ROOT / "data" / "three_groups_products.csv"
+SRC_CSV = ROOT / "data" / "three_groups_products_cleaned.csv"
 OUT_CSV = ROOT / "data" / "products.csv"
 
 IMG_COLS = ["Image 1", "Image 2", "Image 3", "Image 4", "Image 5"]

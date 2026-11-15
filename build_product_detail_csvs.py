@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 """
-three_groups_products.csv-এর প্রতিটি পণ্যের জন্য একটি করে ডিটেইল CSV বানায়
-=========================================================================
+three_groups_products_cleaned.csv-এর প্রতিটি পণ্যের জন্য ডিটেইল CSV বানায়
+=============================================================================
 
 ফাইলের নাম আসে ``data/products.csv``-এর ``SKU`` থেকে::
 
-    data/three_groups_products.csv  (কাঁচা/কিউরেটেড সোর্স)
+    data/three_groups_products_cleaned.csv  (সঠিক পরিচ্ছন্ন সোর্স)
         │  build_products_csv.py-এর একই পরিচ্ছন্নতা + SKU ম্যাপিং
         ▼
-    data/products/<SKU>.csv         (শুধু product-detail.html-এর প্রয়োজনীয় কলাম)
+    data/products/<SKU>.csv                (শুধু product-detail.html-এর প্রয়োজনীয় কলাম)
 
-প্রতিটি ফাইলে header + ঠিক একটিই data row থাকে। কাঁচা সোর্সের অভ্যন্তরীণ
-কলাম (Group, Review Status, 1688 Links, Source Price, Product IDs, MOQ,
-নোট ইত্যাদি) এখানে আসে না — ``build_products_csv.OUT_FIELDS``-ই whitelist।
+প্রতিটি ফাইলে header + ঠিক একটিই data row থাকে। সোর্সের অভ্যন্তরীণ কলাম
+(Group, Review Status, 1688 Links, Source Price, Product IDs, নোট ইত্যাদি)
+এখানে আসে না — ``build_products_csv.OUT_FIELDS``-ই whitelist।
 
 ব্যবহার::
 
@@ -31,7 +31,7 @@ from pathlib import Path
 import build_products_csv as builder
 
 ROOT = Path(__file__).resolve().parent
-SOURCE_CSV = ROOT / "data" / "three_groups_products.csv"
+SOURCE_CSV = ROOT / "data" / "three_groups_products_cleaned.csv"
 CATALOG_CSV = ROOT / "data" / "products.csv"
 OUT_DIR = ROOT / "data" / "products"
 
